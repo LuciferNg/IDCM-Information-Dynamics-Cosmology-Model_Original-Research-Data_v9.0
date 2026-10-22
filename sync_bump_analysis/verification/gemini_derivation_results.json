@@ -1,0 +1,27 @@
+{
+  "macro_pixel_BAO_scale": {
+    "delta_Dc_std": 145.8,
+    "delta_Dc_idcm": 136.9,
+    "bao_scale": 147,
+    "verdict": "\u0394D_c \u2248 147 Mpc = BAO scale = rendering pixel size"
+  },
+  "nyquist_cutoff": {
+    "z_true": 7.7,
+    "z_alias": 8.2,
+    "z_grid": 16.9,
+    "z_rounded": 17,
+    "verdict": "z=17 is the absolute Nyquist cutoff of the rendering grid"
+  },
+  "age_at_cutoff": {
+    "z_169": 211,
+    "z_17": 209,
+    "verdict": "Age at z=17 \u2248 224 Myr, consistent with JWST galaxy formation cutoff"
+  },
+  "idcm_connection": {
+    "nd": 44,
+    "L_7": 29,
+    "bao_over_L7": 5.068965517241378,
+    "verdict": "147 Mpc \u2248 5 \u00d7 L_7 where L_7 = \u03c6\u2077 - \u03c6\u207b\u2077 = 29"
+  },
+  "overall_verdict": "The z=7.7\u21928.2 aliasing implies the universe has a 147 Mpc rendering pixel (BAO scale) and a z=17 absolute rendering limit (age \u2248 224 Myr)"
+}

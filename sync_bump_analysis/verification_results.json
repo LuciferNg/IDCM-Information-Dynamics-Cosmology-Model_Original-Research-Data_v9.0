@@ -1,0 +1,30 @@
+{
+  "method1": {
+    "title": "Fibonacci\u6392\u7a0b\u7d2f\u7a4d\u5206\u914d",
+    "status": "PASS",
+    "z_c": 0.6,
+    "reason": "C_5 = \u03a3F\u2081\u208b\u2085/\u03a3F\u2081\u208b\u2086 = 12/20 = 3/5 = 0.6"
+  },
+  "method2": {
+    "title": "\u5716\u8ad6\u8b5c\u9699",
+    "status": "PASS",
+    "spectral_gap": 0.005095770779492917,
+    "chain_duality": "\u03b3_n + \u03b3_-90 = B = 4",
+    "reason": "\u8b5c\u9699 = \u03b3_1 = 4 sin\u00b2(\u03c0/2N_d) = 0.005096, N_d = B\u00d7L\u2085 = 44"
+  },
+  "method3": {
+    "title": "\u53cd\u5e38\u6d88\u9664",
+    "status": "PASS",
+    "N_d": 44,
+    "formula": "B\u00d7L\u2085 = 4\u00d711 = 44",
+    "reason": "N_d = B\u00d7Lucas_n \u7d50\u69cb\u5f37\u8feb, N_d=44 \u4fc2\u552f\u4e00 Lucas \u7d50\u69cb\u901a\u9053\u6578"
+  },
+  "method4": {
+    "title": "\u5e7e\u4f55\u6975\u9650\u7b49\u50f9",
+    "status": "PASS",
+    "continuum_limit": "T_Pl\u21920 \u2192 \u6a19\u6e96 GR",
+    "correction_peak": 0.056840499601567195,
+    "z_c": 0.6,
+    "reason": "\u96e2\u6563\u2192\u9023\u7e8c\u9084\u539f GR, SYNC\u4fee\u6b63\u55baz=0.6\u7522\u751fDE bump"
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "dipole": {
+    "l": 264,
+    "b": 48,
+    "v": 370
+  },
+  "axis_of_evil": {
+    "l": 245,
+    "b": -10
+  },
+  "alignment": {
+    "cos_theta": 0.4940179119170364,
+    "theta_deg": 60.394988832341134
+  },
+  "quadrupole": {
+    "obs": 212,
+    "model": 1060,
+    "ratio": 0.2,
+    "cosmic_variance": 0.6324555320336759
+  },
+  "octopole": {
+    "obs": 1040,
+    "model": 1240,
+    "ratio": 0.8387096774193549,
+    "cosmic_variance": 0.5345224838248488
+  },
+  "phi_predictions": {
+    "phi_inv_2": 0.3819660112501051,
+    "pred_C2": 0.6180339887498949,
+    "phi_inv_3": 0.23606797749978964,
+    "pred_C3": 0.7639320225002104
+  },
+  "verdict": {
+    "axis_alignment": "consistent within uncertainty",
+    "phi_power_law": "too simple \u2014 needs refinement",
+    "observer_relative": "supported by dipole alignment"
+  }
+}

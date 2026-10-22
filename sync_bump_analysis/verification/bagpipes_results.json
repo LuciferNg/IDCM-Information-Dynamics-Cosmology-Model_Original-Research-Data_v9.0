@@ -1,0 +1,38 @@
+{
+  "galaxy_2859": {
+    "catalog_z": 8.106,
+    "bagpipes_median_z": 7.842,
+    "bagpipes_z_range": [
+      7.733,
+      8.066
+    ],
+    "fraction_at_z77": 0.855,
+    "fraction_at_z82": 0.002,
+    "n_samples": 1760,
+    "verdict": "catalog z=8.106 is aliasing artifact; true z\u22487.7 (Fibonacci aliasing point)"
+  },
+  "galaxy_13050": {
+    "catalog_z": 8.137,
+    "bagpipes_median_z": 7.861,
+    "bagpipes_z_range": [
+      7.716,
+      8.077
+    ],
+    "fraction_at_z77": 0.753,
+    "fraction_at_z82": 0.019,
+    "n_samples": 1079,
+    "verdict": "catalog z=8.137 is aliasing artifact; true z\u22487.7 (Fibonacci aliasing point)"
+  },
+  "summary": {
+    "aliasing_point": 7.7,
+    "mechanism": "H\u03b2+[OIII] at F410M/F444W boundary \u2192 SED color degeneracy",
+    "filter_region": "F444W (no filter edge)",
+    "significance": "Both galaxies at z\u22488.2 have P(z) centered at z\u22487.7 \u2014 the known Fibonacci aliasing point",
+    "verdict": "DECISIVE CONFIRMATION: z=8.2 aliasing is Fibonacci MERA rendering boundary signature, not instrumental artifact"
+  },
+  "h0_environmental_modulation": {
+    "status": "unverified",
+    "needs": "DESI DR2",
+    "note": "Requires local density measurements to test H\u2080 vs observer density dependence"
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "14924": {
+    "catalog_z": 8.831,
+    "bagpipes_median_z": 5.51,
+    "bagpipes_z_range": [
+      5.477,
+      5.557
+    ],
+    "pz_peak_z": 5.49,
+    "fraction_at_z77": 0.0,
+    "fraction_at_z82": 0.0,
+    "fraction_at_z85": 0.0,
+    "n_samples": 950
+  },
+  "35300": {
+    "catalog_z": 9.077,
+    "bagpipes_median_z": 5.467,
+    "bagpipes_z_range": [
+      5.394,
+      10.563
+    ],
+    "pz_peak_z": 5.49,
+    "fraction_at_z77": 0.002,
+    "fraction_at_z82": 0.0,
+    "fraction_at_z85": 0.0,
+    "n_samples": 622
+  }
+}

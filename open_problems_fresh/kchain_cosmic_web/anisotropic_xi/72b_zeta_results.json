@@ -1,0 +1,12 @@
+{
+  "constants": {
+    "phi_3": 0.23606797749978975,
+    "z_0": 0.546,
+    "sigma": 0.17356047840765434,
+    "H0": 72.59,
+    "R_H": 4129.94156219865
+  },
+  "zeta_formula": "\u03b6(z) = 1/(1+z) \u00b7 [1 - \u03c6\u207b\u00b3\u00b7exp(-(z-z\u2080)\u00b2/2\u03c3\u00b2)]\u207b\u00b9",
+  "weff_from_zeta": "w_eff = -1 + (1+z)/3 \u00b7 d/dz \u00b7 ln(\u03b6(z))",
+  "DL_from_zeta": "D_L(z) = (1+z) \u00b7 R_H \u00b7 \u222b\u2080\u1dbb \u03b6(z') dz'"
+}

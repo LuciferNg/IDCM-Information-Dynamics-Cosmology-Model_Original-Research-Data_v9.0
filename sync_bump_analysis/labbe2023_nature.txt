@@ -1,0 +1,788 @@
+A population of red candidate massive galaxies ~600 Myr after the Big
+Bang
+Ivo Labbé1, Pieter van Dokkum2, Erica Nelson3, Rachel Bezanson4, Katherine A. Suess5,6,
+Joel Leja7,8,9, Gabriel Brammer10, Katherine Whitaker10,11, Elijah Mathews7,8,9, Mauro
+Stefanon12,13, Bingjie Wang7,8,9
+
+
+1
+  Centre for Astrophysics and Supercomputing, Swinburne University of Technology,
+Melbourne, VIC 3122, Australia
+2
+  Department of Astronomy, Yale University, New Haven, CT 06511, USA
+3
+  Department for Astrophysical and Planetary Science, University of Colorado, Boulder, CO
+80309, USA
+4
+  Department of Physics and Astronomy and PITT PACC, University of Pittsburgh, Pittsburgh,
+PA 15260, USA
+5
+  Department of Astronomy and Astrophysics, University of California, Santa Cruz, 1156 High
+Street, Santa Cruz, CA 95064 USA
+6
+  Kavli Institute for Particle Astrophysics and Cosmology and Department of Physics, Stanford
+University, Stanford, CA 94305, USA
+7
+  Department of Astronomy & Astrophysics, The Pennsylvania State University, University
+Park, PA 16802, USA
+8
+  Institute for Computational & Data Sciences, The Pennsylvania State University, University
+Park, PA, USA
+9
+  Institute for Gravitation and the Cosmos, The Pennsylvania State University, University Park,
+PA 16802, USA
+10
+   Cosmic Dawn Center (DAWN), Niels Bohr Institute, University of Copenhagen, Jagtvej 128,
+København N, DK-2200, Denmark
+11
+   Department of Astronomy, University of Massachusetts, Amherst, MA 01003, USA
+12
+    Departament d’Astronomia i Astrofisica, Universitat de Valencia, C. Dr. Moliner 50, E-
+46100 Burjassot, Valencia, Spain
+13
+   Unidad Asociada CSIC “Grupo de Astrofisica Extragalactica y Cosmologi” (Instituto de
+Fisica de Cantabria - Universitat de Valencia)
+
+Galaxies with stellar masses as high as ~ 1011 solar masses have been identified1–3 out to
+redshifts z ~ 6, approximately one billion years after the Big Bang. It has been difficult to
+find massive galaxies at even earlier times, as the Balmer break region, which is needed
+for accurate mass estimates, is redshifted to wavelengths beyond 2.5 μm. Here we make
+use of the 1-5 μm coverage of the JWST early release observations to search for
+intrinsically red galaxies in the first ≈ 750 million years of cosmic history. In the survey
+area, we find six candidate massive galaxies (stellar mass > 1010 solar masses) at 7.4 ≤ z ≤
+9.1, 500–700 Myr after the Big Bang, including one galaxy with a possible stellar mass of
+~1011 solar masses. If verified with spectroscopy, the stellar mass density in massive
+galaxies would be much higher than anticipated from previous studies based on rest-
+frame ultraviolet-selected samples.
+
+The galaxies were identified in the first observations of the JWST Cosmic Evolution Early
+Release Science (CEERS) program. This program obtained multi-band images at 1−5 μm
+with the Near Infrared Camera (NIRCam) in a “blank” field, chosen to overlap with existing
+Hubble Space Telescope (HST) imaging. The total area covered by these initial data is ≈ 40
+arcmin2. The data were obtained from the MAST archive and reduced using the Grizli
+pipeline.4 A catalog of sources was created, starting with detection in a deep combined
+F277W+F356W+F444W image (see Methods for details). A total of 42,729 objects are in
+this parent catalog.
+
+We selected candidate massive galaxies at high redshifts by identifying objects that have two
+redshifted breaks in their spectral energy distributions (SEDs), the λrest = 1216 Å Lyman break
+and the λrest ~ 3600 Å Balmer break. This selection ensures that the redshift probability
+distributions are well-constrained, have no secondary solutions at lower redshifts, and that we
+include galaxies that have potentially high mass-to-light ratios. Specifically, we require that:
+objects are not detected at optical wavelengths; blue in the near-infrared with F150W –
+F277W< 0.7; red at longer wavelengths with F277W – F444W > 1.0; brighter than F444W <
+27 AB magnitude. After visual inspection to remove obvious artefacts (such as diffraction
+spikes), this selection produced 13 galaxies with the sought-for “double-break” spectral
+energy distributions. Next, redshifts and stellar masses were determined with three widely-
+used techniques, taking the contribution of strong emission lines to the rest-frame optical
+photometry explicitly into account.5–15 We use the EAZY code16 (with additional strong
+emission line templates), the Prospector-α framework17 , and five configurations of the
+Bagpipes SED-fitting code to explore systematics due to modeling assumptions. The seven
+individual mass and redshift measurements of the 13 galaxies are listed in the Methods
+section. We adopt fiducial masses and redshifts by taking the median value for each galaxy.
+We note that these masses and redshifts are not definitive and that all galaxies should be
+considered candidates.
+
+As shown in Fig. 1 all 13 objects have photometric redshifts 6.5 < z < 9.1. Six of the 13 have
+fiducial masses > 1010 M⊙ (Salpeter IMF) and multi-band images and spectral energy
+distributions of these galaxies are shown in Figs. 2 and 3. Their photometric redshifts range
+from z=7.4 to z=9.1. The model fits are generally excellent, and in several cases clearly
+demonstrate that rest-frame optical emission lines contribute to the continuum emission.
+These lines can be so strong in young galaxies that they can dominate the broad band fluxes
+redward of the location of the Balmer break,6–8,14,18 and Spitzer/IRAC detections of optical
+continuum breaks in galaxies at z ≳ 5 have been challenging to interpret.3, 5, 19–24 With JWST,
+this ambiguity is largely resolved owing to the dense wavelength coverage of the NIRCam
+filters and the inclusion of relatively narrow emission line-sensitive filter F410M,25 which
+falls within the F444W band, although the uncertainties are such that alternative solutions
+with lower masses may exist14. The brightest galaxy in the sample, 38094, is at z = 7.5 and
+may have a mass that is as high as M*≈ 1×1011 M⊙, more massive than the present-day Milky
+Way. It has two nearby companions with a similar break in their optical to near-IR SEDs,
+suggesting that the galaxy may be in a group.
+
+We place these results in context by comparing them to previous studies of the evolution of
+the galaxy mass function to z ~ 9. These studies are based on samples that were selected in
+the rest-frame UV using ultra-deep HST images, with Spitzer/IRAC photometry typically
+acting as a constraint on the rest-frame optical SED.3, 15, 26–28 The bottom panel of Fig. 3
+compares the average SED of the six candidate massive galaxies to the SEDs of HST-selected
+galaxies at similar redshifts. The galaxies we report here are much redder and the differences
+are not limited to one or two photometric bands: the entire SED is qualitatively different. This
+is the key result of our study: we show that galaxies can be robustly identified at z>7 with
+JWST that are intrinsically-redder than previous HST-selected samples at the same redshifts.
+It is likely that these galaxies also have much higher M/L ratios, but this needs to be
+confirmed with spectroscopy. We note that the new galaxies are very faint in the rest-frame
+UV (median F150W~28 AB), and previous wide-field studies with HST and Spitzer29 of
+individual galaxies did not reach the required depths to find this population.
+
+The masses that we derive are intriguing in the context of previous studies. No candidate
+galaxies with log(M*/M⊙) > 10.5 had been found before beyond z ~ 7, and no candidates
+with log(M*/M⊙) > 10 had been found beyond z ~ 8. Furthermore, Schechter fits to the
+previous candidates predicted extremely low number densities of such galaxies at the highest
+redshifts.3 This is shown by the lines in Fig. 4: the expected mass density in galaxies with
+log(M*/M⊙) > 10 at z ~ 9 was ~102 M⊙ Mpc−3, and the total previously derived stellar mass
+density, integrated over the range 8 < log(M* /M⊙ ) < 12, is less than 105 M⊙ Mpc−3. If
+confirmed, the JWST-selected objects would fall in a different region of Fig. 4, in the top
+right, as the JWST-derived fiducial mass densities are far higher than the expected values
+based on the UV-selected samples. The mass in galaxies with log(M∗/M⊙) > 10 would be a
+factor of ~ 20 higher at z ~ 8 and a factor of ~1000 higher at z ~ 9. The differences are even
+greater for log(M*/M⊙ ) > 10.5.
+
+We infer that the possible interpretation of these JWST-identified “optical break galaxies”
+falls between two extremes. If the redshifts and fiducial masses are correct, then the mass
+density in the most massive galaxies would exceed the total previously estimated mass
+density (integrated down to M*=108M⊙) by a factor of ~ 2 at z~ 8 and by a factor of ~5 at z ~
+9. Unless the low mass samples are highly incomplete, the implication would be that most of
+the total stellar mass at z = 8 − 9 resides in the most massive galaxies. Although extreme, this
+is qualitatively consistent with the notion that the central regions of present-day massive
+elliptical galaxies host the oldest stars in the universe (together with globular clusters), and
+with the finding that by z ~ 2 the stars in the central regions of massive galaxies already
+make up 10% – 20% of the total stellar mass density at that redshift.30 A more fundamental
+issue is that these stellar mass densities are difficult to realize in a standard LCDM
+cosmology, as pointed out by several recent studies.31,32 Our fiducial mass densities push
+against the limit set by the number of available baryons in the most massive dark matter
+halos.
+
+The other extreme interpretation is that all the fiducial masses are larger than the true masses
+by factors of >10-100. We use standard techniques and multiple methods to estimate the
+masses. Under certain assumptions for the dust attenuation law and stellar population age
+sampling (favoring young ages with strong emission lines), low masses can be produced (see
+Methods). This only occurs at specific redshifts (z=5.6, 6.9, 7.7, or about ~10% of the
+redshift range of the sample) where line-dominated and continuum-dominated models
+produce similar F410M-F444W colors. In addition, it is possible that techniques that have
+been calibrated with lower redshift objects17 are not applicable. As an example, we do not
+include effects of exotic emission lines or bright active galactic nuclei (AGN)14. Part the
+sample is reported to be resolved in F200W33 making significant contribution from AGN less
+likely, but faint, red AGN are possible and would be highly interesting in their own right,
+even if they could lead to changes in the masses.
+
+It is perhaps most likely that the situation is in between these extremes, with some of the red
+colours reflecting exotic effects or AGN and others reflecting high M/L ratios. Future JWST
+NIRSpec spectroscopy can be used to measure accurate redshifts as well as the precise
+contributions of emission lines and to the observed photometry. With deeper data the stellar
+continuum emission can be detected directly for the brightest galaxies. Finally, dynamical
+masses are needed to test the hypothesis that our description of massive halo assembly in
+LCDM is incomplete. It may be possible to measure the required kinematics with ALMA or
+from rotation curves with the NIRSpec IFU if the ionized gas is spatially extended.30,31
+
+    1.    Glazebrook,K. et al. A massive, quiescent galaxy at a redshift of 3.717. Nature 544, 71–74
+          (2017)
+    2. Riechers, D. A. et al. Rise of the Titans: Gas Excitation and Feedback in a Binary
+    Hyperluminous Dusty Starburst Galaxy at z ~ 6. Astrophys. J. 907, 62 (2021)
+    3. Stefanon, M. et al. Galaxy Stellar Mass Functions from z~10 to z~6 using the Deepest
+    Spitzer/Infrared Array Camera Data: No Significant Evolution in the Stellar-to-halo Mass Ratio
+    of Galaxies in the First Gigayear of Cosmic Time. Astrophys. J. 922, 29 (2021)
+    4. Brammer, G. & Matharu, J. gbrammer/grizli: Release 2021. Zenodo (2021).
+    5. Schaerer, D. & de Barros, S. The impact of nebular emission on the ages of z ≈ 6 galaxies.
+    Astron. Astrophys. 502, 423–426 (2009)
+    6. Shim, H. et al. z~4 Hα Emitters in the Great Observatories Origins Deep Survey: Tracing
+    the Dominant Mode for Growth of Galaxies. Astrophys. J. 738, 69 (2011)
+    7. Labbé, I. et al. The Spectral Energy Distributions of z~8 Galaxies from the IRAC Ultra
+    Deep Fields: Emission Lines, Stellar Masses, and Specific Star Formation Rates at 650 Myr.
+    Astrophys. J. 777, L19 (2013)
+    8. Stark, D. P. et al. Keck Spectroscopy of 3 < z < 7 Faint Lyman Break Galaxies: The
+    Importance of Nebular Emission in Understanding the Specific Star Formation Rate and Stellar
+    Mass Density. Astrophys. J. 763, 129 (2013)
+    9. Smit,R. et al. Evidence for Ubiquitous High-equivalent-width Nebular Emission in z~7
+    Galaxies: Toward a Clean Measurement of the Specific Star-formation Rate Using a Sample of
+    Bright, Magnified Galaxies. Astrophys. J. 784, 58 (2014)
+    10. Smit, R. et al. High-precision Photometric Redshifts from Spitzer/IRAC: Extreme [3.6] -
+    [4.5] Colors Identify Galaxies in the Redshift Range z ~ 6.6 - 6.9. Astrophys. J. 801, 122 (2015)
+    11. Faisst, A. L. et al. A Coherent Study of Emission Lines from Broadband Photometry:
+    Specific Star Formation Rates and [O III]/Hβ Ratio at 3 < z < 6. Astrophys. J. 821, 122 (2016)
+    12. De Barros, S. et al. The GREATS H β + [O III] luminosity function and galaxy properties at
+    z~8: walking the way of JWST. Mon. Not. R. Astron. Soc. 489, 2355–2366 (2019)
+    13. Naidu, R. P. et al. Two remarkably luminous galaxy candidates at Z ≈ 10–12 revealed by
+    JWST. Astrophys. J. 940, L14 (2022)
+    14. Endsley, R., et al. A JWST/NIRCam Study of Key Contributors to Reionization: The Star-
+    forming and Ionizing Properties of UV-faint z~7-8 Galaxies. arXiv:2208.14999 (2022)
+    15. Stefanon, M. et al. Blue Rest-frame UV-optical Colors in z~8 Galaxies from GREATS: Very
+    Young Stellar Populations at 650 Myr of Cosmic Time. Astrophys. J. 927, 48 (2022)
+    16. Brammer, G. B., van Dokkum, P. G. & Coppi, P. EAZY: A Fast, Public Photometric
+    Redshift Code. Astrophys. J. 686, 1503–1513 (2008)
+    17. Leja, J., Johnson, B. D., Conroy, C., van Dokkum, P. G. & Byler, N. Deriving Physical
+    Properties from Broadband Photometry with Prospector: Description of the Model and a
+    Demonstration of its Accuracy Using 129 Galaxies in the Local Universe. Astrophys. J. 837, 170
+    (2017)
+    18. Smit, R. et al. Inferred Hα Flux as a Star Formation Rate Indicator at z~4-5: Implications for
+    Dust Properties, Burstiness, and the z = 4-8 Star Formation Rate Functions. Astrophys. J. 833,
+    254 (2016)
+    19. Barro, G. et al. CANDELS: The Progenitors of Compact Quiescent Galaxies at z~2.
+    Astrophys. J. 765, 104 (2013)
+    20. Roberts-Borsani, G., et al. Interpreting the Spitzer/IRAC colours of 7 ≤ z ≤ 9 galaxies:
+    distinguishing between line emission and starlight using ALMA. Astrophys. J. 497, 3440 (2020)
+    21. Laporte, N. et al. Probing cosmic dawn: Ages and star formation histories of candidate z ≥ 9
+    galaxies. Mon. Not. R. Astron. Soc. 505, 3336–3346 (2021)
+    22. Topping, M. W. et al. The ALMA REBELS Survey: Specific Star-Formation Rates in the
+    Reionization Era. arXiv e-prints arXiv:2203.07392 (2022)
+23. Whitler, L. et al. Star formation histories of UV-luminous galaxies at z ~ 6.8: implications
+for stellar mass assembly at early cosmic times. arXiv e-prints arXiv:2206.05315 (2022)
+24. Hashimoto, T., et al. The onset of star formation 250 million years after the Big Bang, Nature
+  557, 392 (2018)
+25. Roberts-Borsani, G., et al. Improving z ∼ 7-11 Galaxy Property Estimates with
+  JWST/NIRCam Medium-band Photometry. Astrophys. J. 910, 86 (2021)
+26. Duncan, K. et al. The mass evolution of the first galaxies: stellar mass functions and star
+formation rates at 4 < z < 7 in the CANDELS GOODS-South field. Mon. Not. R. Astron. Soc.
+444, 2960–2984 (2014)
+27. Davidzon, I. et al. The COSMOS2015 galaxy stellar mass function: Thirteen billion years of
+stellar mass assembly in ten snapshots. Astron. Astrophys 605, A70 (2017)
+28. Song, M. et al. The Evolution of the Galaxy Stellar Mass Function at z = 4-8: A Steepening
+Low-mass-end Slope with Increasing Redshift. Astrophys. J. 825, 5 (2016)
+29. Roberts-Borsani, G. W. et al. z ≳ 7 Galaxies with Red Spitzer/IRAC [3.6]-[4.5] Colors in the
+Full CANDELS Data Set: The Brightest-Known Galaxies at z ~7-9 and a Probable Spectroscopic
+Confirmation at z = 7.48. Astrophys. J. 823, 143 (2016)
+30. van Dokkum, P. G. et al. Dense Cores in Galaxies Out to z = 2.5 in SDSS, UltraVISTA, and
+the Five 3D-HST/CANDELS Fields. Astrophys. J. 791, 45 (2014)
+31. Boylan-Kolchin, M. Stress Testing ΛCDM with High-redshift Galaxy Candidates. arXiv e-
+prints arXiv:2208.01611 (2022)
+32. Menci, N., et al. High-redshift Galaxies from Early JWST Observations: Constraints on Dark
+Energy Models, Astrophys. J. 938, L5
+33. Finkelstein S., et al., CEERS Key Paper I: An Early Look into the First 500 Myr of Galaxy
+Formation with JWST, arXiv e-prints arXiv:2211.05792 (2022)
+34. van Dokkum, P., et al. Forming Compact Massive Galaxies. Astrophys. J. 813, 23
+35. Forster Schreiber, N., et al. The SINS/zC-SINF Survey of z ~ 2 Galaxy Kinematics:
+SINFONI Adaptive Optics-assisted Data and Kiloparsec-scale Emission-line Properties.
+Astrophys. J. 238, 21 (2018)
+Figure 1: Redshifts and tentative stellar masses of double-break selected galaxies. Shown
+in gray circles are EAZY-determined redshifts and stellar masses using emission-line
+enhanced templates (Salpeter IMF) for objects with S/N> 8 in the F444W band. Fiducial
+redshifts and masses of the bright galaxies (F444W < 27 AB) that satisfy our double-break
+selection are shown by the large red symbols. Uncertainties are the 16th -84th percentile of the
+posterior probability distribution. All galaxies have photometric redshifts 6.5 < z < 9.1. Six
+galaxies are candidate massive galaxies with fiducial M* > 1010 M⊙.
+Figure 2: Images of the six galaxies with the highest apparent masses as a function of
+wavelength. The fiducial stellar masses of the galaxies are (log(M*/M⊙) > 10). Each cutout
+has a size of 2.4” × 2.4”. The filters range from the 0.6 μm F606W filter of HST/ACS to the
+4.4 μm F444W JWST/NIRCam filter. The galaxies are undetected in the optical filters; blue
+in the short-wavelength NIRCam filters; and red in the long-wavelength NIRCam filters. The
+color stamps show F150W in blue, F277W in green, and F444W in red.
+Figure 3: Spectral energy distributions and stellar population model fits. Top rows:
+photometry (black squares), best-fitting EAZY models (red lines) and redshift probability
+distribution P(z) (gray filled histograms) of six galaxies with apparent fiducial masses
+log(M*/M⊙) > 10. The flux density units are fν. Uncertainties and upper limits (triangles) are
+1σ. Fiducial best-fit stellar masses and redshifts are noted. The seds are characterized by a
+double break: a Lyman break and an upturn at >3μm. Emission lines are visible in the longest
+wavelength bands in several cases. Bottom panel: average rest-frame SED of the 6 candidate
+massive galaxies (red dots) and the 16th -84th percentile of the running median (shaded area).
+The red line is the best-fit median EAZY model. Green squares and the green line show
+average rest-frame UV-selected galaxies at z=8,10 from HST+Spitzer15,34. Gray triangles
+show two spectroscopically confirmed galaxies at z~923,36,44. The double break selected
+galaxies are significantly redder than previously identified objects at similar redshifts. This
+may be due to high M/L ratios or effects that are not included in our modeling, such as AGN
+or exotic lines.
+Figure 4: Cumulative stellar mass density, if the fiducial masses of the JWST-selected
+red galaxies are confirmed. The solid symbols show the total mass density in two redshift
+bins, 7 < z < 8.5 and 8.5 < z < 10, based on the three most massive galaxies in each bin.
+Uncertainties reflect Poisson statistics and cosmic variance. The dashed lines are derived
+from Schechter fits to UV-selected samples.3 The JWST-selected galaxies would greatly
+exceed the mass densities of massive galaxies that were expected at these redshifts based on
+previous studies. This indicates that these studies were highly incomplete or that the fiducial
+masses are overestimated by a large factor.
+Methods
+
+Observations, reduction, and photometry
+
+This paper is based on the first imaging taken with the Near Infrared Camera (NIRCam) on
+JWST as part of the Cosmic Evolution Early Release Science (CEERS) program (PI:
+Finkelstein; PID: 1345). Four pointings have been obtained, covering ~38 square arcminutes
+on the Extended Groth Strip HST legacy field and overlapping fully with the existing
+HST/ACS and WFC3 footprint. NIRCam observations were taken in six broadband filters,
+F115W, F200W, F150W, F277W, F356W, and F444W, and one medium bandwidth filter
+F410M. The F410M medium band sits within the F444W filter and is a sensitive tracer of
+emission lines, enabling improved photometric redshifts and stellar mass estimates of high-
+redshift galaxies29.
+
+Exposures produced by Stage 2 of the JWST calibration pipeline (v1.5.2) were downloaded
+from the MAST archive. The data reduction pipeline Grism redshift and line analysis
+software for space-based spectroscopy (Grizli4) was used to process, align, and co-add the
+exposures. The pipeline mitigates various artefacts, such as “snow-balls” and 1/f noise. the
+To improve pixel-to-pixel variation, custom flat-field calibration images1 were created from
+on-sky commissioning data (program COM-1063) that are the median of the source-masked
+and background-normalized exposures in each NIRCam detector.
+
+The pipeline then subtracts a large-scale sky background, aligns the images to stars from the
+Gaia DR3 catalog, and drizzles the images to a common pixel grid using astrodrizzle. The
+mosaics are available online as part of the v3 imaging data release2. Existing multi-
+wavelength ACS and WFC3 archival imaging from HST were also processed with Grizli. For
+the analysis in this paper all images are projected to a common 40 mas pixel grid. Remaining
+background structure in the NIRCam mosaics is due to scattered light. The background is
+generally smooth on small scales and was effectively removed with a 5” median filter after
+masking bright sources.
+
+We use standard astropy36 and photutils37 procedures to detect sources, create segmentation
+maps, and perform photometry. The procedures are like those used in previous ground- and
+space-based imaging surveys. Briefly, we create an inverse variance weighted combined
+F277W + F356W + F444W image and detect sources after convolution with a Gaussian of 3
+pixels FWHM (0.”12) to enhance sensitivity for point sources. PSFs were matched to the
+F444W-band using photutils procedures. Photometry was performed at the locations of
+detected sources in all filters using 0.”32 diameter circular apertures. The fluxes were
+corrected to total using the Kron autoscaling aperture measurement on the detection image. A
+second small correction was applied for light outside the aperture based on the encircled
+energy provided by the WebbPSF software. The final catalog contains 42,729 sources and
+includes all available HST/ACS and JWST/NIRCam filters (10 bands, spanning 0.43 to 4.4
+micron). Photometry for HST/WFC3 bands was also derived, but only used for zeropoint
+testing as the HST/WFC3 images are several magnitudes shallower than NIRCam.
+
+Photometric zeropoints
+
+1
+    https://s3.amazonaws.com/grizli-v2/NircamSkyflats/flats.html
+2
+    https://s3.amazonaws.com/grizli-v2/JwstMosaics/v3/index.html
+The first JWST images were released with pre-flight zeropoints for the NIRCam filters. The
+pre-flight estimates do not match the in-flight performance, with errors up to ~20% in the
+long wavelength (LW) bands. This analysis uses updated in-flight calibrations that were
+provided by STScI on 7/29/2022 (jwst_0942.pmap) based on observations of two standard
+stars. The calibrations improved the accuracy of the LW photometry but introduced errors in
+the short wavelength (SW) bands, with variations up to 20% between detectors, as
+determined from comparisons to previous HST/WFC3 photometry and analyses of stars in
+the LMC and the globular cluster M9238,39.
+
+We derived new zeropoints for all SW and LW bands, for both NIRCam modules, using two
+independent methods. The first method (“GB”) uses zeropoints that are based on standard
+stars observed by JWST in the B module and transferred to the A module using overlapping
+stars in the LMC. The second method (“IL”) uses 5-10k galaxies at photometric redshifts 0.1
+< z < 5 with SNR>15 from the CEERS parent catalog and calculates the ratio between
+observed and EAZY model fluxes for each detector, module, and photometric band. As the
+observed wavelengths sample different rest-frame parts of the SEDs of the galaxies, errors in
+the model fits can be separated from errors in the zeropoints. More information on the
+methodology and the resulting zeropoints are provided on github3.
+
+The methods agree very well, with differences of 3 ± 3 % in all bands except F444W, where
+we find a difference of 8%. We use the GB values for all bands except F444W where we take
+the average of the GB and IL values (multiplicative corrections 1.064 for module A and
+1.084 for module B). Using the fiducial zeropoints, Extended Data Figure 1 shows offsets
+with respect to EAZY model fluxes, split by detector, module, and filter, showing only 0-3%
+residuals. A third independent method used color-magnitude diagrams of stars in M9238,39 in
+F090W, F150W, F277W, F444W bands, with reported consistency with the “GB” values
+within the uncertainties. Our adopted zeropoints agree with the most recent NIRCam flux
+calibration (jwst_0989.pmap, Oct 2022) to within 4%. This paper adopts a 5% minimum
+systematic error (added in quadrature) for all photometric redshift and stellar population fits
+to account for calibration uncertainties. Finally, we compiled a sample of 450 galaxies with
+spectroscopic redshifts 0.2 < z < 3.8 from 3DHST40 and MOSDEF41 to test photometric
+redshift performance, finding a normalized median absolute deviation of (zphot-zspec)/(1+zspec)
+= 2.5%.
+
+Sample selection
+
+The JWST/NIRCam imaging in this paper reaches 5σ depths from 28.5 to 29.5 AB,
+representing an order of magnitude increase in sensitivity and resolution beyond wavelengths
+of 2.0 μm, and allowing us for the first time to select galaxies at rest-frame optical
+wavelengths to z ~ 10. To enable straightforward model-independent reproduction of the
+sample we employ a purely empirical selection of high-redshift galaxies based on NIRCam
+photometry, rather than one on inferred photometric redshift or stellar mass. We select on a
+“double break” SED: no detection in the HST ACS optical, blue in the NIRCam SW filters,
+and red in the NIRCam LW filters, which is expected for sources at z ≳ 7 with Lyman-break
+and with red UV-optical colors.
+
+The following color selection criteria were applied:
+
+3
+    https://github.com/gbrammer/grizli/pull/107
+                                      F150W − F 277W < 0.7
+                                      F277W − F 444W > 1.0
+in addition to a non-detection requirement in HST ACS imaging
+                                      SNR(B435, V606, I814) < 2
+To ensure good SNR, we limit our sample to F444W< 27 AB magnitude and F150W< 29 AB
+magnitude and require SNR(F444W)>8. We manually inspected selected sources and
+removed a small number of artefacts, such as hot pixels, diffraction spikes, and sources
+affected by residual background issues or bright neighbors.
+
+This selection complements the traditional “drop-out” color selection techniques based on
+isolating the strong Lyman 1216 A ̊ break as it moves through the filters. Drop-out selection is
+not feasible here: the HST ACS data are not deep enough to select dropout galaxies to the
+same equivalent limits as the NIRCam imaging. Screening for two breaks has shown to be an
+effective redshift selection: a similar technique was used to successfully select bright galaxies
+at 7 < z < 9 from wide-field HST and Spitzer data29. A red F277W-F444W color can be
+produced by large amounts of reddening by dust, evolved stellar populations with a Balmer
+Break24, strong optical emission lines10, or a combination of these.
+
+This selection produced a total of 13 sources, with a median S/N ratio in the F444W band of
+~ 30. The resulting sample is dark at optical wavelengths (2σ upper limit of I814 > 30.4 AB)
+and faint in F115W and F150W with median ~ 28 AB magnitude, beyond the limits reached
+with HST/WFC3 except in small areas in the Hubble Ultra Deep Field and the Frontier
+Fields. The absence of any flux in the ACS optical, the red I814 − F115W > 2.5 and blue
+F115W − F150W ~ 0.3 AB colors are consistent with a strong Lyman break moving beyond
+the ACS I814 band at redshifts z > 6. The NIRCam F444W magnitudes are bright ~ 26 AB,
+and the median F150W − F444W ~ 2 AB color is redder than any sample previously reported
+at z > 73,18,21,29,42.
+
+Fits to the photometry
+
+Several methods are used to derive redshifts and stellar masses, all allowing extremely strong
+emission lines combined with a wide range of continuum slopes: 1) EAZY with additional
+templates that include strong emission lines, 2) Prospector with a strongly rising SFH prior
+which favors young ages, 3) Bagpipes to evaluate dependence on stellar population model
+assumptions and minimization algorithm. Finally, we also consider 4) a proposed template set
+for high redshift galaxies with blue continua, strong emission lines, and a non-standard IMF.
+Throughout, reported uncertainties are the 16th-84th percentile of the probability distributions.
+A Salpeter43 IMF is assumed throughout, for consistency with previous determinations of the
+high redshift galaxy mass function3,28 and constraints on the IMF in the centers of the likely
+descendants44-47. A summary of the results is presented in Extended Data Figure 3 and 4.
+
+1. EAZY. The main benefits of EAZY5 are ease of use, speed, and reproducibility. EAZY fits
+non-negative linear combinations of templates, with redshift and scaling of each template as
+free parameters. The allowed redshift range was 0 − 20 and no luminosity prior was applied.
+The standard EAZY template set (tweak_fsps_QSF_12_v3) is optimized for lower redshift
+galaxies. High redshift stellar populations tend to be younger, less dusty, and have stronger
+emission lines. We create a more appropriate template set by removing the oldest and dustiest
+templates (AV > 2.5) from the standard set, keeping templates 1, 2, 7, 8, 9, 10, and 11, and
+adding two Flexible Stellar Population Synthesis (FSPS) templates with strong emission
+lines. The first has a continuum that is approximately constant in Fν with EW(Hβ+[OIII]) =
+650 Å, similar to NIRSpec-confirmed galaxies48 at z=7-8. The second has a red continuum
+that is constant in Fλ with EW(Hβ+[OIII]) = 1100 Å, comparable to line strengths inferred for
+bright LBGs at z=7-929. Each template has an associated M/L ratio, so the template weights
+in the fit can be converted to a total stellar mass. We fit all galaxies in the catalog with the
+default EAZY template set first and then re-fit all galaxies at z > 7 using the new template
+set. The template set is available online with the photometric catalog.4 The EAZY redshift
+distribution of the sample of 13 galaxies is 7.3 < z < 9.4, with no low-redshift interlopers
+(z<6). EAZY masses range from 9.2 < log (M∗/M⊙) < 10.9.
+
+2. Prospector. We perform a stellar population fit with more freedom than is possible in
+EAZY using the Prospector17,49 framework, specifically the Prospector-α settings50 and the
+MIST stellar isochrones51,52 from Flexible Stellar Population Synthesis (FSPS)53,54. This
+mode includes non-parametric star formation histories, with a continuity prior that disfavors
+large changes in the star formation rate between time bins.55 It uses a two-component, age-
+dependent dust model, allows full freedom for the gas-phase and stellar metallicity, includes
+nebular emission where the nebulae are self-consistently powered by the stellar ionizing
+continuum from the model.56 The sampling was performed using the dynesty57 nested
+sampling algorithm. We also adopt two new priors which disfavor high-mass solutions: first,
+a mass function prior on the stellar mass, adopting the observed z=3 mass function for z>3
+solutions58, and second, a nonparametric SFH prior which favors rising SFHs in the early
+universe and falling SFHs in the late universe, following expectations from the cosmic star
+formation rate density. These are described in detail in Wang et al. (submitted).
+
+The masses from Prospector are consistent within the uncertainties with the EAZY masses,
+with a mean offset of log (M*Prosp/M∗EAZY)= 0.1 for objects with > 1010M⊙. The most massive
+objects as indicated by EAZY are also the most massive in the Prospector fits. Prospector
+also provides ages and star formation rates. The star formation rates are generally not very
+well constrained in the fits, due to the lack of IR coverage. The ages are also uncertain and
+depend strongly on the adopted prior. For a constant SFH prior Prospector finds typical ages
+of ~0.3 Gyr, with substantial Balmer Breaks, whereas for strongly rising SFHs Prospector
+finds a median mass-weighted age of 34 Myr, with strong emission lines and large amounts
+of reddening (AV ~ 1.5). This is reminiscent of the age-dust degeneracy that is well known at
+lower redshift. Importantly, the stellar masses do not vary significantly between these two
+priors. The red SEDs (see Figure 3) require high M/L ratios for a large range of the best-fit
+stellar population ages, as is well known from studies of nearby galaxies59.
+
+3. Bagpipes. Fits with the Bayesian Analysis of Galaxies for Physical Inference and
+Parameter EStimation (Bagpipes60) software are also considered. Compared to Prospector,
+Bagpipes uses the Bruzual & Charlot stellar population models61 and sampling algorithm
+Multinest62. While Bagpipes does not cover new parameter space compared to Prospector, it
+allows us to evaluate how sensitive the masses are to the adopted stellar population model or
+fitting technique. Furthermore, Bagpipes is relatively fast, so we can use it explore the effect
+of modeling assumptions to investigate the role of systematic uncertainties on the derived
+redshift and stellar mass. We focus on attenuation law, SFH, age sampling priors, and SNR.
+
+A. bagpipes_csf_salim: baseline model of constant SFH with redshift 0 to 20, age_max from
+1 Myr to 10 Gyr, metallicity between 0.01 and 2.5 Solar, ionization parameter -4 < log(U) < -
+2, a Salim63 attenuation 0 < Av < 4, and adopting a linear prior in age and log prior in
+
+4
+    https://github.com/ivolabbe/red-massive-candidates
+metallicity and ionization and uniform prior in redshift, age, and Av. The Salim law varies
+between a steep SMC-like extinction law at low optical depth and a flat Calzetti-like dust law
+at large optical depth, in accordance with empirical studies63 and theoretical expectations64.
+The Bagpipes masses and redshifts are similar on average to those of EAZY and Prospector,
+with a mean offset of log(M*A/M*EAZY)= 0.0 for the massive sample.
+
+B. Bagpipes_rising_salim: this model is not intended to search for best fit in a wide
+parameter space but only in a restricted space to increase the emission line contribution to the
+reddest filter, F444W, and decrease the stellar masses. The model is restricted to rising star
+formation rates at high redshift (delayed τ>0.5 Gyr) and redshifts to z<9.0 to force the
+Hb+[OIII] complex to fall within the F444W filter. The fits show strong emission lines, low
+ages (median ~30 Myr) and high dust content (median AV ~ 1.7). Even with these
+restrictions, the mean stellar mass agrees well with the baseline (mean log(M*B/M*A)= -0.1
+for objects with > 1010M⊙).
+
+C. Bagpipes_csf_salim_logage: like model (A) but with a logarithmic age prior, which is
+heavily weighted towards very young ages. For the 5 reddest, most massive galaxies in A the
+results are unchanged, whereas 6 other galaxies are now placed at significantly lower masses
+(inconsistent with model A, given the uncertainties), including 14924 (from log(M*/M⊙) =
+10.1 to 8.7). The P(z) of these lower mass solutions is remarkably narrow and clustered in
+narrow spikes at z = 5.6, 6.9, 7.7, where the F410M filter cannot distinguish between strong
+lines and continuum SEDs (see Extended Data Figure 5 and 6).
+
+D. Bagpipes_csf_salim_logage_snr10: to test if the fit in (C) is driven by the high SNR in
+long wavelength filters (which put all the weight in the fits there), we impose an error floor of
+10% on the photometry which approximately balances the SNR across all NIRCam bands.
+Since JWST is still in early days of calibration, some limit on SNR is prudent. The SNR-
+limited fits result in high mass solutions for 11/13 galaxies. Notably, the uncertainties on the
+stellar mass do not encompass the low mass solution from (C) indicating that detailed
+assumptions on the treatment of SNR can introduce systematic changes.
+
+E. Bagpipes_csf_smc_logage: SMC-extinction is often used in modeling high-redshift
+galaxies14. Our Bagpipes modeling use Salim-type dust which includes the SMC-like
+extinction at low optical depth, but it is useful to evaluate fits that are restricted to a steep
+extinction law in combination with a logarithmic age prior favoring young ages. The results
+are remarkably different from any of the modeling above: 10/13 galaxies show very low
+stellar masses (in the range 108M⊙-109M⊙) in combination with extremely young ages (1-5
+Myr). Another notable aspects are that these fits do not match the blue part of the SED well
+(NIRCam SW F115W, F150W, F200W) and the fits appear driven by the high SNR in the
+NIRCam LW filters (see Extended Data Figure 3). Most fits have significantly worse χ2 than
+the high-mass fits (Eazy, Prospector, Bagpipes A-D).
+
+In conclusion, the derived masses depend on assumed attenuation law, parameterization of
+ages, and treatment of photometric uncertainties. Together, these aspects can produce lower
+redshifts and lower masses by up to factors of 100 in ways that are not reflected by the
+random uncertainties. Therefore, different assumptions can change the stellar masses and
+redshifts systematically and the uncertainties are likely underestimated.
+
+While neither high, nor low-mass models can be excluded with the currently available data,
+there are two features that would suggest the ultra-young, low-mass solutions are less
+plausible. First, while 1-5 Myr ages are formally allowed, the galaxy would not be causally-
+connected – 108.5M⊙ of star formation would have started spontaneously on timescales less
+than a dynamical time (although dynamical times are uncertain until velocity dispersions and
+corresponding sizes are measured). In addition, the probability of catching most galaxies at
+that precise moment is low - given the ~200 Myr search window at z=7-9. It would suggest
+there are >40 older and more massive galaxies for every galaxy in our sample.
+
+Second, the P(z) of the low-mass solutions are extremely narrow and concentrated at nearly
+discrete redshifts z=5.6, 6.9, 7.7 (e.g, 38094 z=6.93 +/- 0.01). Here strong Hɑ and Hβ+[OIII]
+transition between the overlapping F356W, F410M, and F444W filter edges (see Extended
+Data Figure 5). A single line can contribute to several bands (e.g., [OIII]5007 at z=6.9), with
+great flexibility due to the rapidly varying transmission at the filter edges. The result is that
+line and continuum dominated models are degenerate due to undersampling of the SED and
+resulting aliasing, but only at specific redshifts.
+
+While finding one 5 Myr galaxy exactly in this narrow window could be luck, we find that
+10/13 galaxies can only be fit with low mass, ultra-young models at these discrete redshifts
+z=5.6, 6.9, 7.7. Such an age and P(z) distribution for the sample, at precisely the redshifts
+where this fortuitous overlap between filters occurs (~< 8% of the redshift range between
+z=5-9), is not implausible. To rule out that the spiked nature of the P(z) is the result of our
+double break selection, we perform simple simulations. We take random draws from the
+posteriors of line-dominated model E, redshift the models to a uniform distribution between 4
+and 10, perturb with the observational errors, and apply our double break selection criterion
+to the simulated photometry (see Extended Data Figure 6). This suggests that even if the
+sample were line-dominated with ages < 5 Myr, the redshift distribution should be different
+(not spiked) suggesting that these fits suffer from aliasing. In contrast, P(z) of high-mass
+model B is broadly self-consistent with the selection function based on the model B fits.
+The likely reason that this effect primarily occurs with an SMC extinction law is because of
+the strong wavelength dependence (steep in the FUV, flatter in optical). For the sample in this
+paper, fits with SMC have difficulty reproducing the overall (rest-optical) red SED shape.
+This can be clearly seen in Extended Data Figure 3, where the SMC based fits have strongly
+“curved” continuum, which are generally too steep in the rest-UV and too flat in the rest-
+optical (F356W,F410W,F444W bands), requiring strong emission lines at specific redshifts
+to produce the red colors.
+
+5. FSPS-hot model. For completeness we also consider recently proposed “fsps-hot”
+models65, which consist of templates with blue continua, strong emission lines, and with a
+modified extremely bottom-light IMF which produces lower masses. Such an IMF is
+proposed to be appropriate for the extreme conditions that might be expected in high redshift
+galaxies. For 10 of 13 galaxies (including all massive > 1010M⊙ sources), the fsps-hot
+template set provides poorer fits to the photometry than the fsps-wulturecorn set (median Δχ2
+= 31), due to the lack of red templates. The fsps-hot set places 9/13 galaxies in a narrow
+redshift range z=7.7 with very small uncertainties σ(z) = 0.05, reminiscent of the spiked
+distribution found earlier for Bagpipes model E. The blue template set can only produce red
+colors if strong emission lines are placed at specific redshifts. Since the fits are overall poor
+and no additional insight is gained, we do not consider these masses further to avoid
+confusion due to adopting vastly different IMFs. The extremely bottom-light IMF, with
+suppression of (invisible) low mass stars, is untestable with photometric data.
+
+Fiducial redshifts and stellar masses
+The majority of methods explored produce good fits and consistent masses and redshifts.
+Rather than favor one method over the others we derive “fiducial” masses and redshifts for
+each object by taking the median values of the EAZY (1), Prospector (2), the 5 Bagpipes fits
+(3-7) results of each galaxy. As discussed in the main text, the consistency between various
+methods may largely indicate a consistency in underlying assumptions. Different assumptions
+can change the stellar masses and redshifts systematically in ways that are not reflected by
+the random uncertainties.
+
+Additionally, we do not consider contributions from exotic emission line species nor include
+AGN templates in the fits14. All objects in this paper should be considered candidate massive
+galaxies, to be confirmed with spectroscopy.
+
+Lensing
+
+A potential concern is that the fluxes (and therefore the masses) of some or all the galaxies
+are boosted by gravitational lensing. No galaxy is close to the expected Einstein radius of
+another object. The bright galaxy that is 1.2′′ to the southwest of 38094 has zgrism ≈ 1.15 and
+M* ≈ 10.63 (object number 28717 in 3D-HST AEGIS catalog23), and an Einstein radius (~
+0.4′′) that is 0.3× the distance to 38094. If we assume that the mass profile of the lensing
+galaxy is an isothermal sphere, then the magnification is 1/(1 − θE /θ) where θ is the
+separation from the foreground source and θE is the Einstein radius. This would imply a
+relatively modest -0.15 dex correction to the stellar mass. We apply this correction when
+calculating densities in Figure 4.
+
+Volume
+
+Stellar mass densities for galaxies with M* > 1010 M⊙ are calculated by grouping the galaxies
+in two broad redshift bins (7 < z < 8.5 and 8.5 < z < 10). At z ~ 8.5 the Lyman Break moves
+through the F115W filter, allowing galaxies to be separated into the two bins. The cosmic
+volume is estimated by integrating between the redshift limits over 38 sq arcmin, making no
+corrections for contamination or incompleteness. The key result is driven by the most
+massive galaxies. Any incompleteness would increase the derived stellar mass densities,
+while contamination would decrease it. Cosmic variance is about 30%, calculated using a
+web calculator66,5. The error bars on the densities are the quadratic sum of the Poisson
+uncertainty and cosmic variance, with the Poisson error dominant. The volume estimate is
+obviously simplistic, but the color selection function (see Extended Data Figure 6) suggests
+that most of the sample should lie between 7 < z < 10. A more refined treatment does not
+seem warranted given that the main (orders of magnitude) uncertainty in our study is the
+interpretation of the red colors of the galaxies.
+
+Data Availability. The HST data are available in the Mikulski Archive for Space Telescopes
+(MAST; http://archive.stsci.edu), under program ID 1345. Photometry, EAZY template set,
+fiducial redshifts, and stellar masses of the sources presented here are available at
+https://github.com/ivolabbe/red-massive-candidates.
+
+Code Availability. Publicly available codes and standard data reduction tools in the Python
+environments were used: Grizli,4 EAZY5, astropy64, photutils65, Prospector17,37,38.
+Acknowledgements. We are grateful to the CEERS team for providing these exquisite public
+JWST data so early in the mission. We thank Michael Boylan-Kolchin for helpful discussions
+on the theoretical context of this work. Cloud-based data processing and file storage for this
+work is provided by the AWS Cloud Credits for Research program. The Cosmic Dawn
+Center is funded by the Danish National Research Foundation. K.W. wishes to acknowledge
+funding from Alfred P. Sloan Foundation Grant FG-2019-12514. M.S. acknowledges project
+PID2019-109592GB-I00/AEI/10.13039/501100011033 from the Spanish Ministerio de
+Ciencia e Innovacion - Agencia Estatal de Investigacion.
+
+Author Contributions. I.L. performed the photometry, devised the selection method, and led
+the analysis. P.v.D. drafted the main text. I.L. wrote the Methods section and produced the
+figures. G.B. developed the image processing pipeline and created the image mosaics. E.N.
+and R.B. identified the first double break galaxy, prompting the systematic search for these
+objects. J.L., B.W., K.S., and E.M. ran the Prospector analysis. All authors contributed to the
+manuscript and aided the analysis and interpretation.
+
+Author Information. The authors declare that they have no competing financial interests.
+Correspondence and requests for materials should be addressed to I.L. (email:
+ilabbe@swin.edu.au).
+
+
+     36. Astropy Collaboration. The Astropy Project: Sustaining and Growing a Community-oriented
+    Open-source Project and the Latest Major Release (v5.0) of the Core Package, Astrophys. J. 935,
+    167 (2022)
+    37. Bradley L., et al. astropy/photutils: 1.5.0. (2022) doi:10.5281/zenodo.6825092
+    38. Boyer, M.~L., Anderson, J., Gennaro, M., et al. The JWST Resolved Stellar Populations
+    Early Release Science Program I.: NIRCam Flux Calibration. arXiv e-prints arXiv:2209.03348
+    (2022)
+    39. Nardiello D., et al. Photometry and astrometry with JWST -- I. NIRCam Point Spread
+    Functions and the first JWST colour-magnitude diagrams of a globular cluster. arXiv e-prints
+    arXiv:2209.06547 (2022)
+    40. Skelton, R. E. et al. 3D-HST WFC3-selected Photometric Catalogs in the Five
+    CANDELS/3D-HST Fields: Photometry, Photometric Redshifts, and Stellar Masses. Astrophys.
+    J.S 214, 24 (2014)
+    41. Kriek, M. et al. The MOSFIRE Deep Evolution Field (MOSDEF) Survey: Rest-frame
+    Optical Spectroscopy for ~1500 H- selected Galaxies at 1.37 < z < 3.8. Astrophys. J.S 218, 15
+    (2015)
+    42. Zitrin, A., et al. Lyman-α Emission from a Luminous z = 8.68 Galaxy: Implications for
+    Galaxies as Tracers of Cosmic Reionization. Astrophys. J. 810, L12 (2015)
+    43. Salpeter, E. The Luminosity Function and Stellar Evolution. Astrophys. J. 121, p.161
+    44. Treu T., et al. The Initial Mass Function of Early-Type Galaxies. Astrophys. J. 709, 2 (2010)
+    45. Cappellari M., et al. Systematic variation of the stellar initial mass function in early-type
+    galaxies, Nature 544, 485-488 (2012)
+    46. Conroy C. & van Dokkum P. The Stellar Initial Mass Function in Early-type Galaxies From
+    Absorption Line Spectroscopy. II. Results, Astrophys. J. 760, 71 (2012)
+    47. van Dokkum P., et al. The Stellar Initial Mass Function in Early-type Galaxies from
+    Absorption Line Spectroscopy. III. Radial Gradients. Astrophys. J. 841, 68 (2017)
+    48. Schaerer D., et al. First look with JWST spectroscopy: Resemblance among z ∼ 8 galaxies
+    and local analogs. Astron. Astrophys. 665, L4 (2022)
+    49. Johnson, B. D., Leja, J., Conroy, C. & Speagle, J. S. Stellar Population Inference with
+    Prospector. Astrophys. J.S 254, 22 (2021)
+    50. Leja, J. et al. An Older, More Quiescent Universe from Panchromatic SED Fitting of the 3D-
+    HST Survey. Astrophys. J. 877, 140 (2019)
+51. Choi, J. et al. Mesa Isochrones and Stellar Tracks (MIST). I. Solar-scaled Models.
+Astrophys. J. 823, 102 (2016)
+52. Dotter, A. MESA Isochrones and Stellar Tracks (MIST) 0: Methods for the Construction of
+Stellar Isochrones. Astrophys. J. S 222, 8 (2016)
+53. Conroy, C., Gunn, J. E., White, M. The Propagation of Uncertainties in Stellar Population
+Synthesis Modeling. I. The Relevance of Uncertain Aspects of Stellar Evolution and the Initial
+Mass Function to the Derived Physical Properties of Galaxies. Astrophys. J. 699, 486 (2009)
+54. Conroy, C., Gunn, J. E. The Propagation of Uncertainties in Stellar Population Synthesis
+Modeling. III. Model Calibration, Comparison, and Evaluation. Astrophys. J. 712 833 (2010)
+55. Leja, J., Carnall, A. C., Johnson, B. D., Conroy, C. & Speagle, J. S. How to Measure Galaxy
+Star Formation Histories. II. Nonparametric Models. Astrophys. J. 876, 3 (2019)
+56. Byler, N., Dalcanton, J. J., Conroy, C. & Johnson, B. D. Nebular Continuum and Line
+Emission in Stellar Population Synthesis Models. Astrophys. J. 840, 44 (2017)
+57. Speagle J. DYNESTY: a dynamic nested sampling package for estimating Bayesian
+posteriors and evidences. Mon. Not. R. Astron. Soc. 493, 3132-3158 (2020)
+58. Leja, J., et al. A New Census of the 0.2 < z < 3.0 Universe. I. The Stellar Mass Function.
+Astrophys. J. 893, 111 (2020)
+59. Bell E. & de Jong R., Stellar Mass-to-Light Ratios and the Tully-Fisher Relation. Astrophys.
+J. 550, 1 (2001)
+60. Carnall, A., et al. Inferring the star formation histories of massive quiescent galaxies with
+BAGPIPES: evidence for multiple quenching mechanisms. Mon. Not. R. Astron. Soc. 480, 4,
+4379-4401 (2018)
+61. Bruzual, G. & Charlot, S. Stellar population synthesis at the resolution of 2003. Mon. Not. R.
+Astron. Soc. 344, 1000-1028 (2003)
+62. Feroz, F., et al. Importance Nested Sampling and the MultiNest Algorithm, Open J. of
+Astrophys. 2, 10 (2019)
+63. Salim, S., Boquien, M., Lee, J. C., Dust Attenuation Curves in the Local Universe:
+Demographics and New Laws for Star-forming Galaxies and High-redshift Analogs .Astrophys.
+J. 859 (2018)
+64. Chevallard, J., et al., Insights into the content and spatial distribution of dust from the
+integrated spectral properties of galaxies, Mon. Not. R. Astron. Soc 432, 2061 (2013)
+65. Steinhardt. C. L., et al. Templates for Fitting Photometry of Ultra-High-Redshift Galaxies
+arXiv e-prints arXiv:2208.07879 (2022)
+66. Trenti, M. & Stiavelli, M. Cosmic Variance and Its Effect on the Luminosity Function
+Determination in Deep High-z Surveys, Astrophys. J. 676, 767-780 (2008)
+Extended Data
+
+       a
+
+
+
+
+       b
+
+
+
+
+Extended Data Figure 1. Systematic offsets in photometry as a function of wavelength.
+The offsets are estimated by the ratio of the observed fluxes to the EAZY best-fit model
+fluxes for 5,000-10,000 sources at 0.1 < z < 5 in the CEERS field. The offsets are calculated
+separately for each detector (1-4), module (A/B), and filter. Symbols are slightly spread out
+in wavelength for clarity. a. the first in-flight NIRCam flux calibration update of 29 July
+2022 (jwst_0942.pmap) introduced significant offsets in NIRCam short-wavelength
+zeropoints. b. After adopting our fiducial zeropoints, residual offsets are ~<3% across all
+bands. This paper adopts a 5% minimum systematic error for all photometric redshift and
+stellar population fits.
+Extended Data Figure 2. Images of the seven galaxies with apparent lowest mass. The
+galaxies satisfy the color-color selection and have fiducial masses log(M∗/M⊙) < 10. The
+layout and panels of the figure are identical to Fig. 2 in the main text. Each cutout has a size
+of 2.4” × 2.4”. The filters range from the 0.6 μm F606W filter of HST/ACS to the 4.4 μm
+F444W JWST/NIRCam filter.
+Extended Data Figure 3. Spectral energy distributions of all 13 galaxies that satisfy the
+color-color selection. The layout of the figure is identical to Fig. 3 in the main text. In
+addition, an alternative model fit (model E, see Methods) is shown that produces low stellar
+masses (blue), but generally requires extremely young ages (<5 Myr) at specific narrow
+redshift intervals. The panel at the lower right shows the averaged rest-frame SED of the
+seven galaxies with fiducial log(M∗/M⊙) < 10, compared to previously-found galaxies at
+similar redshifts (see Fig. 3).
+          a
+
+
+
+
+          b
+
+
+
+
+          c
+
+
+
+
+Extended Data Figure 4. Results of the stellar population fitting. Masses (a), redshifts (b),
+and the chi-squared fit quality (c) of the 13 galaxies that satisfy the color-color selection. For
+each galaxy seven different measurements are shown, as well as the median of the seven that
+is adopt as the fiducial value (see Methods section). These medians are listed in Table 2.
+Extended Data Figure 5. Color difference between emission line and continuum-
+dominated models. The line-dominated model is a 5 Myr old constant SFH with nebular
+emission lines. The continuum dominated model is a 50 Myr old CSF without emission lines.
+Two colors differences involving the line-sensitive F410M filter are shown: F356W-F410M
+(green) and F410M-F444W (red) and the sum of their absolute values. When Hɑ and
+Hβ+[OIII] move through the filters with redshift, the emission line sensitive medium-band
+F410M filter produces a strong signature, except at z=5.6, 6.9, 7.7, where the lines transition
+between filters. Here continuum and line-dominated SEDs produce similar colors due to
+undersampling of the SED by the filters.
+Extended Data Figure 6. Stacked redshift probability distribution of all 13 galaxies in the
+sample. The P(z) were derived using Bagpipes (as described in Methods). Redshifts of a high
+mass solution are shown in red (model B: Salim dust attenuation law, rising SFH, linear age
+prior, continuum dominated) and a low mass solution are shown in blue (model E: SMC dust,
+logarithmic age prior, emission line dominated). Other high mass fits (e.g., Prospector,
+EAZY) and low mass fits produce similar P(z). Solid curves show expected selection
+function under the assumption of continuum (red) or line-dominated models (blue). The high-
+mass continuum-dominated P(z) broadly traces the expected selection functions. The low-
+mass line-dominated P(z) is not expected for selection of a line-dominated model. The P(z) is
+concentrated at narrow redshifts around z=5.6, 6.9, 7.7 (black dotted lines) where the line-
+sensitive F410M cannot distinguish between continuum and strong lines due to aliasing.
+

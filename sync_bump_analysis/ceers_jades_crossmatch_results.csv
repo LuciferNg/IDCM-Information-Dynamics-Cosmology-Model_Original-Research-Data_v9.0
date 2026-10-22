@@ -1,0 +1,11 @@
+# CEERS DR1 × JADES DR4 Cross-Match Results
+# Cross-match: 0 matches found
+# Reason: CEERS DR1 catalog is in EGS field (RA~215°, Dec~53°), JADES DR4 covers GOODS-S (RA~53°, Dec~-28°) and GOODS-N (RA~189°, Dec~62°)
+# No positional overlap between these fields
+# 
+# CEERS DR1: 551 z>7 candidates (quality cuts), EGS field
+# JADES DR4: 138 z_PRISM>7 sources in GOODS-S, 46 in GOODS-N
+# Match radius: 1 arcsecond
+# 
+# See ceers_jades_crossmatch_report.txt for full analysis.
+ceers_number,ceers_ra,ceers_dec,z_phot,z_phot_lo,z_phot_hi,z_phot_best,mass_med,sfr_med,nbands,jades_uid,jades_ra,jades_dec,z_spec,z_flag,sep_arcsec,field

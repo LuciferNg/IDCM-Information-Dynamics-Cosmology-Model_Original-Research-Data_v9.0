@@ -1,0 +1,27 @@
+{
+  "P1_aliasing_fractal": {
+    "prediction": "Galaxy P(z) bimodality shows self-similar (fractal) cascade at Fibonacci ratios",
+    "test": "Check CEERS P(z) at z=8.5 for sub-aliasing structure",
+    "status": "\ud83d\udfe1 testable with existing CEERS data at z=8.5"
+  },
+  "P2_z85_aliasing": {
+    "prediction": "z=8.5 is aliasing of z=8.2 (H\u03b2+[OIII] in F444W)",
+    "test": "Bagpipes MCMC on z=8.5 candidates \u2192 P(z) peaks at z=8.2",
+    "status": "\ud83d\udfe1 testable once JWST observes z=8.5 candidates"
+  },
+  "P3_cmb_ell_cutoff": {
+    "prediction": "CMB power spectrum \u2113_max \u2248 N_d \u00d7 L_7 \u00d7 2 = 2552",
+    "test": "Compare with Planck \u2113_max \u2248 2500",
+    "status": "\ud83d\udfe2 already consistent with Planck data"
+  },
+  "P4_mode_count": {
+    "prediction": "Independent information modes = N_d\u00b2 = 1936",
+    "test": "Count CMB independent modes at large scales",
+    "status": "\ud83d\udfe1 testable with Planck data"
+  },
+  "P5_fractal_dimension": {
+    "prediction": "Galaxy counts at aliasing points follow N(z) \u221d z^{D} where D = ln(\u03c6)/ln(2) \u2248 0.694",
+    "test": "Count galaxies at z=5.6, 6.9, 7.7, 8.2, 8.5 in CEERS/JWST data",
+    "status": "\ud83d\udfe1 testable with existing CEERS data"
+  }
+}

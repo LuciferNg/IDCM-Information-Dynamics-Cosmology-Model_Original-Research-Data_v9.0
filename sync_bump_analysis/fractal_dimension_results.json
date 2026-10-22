@@ -1,0 +1,102 @@
+{
+  "total_galaxies": 87345,
+  "valid_redshifts": 82222,
+  "z_gt_15": 0,
+  "fractal_dimension_fibonacci": -1.8831761886085925,
+  "fractal_dimension_idcm": -4.2923880911054235,
+  "phi": 1.618033988749895,
+  "fibonacci_aliasing": [
+    {
+      "z": 0.5,
+      "n_around": 26477,
+      "n_cumul": 68655
+    },
+    {
+      "z": 0.8,
+      "n_around": 26887,
+      "n_cumul": 51050
+    },
+    {
+      "z": 1.3,
+      "n_around": 16382,
+      "n_cumul": 36097
+    },
+    {
+      "z": 2.1,
+      "n_around": 11412,
+      "n_cumul": 18143
+    },
+    {
+      "z": 3.4,
+      "n_around": 3088,
+      "n_cumul": 7065
+    },
+    {
+      "z": 5.5,
+      "n_around": 388,
+      "n_cumul": 1986
+    },
+    {
+      "z": 8.9,
+      "n_around": 42,
+      "n_cumul": 222
+    }
+  ],
+  "idcm_aliasing": [
+    {
+      "z": 5.6,
+      "n_around": 369,
+      "n_cumul": 1935
+    },
+    {
+      "z": 6.9,
+      "n_around": 376,
+      "n_cumul": 670
+    },
+    {
+      "z": 7.7,
+      "n_around": 94,
+      "n_cumul": 371
+    },
+    {
+      "z": 8.2,
+      "n_around": 81,
+      "n_cumul": 306
+    },
+    {
+      "z": 8.5,
+      "n_around": 76,
+      "n_cumul": 256
+    },
+    {
+      "z": 8.9,
+      "n_around": 42,
+      "n_cumul": 222
+    },
+    {
+      "z": 9.2,
+      "n_around": 32,
+      "n_cumul": 202
+    },
+    {
+      "z": 9.5,
+      "n_around": 22,
+      "n_cumul": 190
+    },
+    {
+      "z": 10.0,
+      "n_around": 35,
+      "n_cumul": 164
+    },
+    {
+      "z": 13.5,
+      "n_around": 41,
+      "n_cumul": 75
+    },
+    {
+      "z": 14.0,
+      "n_around": 46,
+      "n_cumul": 18
+    }
+  ]
+}

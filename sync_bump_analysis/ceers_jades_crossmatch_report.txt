@@ -1,0 +1,51 @@
+CEERS DR1 × JADES DR4 CROSS-MATCH REPORT
+===========================================
+
+DATE: 2026-08-02
+WORKING DIRECTORY: /home/wsl/IDCM/sync_bump_analysis
+
+EXECUTIVE SUMMARY
+-----------------
+Cross-match: 0 matches found.
+Root cause: The CEERS DR1 catalog file covers the EGS (Extended Groth Strip)
+field, NOT GOODS-S. JADES DR4 covers GOODS-S and GOODS-N. The fields are
+separated by ~82° (CEERS EGS → JADES GOODS-S) and ~13° (CEERS EGS → JADES
+GOODS-N), with no sky overlap.
+
+CATALOG SUMMARY
+---------------
+CEERS DR1 (ceers_dr1_catalog.fits.gz):
+  - 87,345 total sources
+  - Field: EGS (Extended Groth Strip), RA ~ 215°, Dec ~ +53°
+  - 551 z>7 candidates (quality cuts: z_med>7, z_lo>0.5, nbands>=5)
+  - Photometric redshifts from LePHARE (LP_Z_MED, LP_Z_BEST, etc.)
+  - Also available: ceers_catalog.ecsv (13 curated sources, 12 with z>7)
+
+JADES DR4 (jades_dr4_spectroscopic.fits):
+  - 5,190 sources (6 HDUs: Obs_info, R100_5pix, R100_3pix, R1000_5pix, R1000_3pix)
+  - GOODS-S: 3,387 sources (RA 53.03°-53.22°, Dec -27.92°- -27.71°)
+  - GOODS-N: 1,803 sources (RA 188.99°-189.32°, Dec 62.14°-62.32°)
+  - 184 sources with z_PRISM > 7 (138 GS, 46 GN)
+
+CROSS-MATCH ATTEMPT
+-------------------
+Method: Astropy SkyCoord search_around_sky with 1 arcsec radius
+CEERS z>7 sources (quality cuts): 551 sources
+JADES z>7 GS sources: 138 sources
+Matched: 0
+  - Minimum CEERS-JADES GS separation: 544,942 arcsec (~151°)
+  - Minimum CEERS-JADES GN separation: 58,896 arcsec (~16°)
+
+APPENDIX: JADES DR4 Internal z_phot vs z_PRISM
+-------------------------------------------------
+For completeness, the JADES DR4 Obs_info table contains a z_phot column
+that can be compared with z_PRISM for aliasing analysis:
+  - 138 GS z>7 sources with both z_phot and z_PRISM
+  - |Δz|/(1+z_spec) median: 0.0294
+  - 15 outliers with |Δz|/(1+z_spec) > 0.15 (mostly z_phot=-1 or -99 flags)
+  - 123/138 sources have z_phot/z_PRISM ≈ 1 (within 0.15 tolerance)
+  - No evidence of harmonic aliasing (z_phot ≈ 2×z_PRISM, etc.)
+
+NOTE: To properly cross-match CEERS and JADES, a CEERS GOODS-S catalog
+is needed. CEERS observed GOODS-S with NIRSpec, but this DR1 FITS file
+is the EGS imaging catalog.

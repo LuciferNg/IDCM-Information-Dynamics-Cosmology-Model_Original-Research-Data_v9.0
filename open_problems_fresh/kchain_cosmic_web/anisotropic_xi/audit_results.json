@@ -1,0 +1,13 @@
+{
+  "files_checked": 21,
+  "files_exist": 21,
+  "chi2_60_dm_real_covariance": 27.42133358401737,
+  "chi2_60_synthetic": 11.3,
+  "chi2_old_structure_real_covariance": 13.2,
+  "limitations": [
+    "60 \u865f \u03c7\u00b2=11.3 \u7528\u5408\u6210 3% \u8aa4\u5dee\uff0c\u771f\u5be6 DM-only covariance \u03c7\u00b2=27.4",
+    "DH \u540c DV \u9810\u6e2c\u672a\u5b8c\u6574\u5be6\u73fe",
+    "\u6697\u7269\u8cea\u672a\u6d88\u89e3",
+    "CMB \u4ecd\u5728\u6709\u6548\u57df\u5916 (z>17 Nyquist)"
+  ]
+}

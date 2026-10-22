@@ -1,0 +1,808 @@
+                                               Comparing ΛCDM, ωCDM, and ω0 ωa CDM models with DESI DR2 BAO:
+                                                        Redshift-Resolved Diagnostics and the Role of rd
+                                                                                             Seokcheon Lee1
+                                               1
+                                                   Department of Physics, Institute of Basic Science, Sungkyunkwan University, Suwon 16419, Korea
+                                                                                       (Dated: March 23, 2026)
+                                                      We reanalyze DESI DR2 baryon acoustic oscillation (BAO) measurements to compare ΛCDM,
+                                                   ωCDM, and ω0 ωa CDM. Using (DM /rd , DH /rd ) in seven redshift bins, we reconstruct the covariance
+                                                   and run Markov Chain Monte Carlo in {Ωm0 , hrd , ω0 , ωa }. In the BAO-only case, all models fit well
+                                                   (χ̃2 ≃ 0.8–1.05). Model-selection metrics show at most weak preference for ΛCDM; the slightly lower
+                                                   χ2 of ω0 ωa CDM is offset by complexity, and the pivoted equation of state is consistent with −1 (ωp =
+                                                   −0.899 ± 0.087 at zp ≃ 0.34). These results agree with the DESI DR2 analysis. To assess the role of
+arXiv:2507.01380v3 [astro-ph.CO] 20 Mar 2026
+
+
+
+
+                                                   early-universe information, we add a Gaussian prior on rd from Planck DR3 rather than using the full
+                                                   CMB likelihood. Fixing rd isolates the BAO-ruler calibration and yields no significant evidence for
+                                                   dynamical dark energy. The key discriminator is which early-time anchor is held fixed: anchoring θ∗
+                                                   can raise Ωm0 in ω0 ωa CDM, increasing r∗ and DA (z∗ ) to keep θ∗ constant—thereby mimicking late-
+                                                   time evolution—whereas anchoring rd does not. We therefore advocate a robustness test comparing
+                                                   fixed-rd and fixed-θ∗ analyses; under the former, DESI DR2 BAO remain fully consistent with
+                                                   ΛCDM. Unlike previous discussions that qualitatively noted the sensitivity of dynamical dark-energy
+                                                   inferences to early-universe calibration, this work introduces a controlled fixed-rd robustness test
+                                                   that isolates the role of sound-horizon anchoring from the full CMB likelihood. By reproducing the
+                                                   DESI BAO-only baseline with a reconstructed covariance and comparing it to a uniform BAO+rd
+                                                   prior analysis within the same MCMC framework, we demonstrate quantitatively that the reported
+                                                   ∼ 3σ preference for dynamical dark energy is not reproduced under fixed-rd anchoring.
+                                                                                                                        2
+
+                                                I.   INTRODUCTION
+
+   Baryon Acoustic Oscillations (BAO) provide one of the most powerful standard rulers in cosmology, enabling
+precise reconstruction of the late-time expansion history and stringent tests of dark energy (DE) models [1–7]. The
+second data release of the Dark Energy Spectroscopic Instrument (DESI DR2) has delivered high-precision BAO
+measurements of four distinct observables—DM /rd , DH /rd , DV /rd , and DM /DH —across multiple redshift bins,
+offering an unprecedented opportunity to evaluate cosmological models [8, 9].
+   In many legacy BAO analyses the sound horizon at the drag epoch is effectively calibrated from cosmic microwave
+background (CMB) within ΛCDM [10]. By contrast, the DESI DR2 BAO likelihood does not fix rd : it fits the ratios
+(DM /rd , DH /rd ) and samples cosmological parameters in a full Markov Chain Monte Carlo (MCMC) with explicit
+priors; the directly constrained quantities are these ratios, not DM or DH separately [8, 9]. When DESI combines
+BAO with CMB information, this can be done via a compressed Gaussian prior on (θ∗ , ωb , ωbc ) or with the full
+Planck likelihood, so rd is only calibrated once such external priors are imposed [8, 10]. This distinction is crucial for
+dynamical dark energy (DDE) models such as ω0 ωa CDM [11, 12]: although θ∗ is largely an early-time quantity, shifts
+in Ωm0 h2 propagate to r∗ and rd , so the choice of early-universe anchor (fixing θ∗ vs. fixing rd ) can drive different
+late-time inferences [1, 13–15]. Consequently, the inferred model preference can vary with the choice of early-universe
+anchor—e.g., fixing θ∗ versus fixing rd .
+   The DESI DR2 analysis adopts a full CMB-likelihood combination and reports that BAO+CMB data mildly prefer
+DDE at the 3σ level [8]. In contrast, here we adopt a more conservative approach: instead of including the full CMB
+likelihood, we impose a Gaussian prior on rd derived from Planck DR3. This procedure isolates the impact of the
+sound horizon calibration while avoiding double counting of late-time information. As we show below, once the rd
+prior is included, the apparent preference for DDE becomes much weaker, and no statistically significant evidence for
+deviations from ΛCDM is found. Thus, any apparent support for DDE should be understood as a statement about
+the DESI BAO + CMB combination and hinges on how the CMB information is incorporated; it is not a BAO-
+only conclusion. Our conclusions are therefore limited to BAO-only and BAO+rd prior analyses, and should not be
+directly compared to results that employ the full CMB likelihood. A similar sensitivity arises when different supernova
+compilations are used: substituting Pantheon+ versus Union3 (or adding DESY5) shifts the reported significance for
+ω0 ωa CDM, as summarized in Table VI of Ref. [8].
+   The goal of this work is therefore twofold. First, we validate consistency with the DESI DR2 analysis by repeating
+a DESI-only BAO fit in the (DM /rd , DH /rd ) basis and comparing model preference primarily between ΛCDM and its
+minimal extension ωCDM (with ω0 ωa CDM included for completeness) within the effective space {Ωm0 , hrd , ω0 , ωa }.
+Second, when adding CMB information, we deliberately depart from the DESI treatment and impose a Planck -based
+Gaussian prior on rd (rather than using the full CMB likelihood or compressed {θ∗ , ωb , ωbc }), and then re-evaluate
+model preference. Justaposing the DESI-only baseline with this fixed-rd combination isolates the role of the early-
+universe calibration and clarifies whether any apparent hints of DDE arise from late-time physics or from the chosen
+CMB anchoring (fixed rd versus fixed θ∗ ).
+   The present work builds upon previous discussions of early-universe sensitivity in DESI analyses, but differs in
+scope and methodology in three key aspects. First, we construct a controlled fixed-rd robustness test that isolates the
+impact of sound-horizon calibration from the full CMB likelihood. This allows us to separate the geometric information
+contained in BAO distance ratios from the external anchoring imposed by CMB-derived sound-horizon constraints.
+Second, we reproduce the official DESI DR2 BAO-only baseline using a reconstructed covariance matrix and validate
+it against published DESI ΛCDM results, ensuring that subsequent differences arise from anchoring choices rather
+than numerical artifacts. Third, within a uniform MCMC framework, we directly compare BAO-only, BAO+rd prior,
+and model-dependent rd analyses. This controlled comparison demonstrates quantitatively that the reported ∼ 3σ
+preference for dynamical dark energy is not reproduced under fixed-rd anchoring. The novelty of this work therefore
+lies not in re-analyzing DESI data per se, but in providing a transparent robustness test that isolates the role of
+sound-horizon calibration in shaping dynamical dark-energy inferences.
+   The structure of the paper is as follows. Section II outlines the cosmological framework, including the CPL
+parametrization and the definitions of the relevant distance measures. Section III describes the DESI DR2 BAO
+observables, redshift binning, and the construction of the covariance matrix. Section IV presents the model compari-
+son using BAO-only data, while Section V extends the analysis to include a Planck -based rd prior. Finally, Section VI
+summarizes our conclusions and discusses prospects for future multi-probe analyses.
+
+
+                  II.   COSMOLOGICAL FRAMEWORK AND FIDUCIAL PARAMETERS
+
+  In this section, we summarize the theoretical background relevant for interpreting DESI DR2 BAO measurements
+and clarify the role of the sound horizon calibration.
+                                                                                                                        3
+
+                   A.    Relation Between BAO Fitting Parameters and Distance Observables
+
+  The DESI BAO fitting pipeline constrains the anisotropic BAO signal through the scaling parameters
+
+                                     DH (z) rdfid                                                    DM (z) rdfid
+                          α∥ (z) ≡    fid (z) r
+                                                  ,                               α⊥ (z) ≡            fid (z) r
+                                                                                                                  ,    (1)
+                                     DH        d                                                     DM        d
+
+where DH (z) = c/H(z) is the radial Hubble distance, DM (z) is the comoving angular diameter distance, and rd is
+the sound horizon at the drag epoch. The superscript “fid” denotes the fiducial cosmology assumed in the pipeline.
+It is common to reparameterize these as
+                                           2
+                                                 1/3                                                       α∥ (z)
+                         αiso (z) ≡ α∥ (z) α⊥ (z)     ,                                   αAP (z) ≡                ,   (2)
+                                                                                                            α⊥ (z)
+
+where αiso captures the isotropic BAO scale and αAP the Alcock–Paczynski (AP) distortion ratio. DESI DR2 adopts
+the (αiso , αAP ) basis as baseline since they are nearly uncorrelated. Importantly, the BAO pipeline constrains ratios
+of distances to rd rather than absolute distances, so rd is not internally fixed by the BAO likelihood.
+   The α-parameters map directly to distance observables as
+
+                        DM (z)         Dfid (z)                                  DH (z)         Dfid (z)
+                               = α⊥ (z) Mfid ,                                          = α∥ (z) Hfid .                (3)
+                         rd             rd                                        rd             rd
+
+Composite quantities follow immediately,
+                                                                 fid 2         fid
+                                                                                          1/3
+                                         DV (z)                  DM     (z) z DH    (z)
+                                                = αiso (z)                fid 3
+                                                                                                 ,                     (4)
+                                          rd                             rd
+                                                          fid
+                                        DM (z)     1     DM   (z)
+                                               =          fid
+                                                                  .                                                    (5)
+                                        DH (z)   αAP (z) DH (z)
+
+Thus the primary outputs of BAO fits are α∥ and α⊥ , while (DV /rd , DM /DH ) are derived.
+
+
+                               B.    Background Expansion and the CPL Framework
+
+  DESI DR2 BAO observables are the transverse comoving distance DM (z)/rd , the radial Hubble distance DH (z)/rd ,
+the isotropic distance DV (z)/rd , and the dimensionless ratio DM (z)/DH (z) [8]
+                                                      Z z              Z z
+                             c                      c     dz ′      c       dz ′
+                  DH (z) =        ,    DM (z) =               ′
+                                                                 =                ,                           (6)
+                           H(z)                    H0 0 E(z )      100 0 Eh(z ′ )
+                                            1/3                       Z z                Z z
+                                                                           dz ′               dz ′
+                           
+                                        cz             DM (z)
+                  DV (z) = DM (z)2 ·             ,              = E(z)         ′
+                                                                                 =  Eh(z)          ′
+                                                                                                     ,        (7)
+                                       H(z)            DH (z)           0 E(z )            0 Eh(z )
+
+where H0 = 100h km/s/Mpc, E(z) = H(z)/H0 , and Eh(z) = H(z)/100.
+  For the CPL parametrization [11, 12], the dark-energy (DE) equation of state (e.o.s) and expansion history are
+
+                         z
+                                           q
+                                                                                                        z
+         ω(z) = ω0 + ωa     ,      E(z) = Ωr0 (1 + z)4 + Ωm0 (1 + z)3 + Ωde0 (1 + z)3(1+ω0 +ωa ) e−3ωa 1+z ,
+                        1+z
+                 q
+                                                                            z
+         Eh(z) = ωr (1 + z)4 + ωm (1 + z)3 + ωde (1 + z)3(1+ω0 +ωa ) e−3ωa 1+z ,                                 (8)
+
+with spatial flatness imposing Ωde0 = 1 − Ωm0 − Ωr0 (equivalently, ωde = h2 − ωm − ωr ). The radiation density today
+is given by
+                                     "              4/3 #
+                                           7 4
+                           Ωr0 = Ωγ0 1 +        Neff        , Ωγ0 h2 ≡ ωγ ≃ 2.47 × 10−5 ,                         (9)
+                                           8 11
+
+where Ωγ0 is the present photon density contrast and Neff is the effective number of relativistic neutrino species.
+                                                                                                                        4
+
+  Thus, the DESI observables in the CPL framework are
+                          DH (z)      c       c      1      c 1    1        c 1    1
+                                 =        =             =               =               ,                            (10)
+                           rd      H(z)rd   H0 rd E(z)    100 hrd E(z)     100 rd Eh(z)
+                                          Z z
+                                               dz ′     c 1 z dz ′
+                                                             Z
+                          DM (z)    c 1
+                                 =                   =                   .                                           (11)
+                           rd      100 hrd 0 E(z ′ )   100 rd 0 Eh(z ′ )
+Hence, BAO-only constraints effectively determine the combination h rd together with the shape of E(z) set by
+(Ωm0 , ω0 , ωa ).
+
+
+                                           C.   Sound Horizon Calibration
+
+  The comoving sound horizon at the drag epoch is often estimated using the DESI fitting formula [8, 16],
+                                            ω       −0.13  ω     −0.23  N −0.1
+                        DESI                     b              m              eff
+                       rd    = 147.05 Mpc                                              ,                             (12)
+                                             0.02236         0.1432          3.04
+where ωb = Ωb h2 is related to the baryon energy density contrast. This fitting form is widely used for internal
+consistency checks and parameter forecasts. In our analysis, we consider two treatments: (i) BAO-only, in which rd is
+sampled self-consistently along with (ωb , ωm , h), and (ii) BAO+rd prior, in which a Gaussian prior on rd from Planck
+DR3 is imposed. . The latter isolates the BAO-ruler calibration without using the full CMB likelihood and serves as
+our fixed-rd anchor for robustness tests, in contrast to combinations that effectively anchor θ∗ . The CPL extensions
+considered in this work (ωCDM and ω0 ωa CDM) modify only the late-time expansion history through E(z) and do not
+introduce changes to pre-recombination physics. In particular, the radiation density and Neff are held fixed, and the
+sound horizon remains determined by the standard early-universe physics encoded in Eq. (12). Therefore, the Planck-
+derived Gaussian prior on rd is consistent within the scope of these models. The numerical value rd = 147.09 ± 0.26
+Mpc corresponds to the Planck 2018 TT,TE,EE+lowE+lensing baseline result within flat ΛCDM [10]. We adopt this
+value as a precise early-universe calibration under standard recombination physics, consistent with the assumptions
+of the present analysis.
+
+
+                                                D.    Parameter Space
+
+  Because the BAO likelihood constrains the ratios {DH /rd , DM /rd }, the natural BAO-only parameter vector is
+                                             θBAO = {Ωm0 , h rd , ω0 , ωa }.                                         (13)
+In BAO-only analyses, the observables DM /rd and DH /rd constrain only the product hrd , leading to a pronounced
+degeneracy between h and rd individually. As a result, the posterior distribution exhibits an elongated ridge in the
+(h, rd ) plane. When a Gaussian prior on rd is imposed, this degeneracy is explicitly broken, allowing h to be constrained
+independently. Figure 1 illustrates this degeneracy structure and its collapse under the rd prior. Here h rd sets the
+absolute BAO ruler, while (Ωm0 , ω0 , ωa ) control the late-time expansion via E(z) (flatness gives Ωde0 = 1 − Ωm0 − Ωr0
+with Ωr0 fixed by (Ωγ0 , Neff )). When we add a Gaussian prior on the sound horizon from Planck DR3, the h–rd
+degeneracy is broken by the external calibration. In this case it is more transparent to work with the physical matter
+density and the Hubble parameter,
+                                             θBAO+ rd = {ωm , h, ω0 , ωa } .                                         (14)
+Thus, BAO-only analyses constrain {Ωm0 , hrd , ω0 , ωa }, whereas BAO combined with an rd prior effectively constrains
+{ωm , h, ω0 , ωa } (with Ωm0 obtained from ωm /h2 ). This separation cleanly distinguishes late-time dynamics from the
+externally imposed early-universe calibration.
+
+
+                   III.   DESI DR2 BAO DATA AND COVARIANCE RECONSTRUCTION
+
+   To enable a direct model comparison of ΛCDM, ωCDM, and ω0 ωa CDM using MCMC methods, we closely follow
+the procedure adopted in the DESI DR2 analysis. In particular, we work with the anisotropic BAO observables DM /rd
+and DH /rd , which constitute the primary constraints in the DESI BAO likelihood pipeline and directly enter our
+parameter inference. This section describes the BAO observables and redshift binning, and details the reconstruction
+of the covariance matrix required for likelihood evaluation.
+                                                                                                                        5
+
+                                          A.   DESI DR2 Observables and Redshift Bins
+
+
+
+  DESI DR2 provides four types of BAO observables
+
+
+
+                                      Oi = {DV (z)/rd , DM (z)/rd , DH (z)/rd , DM (z)/DH (z)} ,                     (15)
+
+
+
+reported across seven effective redshift bins, derived from a configuration-space analysis of galaxy clustering. Each
+observable is accompanied by its measurement uncertainty. A summary of the redshift bins and available observables
+is given in Table IV of Ref. [8]. For cosmological inference, we primarily employ the anisotropic pair (DM /rd , DH /rd ),
+consistent with the DESI likelihood construction and avoiding double counting with DV /rd .
+
+  For clarity and completeness, we summarize here the subset of the DESI DR2 BAO dataset used in this work.
+We employ the anisotropic observables (DM /rd , DH /rd ) across seven effective redshift bins: z = 0.295 (BGS), 0.510
+(LRG1), 0.706 (LRG2), 0.934 (LRG3+ELG1), 1.321 (ELG2), 1.484 (QSO), and 2.330 (Lyα). The BGS bin provides
+only a DV /rd measurement, while the remaining bins provide anisotropic constraints. To avoid double counting and
+maintain consistency with the DESI likelihood structure, we primarily use the (DM /rd , DH /rd ) basis, resulting in a
+total of 19 independent data points entering the likelihood.
+
+
+
+
+                                               B.   Covariance Matrix Reconstruction
+
+
+
+   DESI DR2 provides observational uncertainties and partial correlation coefficients but does not release the full
+covariance matrix. We reconstruct a block-diagonal covariance matrix based on the reported uncertainties and cor-
+relation coefficients at each redshift, following the methodology of Ref. [17]. Each block corresponds to a redshift
+bin and contains up to three correlated observables. The resulting matrix covers 19 independent observables across
+six bins, excluding BGS, which contributes only a single DV /rd measurement, and is used for all likelihood-based
+calculations including χ2 , AIC, and BIC statistics. While our reconstruction assumes Gaussian errors and neglects
+bin-to-bin correlations, it provides a consistent and reproducible basis for MCMC parameter estimation.
+
+   To validate our covariance implementation, we use the publicly released uncertainties and correlation coefficients,
+restricting the analysis to the same BAO combinations considered in our likelihood construction. We verified that,
+within ΛCDM, the resulting BAO-only best-fit parameters are consistent with the official DESI DR2 results within
+the reported statistical uncertainties. This confirms that our covariance reconstruction faithfully reproduces the DESI
+likelihood structure and does not introduce significant systematic deviations in parameter inference.
+
+   Concretely, we organize the covariance into two independent 2 × 2 blocks to avoid double counting, as in the DESI
+likelihood:
+
+
+
+                                            σV2
+                                                                               2
+                                                                                                     
+                        (z)                          ρV,M/H σV σM/H              σM     ρM,H σM σH
+                    C         =       ρV,M/H σV σM/H       2
+                                                          σM/H             ⊕                 2           .           (16)
+                                                                             ρM,H σM σH     σH
+
+
+
+Here the first block corresponds to the (DV /rd , DM /DH ) basis, and the second to the (DM /rd , DH /rd ) basis. The
+                                                                                                                            6
+
+explicit numerical covariance values for each redshift bin are listed below:
+
+  Case 1: BGS (z=0.295) DV /rd
+                  
+  CBGS = 0.005625
+
+  Case 2: LRG1 (z=0.510)
+            9.801000 × 10−3 8.415000 × 10−5                             2.788900 × 10−2 −3.257752 × 10−2
+                                                                                                         
+   (1)                                                (2)
+  CLRG1 =                                     ,      CLRG1 =
+            8.415000 × 10−5 2.890000 × 10−4                            −3.257752 × 10−2 1.806250 × 10−1
+
+  Case 3: LRG2 (z=0.706)
+            1.210000 × 10−2 −4.158000 × 10−5                                 3.132900 × 10−2 −2.359764 × 10−2
+                                                                                                             
+   (1)                                                       (2)
+  CLRG2 =                                      ,          CLRG2 =
+            −4.158000 × 10−5 4.410000 × 10−4                                 −2.359764 × 10−2 1.089000 × 10−1
+
+  Case 4: LRG3+ELG1 (z=0.934)
+                 8.281000 × 10−3 9.682400 × 10−5                                     2.310400 × 10−2 −1.220377 × 10−2
+                                                                                                                     
+   (1)                                                        (2)
+  CLRG3+ELG1 =                                     ,         CLRG3+ELG1 =
+                 9.682400 × 10−5 3.610000 × 10−4                                    −1.220377 × 10−2 3.724900 × 10−2
+
+  Case 5: ELG2 (z=1.321)
+             3.0276 × 10−2 1.58166 × 10−3                             1.01124 × 10−1 −3.050065 × 10−2
+                                                                                                     
+   (1)                                              (2)
+  CELG2 =                                   ,      CELG2 =
+            1.58166 × 10−3 2.0250 × 10−3                             −3.050065 × 10−2 4.8841 × 10−2
+
+  Case 6: QSO (z=1.484)
+           1.58404 × 10−1 2.38163 × 10−3                         5.7760 × 10−1 −1.9608 × 10−1
+                                                                                               
+   (1)                                              (2)
+  CQSO =                                   ,      CQSO =
+           2.38163 × 10−3 1.8496 × 10−2                          −1.9608 × 10−1 2.66256 × 10−1
+
+  Case 7: Lya (z=2.330)
+            6.5536 × 10−2 1.425357 × 10−2                         2.81961 × 10−1 −2.311496 × 10−2
+                                                                                                    
+   (1)                                               (2)
+  CLya =                                    ,       CLya =
+           1.425357 × 10−2 9.4090 × 10−3                         −2.311496 × 10−2 1.0201 × 10−2
+
+  While our reconstruction assumes Gaussian errors and neglects bin-to-bin correlations, it provides a consistent
+and reproducible basis for MCMC parameter estimation. This reconstructed covariance is employed consistently
+throughout our analysis: first for BAO-only model comparison, and subsequently when combined with a Planck-based
+Gaussian prior on rd . This ensures that differences between the two treatments originate solely from the choice of rd
+anchoring, not from covariance modeling.
+
+
+
+                                 C.   Validation of the Reconstructed Covariance
+
+
+  To validate the reconstructed covariance matrix, we perform a ΛCDM BAO-only MCMC analysis in the (DM /rd , DH /rd )
+basis. The resulting posterior constraints are listed in Table I, together with the official DESI DR2 ΛCDM values
+quoted by the collaboration [8]. For Ωm0 we obtain 0.2949+0.0096
+                                                          −0.0093 , compared to 0.2975 ± 0.0086 from DESI, and for hrd
+we obtain 101.80 ± 0.84 compared to 101.54 ± 0.73. The numerical differences are smaller than the quoted posterior
+uncertainties. This demonstrates that the reconstructed covariance reproduces the DESI DR2 BAO-only baseline at
+the level relevant for model comparison.
+
+
+
+   IV.   MODEL COMPARISON: ΛCDM, ωCDM, AND ω0 ωa CDM WITH DESI DR2 BAO (DM /rd , DH /rd )
+
+
+   We compare three nested dark-energy models using DESI DR2 BAO observables in the (DM /rd , DH /rd ) basis,
+with a two-element data vector per redshift bin. The sound horizon rd is absorbed into the free parameter h rd and
+is not independently constrained. This setup cleanly isolates the constraining power of BAO distances alone, without
+anchoring to external CMB information.
+                                                                                                                             7
+
+TABLE I: Posterior constraints and fit quality for ΛCDM, ωCDM, and ω0 ωa CDM using DESI DR2 BAO data in the
+  (DM /rd , DH /rd ) basis, derived from our MCMC analysis. Reported values are medians with central 68% credible
+ intervals, while χ2min , reduced χ̃2 , AIC, and BIC are given where available. Superscripts denote external references:
+    ΛCDMDESI , ωCDMDESI , and ω0 ωa CDMDESI correspond to the parameters quoted directly by the DESI DR2
+collaboration [8]; ΛCDMPlanck denotes Planck 2018 TT,TE,EE+lowE+lensing constraints [10]. For CPL, ω0 ωa CDMI
+adopts a uniform prior ωa ∈ [−2.5, 2.5], while ω0 ωa CDMII uses ωa ∈ [−5.0, 5.0]. Note that in the DESI tables ωa is
+     reported as an upper limit, likely reflecting the HPD convention when the posterior is highly non-Gaussian.
+
+Model                     ω0           ωa              Ωm0              hrd          χ2min (dof)    χ̃2      AIC      BIC
+ΛCDM                      -1            0          0.2949+0.0096
+                                                         −0.0093    101.80+0.84
+                                                                          −0.84      10.150 (10)   1.015    14.149   15.119
+ΛCDMDESI                  -1            0         0.2975 ± 0.0086   101.54 ± 0.73       NA         NA        NA        NA
+        Planck
+ΛCDM                      -1            0         0.3142 ± 0.0074   99.24 ± 0.82        NA         NA        NA        NA
+ωCDM                −0.918+0.088
+                          −0.093        0          0.2964+0.0101
+                                                         −0.0099     99.87+2.32
+                                                                          −2.15       9.470 (9)    1.052    15.470   16.925
+ωCDMDESI           −0.916 ± 0.078       0         0.2969 ± 0.0089       NA              NA         NA        NA        NA
+ω0 ωa CDM   I
+                     −0.50+0.19
+                          −0.32     −1.56+1.13
+                                         −0.63      0.352+0.024
+                                                         −0.041      94.61+4.38
+                                                                          −2.80       6.300 (8)    0.788    14.300   16.240
+ω0 ωa CDMII          −0.47+0.19
+                          −0.33     −1.66+1.16
+                                         −0.68      0.356+0.024
+                                                         −0.042      94.27+4.43
+                                                                          −2.54       6.273 (8)    0.784    14.273   16.213
+ω0 ωa CDM   DESI
+                     −0.48+0.35
+                          −0.17      < −1.34        0.352+0.041
+                                                         −0.018         NA              NA         NA        NA        NA
+
+
+TABLE II: Model-selection metrics relative to ΛCDM. LRT reports Tk = χ2ΛCDM − χ2ext with k degrees of freedom;
+pLRT is the corresponding tail probability. SDDR uses the posterior/prior density at the nested point (w = −1 for
+   ωCDM; (ω0 , ωa ) = (−1, 0) for CPL). Akaike/BIC weights assume two-model comparison with equal priors.
+
+Extension            Tk (dof)         pLRT            B01           ∆AIC            ∆BIC           W(AIC)            W(BIC)
+ωCDM                0.679 (1)        0.4099          4.555          1.321           1.806           0.341            0.288
+ω0 ωa CDM           3.849 (2)        0.1460          2.543          0.151           1.121           0.481            0.363
+
+
+
+                                      A.     Posterior constraints and fit quality
+
+   Table I summarizes posterior constraints (medians with central 68% credible intervals) and fit-quality statistics. We
+also list the degrees of freedom (dof = Ndata −Nparams ), reduced chi-square χ̃2 ≡ χ2 /dof, and information criteria. The
+comparison with ωCDMDESI demonstrates that our independent MCMC analysis in the (DM /rd , DH /rd ) basis yields
+parameter constraints consistent with the DESI DR2 release within the quoted uncertainties. Any small differences
+are well within the statistical precision of the data and do not affect the model-selection conclusions. The inclusion
+of the DESI-reported constraints allows a direct validation of our implementation and demonstrates consistency with
+the official DR2 analysis.
+   For CPL, the (ω0 , ωa ) posterior exhibits a pronounced degeneracy ridge. Using equal-tailed percentiles we obtain
+ωa = −1.56+1.13             +1.16
+              −0.63 (−1.66−0.68 ) for different choice of uniform priors, whereas adopting an HPD (highest posterior
+density) summary leads to a one-sided constraint, qualitatively consistent with the DESI-only bound (e.g. wa < −1.34
+at 68% credibility). The physically constrained combination ωp at zp ≃ 0.34 remains close to −1, indicating that BAO
+data alone provide no statistically significant evidence for DDE. All three models provide statistically acceptable fits
+(χ̃2 ∼ 0.8–1.05). The lower χ̃2 of ω0 ωa CDM is offset by its additional complexity, as reflected in the model-selection
+metrics below.
+
+
+                     B.    Model selection: LRT, SDDR Bayes factor, and information criteria
+
+  For the nested comparisons ΛCDM ⊂ ωCDM (1 extra parameter) and ΛCDM ⊂ ω0 ωa CDM (2 extra parameters),
+we evaluate the Wilks likelihood-ratio statistic (LRT), Savage–Dickey density ratio (SDDR), and ∆AIC / ∆BIC
+including model weights [18–21].
+  We now examine each entry of the above table in more detail as follows.
+
+   • Tk (Likelihood Ratio Test statistic): Defined as Tk = χ2ΛCDM −χ2ext , with k the number of additional parameters.
+     Under the null hypothesis it follows a χ2k distribution. Rules of thumb:
+                                                                                                                     8
+
+        – Tk ≲ 1 (for k = 1) or ∼ k: negligible improvement, consistent with chance.
+        – Tk ∼ 2–4 (for k = 1): mild improvement, pLRT ∼ 0.05–0.2, not significant.
+        – Tk ≳ 6 (for k = 1) or Tk ≳ 9 (for k = 2): corresponds to pLRT < 0.05, usually considered significant.
+     T1 = 0.679 (ωCDM) and T2 = 3.849 (ω0 ωa CDM) are both modest, showing no strong evidence for extra
+     parameters.
+   • pLRT (tail probability): The probability that a χ2k random variable exceeds Tk . Larger values mean the observed
+     improvement can easily arise by chance.
+        – pLRT < 0.05: often called “statistically significant,” may support the extension.
+        – pLRT ≳ 0.1: improvement likely due to chance; ΛCDM sufficient.
+        – pLRT ∼ 0.3–0.5: essentially no improvement.
+     pLRT = 0.41 (ωCDM) indicates pure chance improvement, while pLRT = 0.15 (ω0 ωa CDM) is somewhat stronger
+     but still not significant.
+   • B01 (Bayes factor via SDDR (Savage-Dickey density ratio)): Ratio of posterior to prior density at the nested
+     point (ω0 = −1 for wCDM; (ω0 , ωa ) = (−1, 0) for ω0 ωa CDM). By convention, B01 > 1 favors ΛCDM. Jeffreys’
+     scale:
+        – 1 < B01 < 3: weak evidence for ΛCDM,
+        – 3 < B01 < 10: substantial evidence,
+        – B01 > 10: strong to very strong evidence.
+     B01 = 4.6 (ωCDM) falls in the “substantial” range of the Jeffreys scale, but does not constitute decisive evidence
+     for ΛCDM, while B01 = 2.5 (ω0 ωa CDM) corresponds to weak evidence.
+   • ∆AIC, ∆BIC: Information-criterion differences relative to ΛCDM. Values ≲ 2 indicate comparable support.
+     Here ∆AIC=1.3 (ωCDM) and 0.15 (ω0 ωa CDM); ∆BIC=1.8 (ωCDM) and 1.1 (ω0 ωa CDM). Both criteria show
+     only small differences relative to ΛCDM and do not provide decisive evidence favoring any model.
+   • W(AIC) , W(BIC) (Akaike/BIC weights): Defined as
+
+                                                        exp[− 21 ∆i ]
+                                                  Wi = P         1     ,
+                                                        j exp[− 2 ∆j ]
+
+
+        P ∆i = ICi −minj (ICj ). These approximate posterior model probabilities assume equal priors and normalize
+     where
+     to i Wi = 1. Values near 0.5 imply no model is decisively favored. In Table II, ωCDM has (WAIC , WBIC ) =
+     (0.34, 0.29) and ω0 ωa CDM (0.48, 0.36), showing that both remain viable, with ΛCDM retaining a slight edge.
+  Neither extension yields a statistically significant improvement over ΛCDM. The LRT p-values (0.41 for ωCDM, 0.15
+for ω0 ωa CDM) indicate that the observed improvements are compatible with statistical fluctuations. Bayes factors
+and information-criterion differences correspond to at most weak-to-moderate evidence on conventional scales, with all
+models remaining statistically viable. LRT p-values (0.41 for ωCDM, 0.15 for ω0 ωa CDM) show no strong signal. Bayes
+factors based on BIC approximations indicate at most weak differences between models, with no decisive support for
+any extension.
+
+
+                        C.   Correlation structure, degeneracies, and pivot combination
+
+  The fitted parameters show structured (anti-)correlations shaped by Alcock–Paczyński geometry and the ω0 ωa CDM
+degeneracy ridge.
+  a. ωCDM (3×3). Using (Ωm0 , hrd , w) we find
+
+                       ρ(Ωm0 , hrd ) = −0.471,    ρ(hrd , w) = −0.937,      ρ(Ωm0 , w) = 0.164.                   (17)
+
+The very strong anti-correlation between hrd and ω reflects the trade between the standard-ruler scale and late-time
+expansion history in matching (DM /rd , DH /rd ).
+                                                                                                                       9
+
+  b. ω0 ωa CDM (4×4). Strong CPL anti-correlation ρ(ω0 , ωa ) = −0.935 defines an elongated likelihood ridge with
+major-axis angle ≃ 104.4◦ in the (ω0 , ωa ) plane. The pivot redshift is defined as the redshift at which the uncertainty
+on the dark energy equation of state w(a) is minimized. For the CPL parameterization,
+
+                                                w(a) = w0 + wa (1 − a),                                             (18)
+
+the variance of w(a) is
+
+                           Var[w(a)] = Var(w0 ) + (1 − a)2 Var(wa ) + 2(1 − a) Cov(w0 , wa ).                       (19)
+
+Minimizing this expression with respect to a yields the pivot scale factor
+
+                                                           Cov(w0 , wa )
+                                                ap = 1 +                 .                                          (20)
+                                                            Var(wa )
+
+The corresponding pivot redshift is then
+
+                                                            1
+                                                     zp =      − 1.                                                 (21)
+                                                            ap
+
+The value zp ≃ 0.34 quoted in the text is obtained directly from the covariance matrix of (w0 , wa ) derived from the
+posterior MCMC chains. Decorrelating via the standard pivot
+
+                                 ωp = ω0 + (1 − ap )ωa ,      ap = 0.7455 (zp ≃ 0.341),                             (22)
+
+yields a directly constrained combination
+
+                                                 ωp = −0.899 ± 0.087,                                               (23)
+
+consistent with −1 at only ≃ 1.2σ, reinforcing that the pivoted constraint is fully compatible with ΛCDM.
+
+
+                                       D.   Posterior predictive checks (PPC)
+
+  We compute discrepancy-based PPC p-values using the χ2 statistic:
+
+                                            pPPC ≡ P (χ2rep ≥ χ2obs | model).                                       (24)
+
+For ωCDM, pPPC = 0.662; for ω0 ωa CDM, pPPC = 0.891. Both are comfortably away from the extremes, indicating
+that replicated data typically produce comparable or larger discrepancies than observed—hence there is no evidence
+of overfitting and the ΛCDM baseline remains statistically sufficient.
+   While posterior predictive p-values substantially larger than 0.5 indicate that the observed data are well reproduced
+by the model, values approaching unity can sometimes raise concerns about excessive model flexibility or insufficient
+sensitivity of the discrepancy statistic. Therefore, we examine whether the relatively high value obtained for ω0 ωa CDM
+reflects overfitting. First, the PPC statistic employed here is identical across all models, ensuring a fair comparison.
+Second, model complexity is independently accounted for through information criteria (AIC and BIC), which penalize
+additional parameters. The corresponding AIC/BIC values do not indicate an excessive preference for the more flexible
+model. Taken together, the PPC results suggest that the observed discrepancies are typical realizations under the
+model rather than evidence of overfitting.
+
+
+                                                    E.     Synthesis
+
+   Across complementary diagnostics (LRT, SDDR, AIC/BIC, PPC), the present BAO-only (DM /rd , DH /rd ) analysis
+exhibits at most a weak preference for ΛCDM over ωCDM and ω0 ωa CDM. ω0 ωa CDM’s lower χ2 is balanced by
+complexity penalties, while its pivoted constraint ωp remains statistically consistent with −1. The dominant limitation
+is discussed further in Sec. V, where we highlight the role of degeneracies between hrd and dark-energy parameters.
+                                                                                                                     10
+
+
+                                           h rd Degeneracy and Its Breaking by rd Prior
+                                                                                    BAO-only
+                                                                                    BAO + rd prior
+                                180
+
+
+                                170
+
+
+                                160
+                     rd [Mpc]
+
+
+                                150
+
+
+                                140
+
+
+                                130
+
+
+                                            0.60      0.65      0.70         0.75   0.80
+                                                                 h
+FIG. 1: Posterior contours in the (h, rd ) plane. Solid lines denote the 68% confidence regions (1σ), and dashed lines
+  denote the 95% confidence regions (2σ). The BAO-only case exhibits a long ridge-like degeneracy approximately
+aligned with constant hrd . When a Gaussian prior on rd is applied, this degeneracy is broken and the allowed region
+                                       collapses into a compact elliptical shape.
+
+
+                                              F.   Degeneracy Between h and rd
+
+ BAO observables entering our analysis are expressed in the form DM (z)/rd and DH (z)/rd . Neglecting radiation at
+BAO redshifts, these quantities scale approximately as
+
+                                                    DM (z) DH (z)    1
+                                                          ,       ∝      ,                                         (25)
+                                                     rd     rd      h rd
+
+up to a mild dependence on Ωm0 through the expansion rate E(z). As a consequence, BAO-only likelihoods primarily
+constrain the product hrd , rather than the individual parameters h and rd . This induces a strong degeneracy direction
+in the (h, rd ) plane, approximately following contours of constant hrd . When rd is treated as a free parameter, the
+posterior distribution therefore exhibits an extended ridge-like structure.
+   Figure 1 illustrates this behavior. In the BAO-only case, the posterior contours form a long, elongated ridge aligned
+approximately with constant hrd . When a Gaussian prior on rd is introduced, this degeneracy is broken and the poste-
+rior becomes localized, forming a compact elliptical region. In this case, the constraint on h tightens correspondingly.
+This structure motivates the parameter choice adopted in Eq. (13), where hrd is used as a fundamental BAO-only
+parameter. Once an external prior on rd is included, it becomes natural to treat h and rd separately, as in Eq. (14),
+since the degeneracy is then resolved.
+
+
+                                      V.    MODEL COMPARISON WITH FIXED rd
+
+  We now assess the impact of including external early-universe information by imposing a Gaussian prior on the
+sound horizon from Planck DR3, rd = 147.09 ± 0.26 Mpc. This strategy provides a controlled way to break the
+(hrd , ω0 , ωa ) degeneracy while avoiding the full complexity of the CMB likelihood. This approach differs from the
+DESI methodology, which incorporates the full CMB likelihood by treating (θ∗ , ωb , ωm ) as purely early-time quantities
+independent of (ω0 , ωa ). In practice, shifts in Ωm0 and h can alter both rd and r∗ , thereby modifying the angular
+                                                                                                                                    11
+
+acoustic scale θ∗ and indirectly coupling late-time parameters to early-universe observables. Table III illustrates this
+point: the ω0 ωa CDM model yields a significantly higher Ωm0 , which modifies rd and r∗ relative to ΛCDM, even though
+ω0 and ωa do not explicitly enter recombination physics. This demonstrates that the common assumption of strict
+independence is only approximate; our use of an rd prior therefore isolates the impact of sound-horizon calibration in
+a transparent and reproducible manner.
+
+TABLE III: Best-fit cosmological parameters and sound horizons obtained with CLASS [22] at the DESI DR2 BAO
+                                                 best-fit values.
+
+Model                             (ω0 , ωa )                         (Ωm0 , H0 [km/s/Mpc])                            (rd , r∗ ) [Mpc]
+ΛCDM                              (−1.0, 0)                             (0.3027, 68.17)                              (147.22, 144.77)
+ωCDM                             (−1.055, 0)                            (0.2927, 69.51)                              (146.27, 144.10)
+ω0 ωa CDM                      (−0.43, −1.70)                            (0.352, 63.7)                               (149.23, 145.78)
+
+
+
+
+                                       A.     Posterior constraints and fit quality
+
+   Table IV summarizes the MCMC results using DESI DR2 BAO observables combined with the Planck -based rd
+prior. All three models provide good fits, with reduced chi-square values χ̃2 ≃ 0.9–1.2. The ω0 ωa CDM model achieves
+the lowest χ2 , but the difference relative to ΛCDM is small compared with the penalty for additional parameters. As
+in the BAO-only case, the CPL parameters follow a strong degeneracy ridge, and the pivoted e.o.s remains consistent
+with ω = −1 within 1.2σ, confirming the absence of significant evidence for DDE.
+
+ TABLE IV: Posterior constraints and fit quality for ΛCDM, ωCDM, and ω0 ωa CDM using DESI DR2 BAO data
+ combined with the Planck DR3 rd prior. For ω0 ωa CDMI(II) we adopt a relaxed prior ωa ∈ [−2.5, +2.5]([−5, +5]).
+The Gaussian prior on the sound horizon, rd = 147.09 ± 0.26 Mpc, is identical for all models. Any small differences
+in the reported posterior intervals (e.g., 147.09+0.25
+                                                 −0.26 ) arise solely from MCMC sampling and rounding effects after
+           combining the prior with the BAO likelihood, and do not reflect different prior assumptions.
+
+Model               ω0            ωa             Ωm0                 h             rd [Mpc]        χ2min (dof)    χ̃2     AIC / BIC
+ΛCDM                −1             0         0.295 ± 0.010     0.692 ± 0.006     147.09 ± 0.26      10.16 (9)    1.13    16.16 / 17.61
+ωCDM            −0.92 ± 0.09       0         0.296 ± 0.010     0.679 ± 0.016     147.09 ± 0.26      9.48 (8)     1.19    17.48 / 19.42
+ω0 ωa CDMI       −0.50+0.19
+                      −0.32    −1.57+1.14
+                                    −0.62     0.352+0.024
+                                                   −0.041       0.643+0.030
+                                                                     −0.019      147.09 ± 0.26      6.29 (7)     0.90    16.29 / 18.71
+ω0 ωa CDMII      −0.47+0.19
+                      −0.33    −1.67+1.15
+                                    −0.68     0.356+0.024
+                                                   −0.041       0.641+0.030
+                                                                     −0.017       147.09+0.25
+                                                                                        −0.26        6.25 (7)    0.89    16.25 / 18.68
+
+
+
+
+                                                    B.   Model selection
+
+  Table V reports the model-selection metrics relative to ΛCDM. For ωCDM the likelihood-ratio statistic is T1 ≃ 0.68
+with p ≃ 0.41, while for ω0 ωa CDM it is T2 ≃ 3.87 with p ≃ 0.14. Neither reaches conventional significance. Bayes
+factors based on BIC approximations are below unity, indicating weak support for ΛCDM. AIC values show a slight
+preference for ω0 ωa CDM, but BIC imposes stronger complexity penalties, leaving ΛCDM marginally favored overall
+and the extended models statistically viable but not compelling.
+
+    TABLE V: Model-selection metrics relative to ΛCDM for DESI DR2 + Planck rd prior. For ω0 ωa CDMI and
+       ω0 ωa CDMII we adopt different uniform priors on ωa , namely [−2.5, +2.5] and [−5, +5], respectively.
+
+Extension               Tk (dof)            pLRT             B01           ∆AIC              ∆BIC                WAIC           WBIC
+ωCDM                    0.68 (1)            0.41             0.41              1.32              1.81            0.21            0.20
+ω0 ωa CDM(I)            3.87 (2)            0.14             0.58              0.13              1.10            0.38            0.29
+ωCDM                    0.678 (1)           0.410            2.467         1.322             1.806               0.341          0.288
+ω0 ωa CDM(II)           3.907 (2)           0.142            1.701         0.093             1.063               0.488          0.370
+                                                                                                                    12
+
+                                                     C.   Synthesis
+
+
+   When combined with the Planck rd prior, DESI DR2 BAO data remain consistent with ΛCDM. The extended
+models provide slightly lower χ2 but do not achieve statistically significant improvements, and all model-selection
+metrics point to at most weak differences. Importantly, the apparent ∼ 3σ preference for DDE reported by the DESI
+collaboration (based on the full CMB likelihood) is not reproduced here. Instead, the data show that once the sound
+horizon calibration is imposed without double counting late-time information, no strong evidence for DDE emerges.
+This highlights the sensitivity of DE inference to how early-universe information is incorporated, and underscores the
+value of fixed-rd analyses as a robustness test. Similar sensitivity to anchor choice has also been discussed in eBOSS
+Lyα BAO studies [23], and in SNe systematics analyses [24].
+   We note that in the BAO+rd prior analysis, the ω0 ωa CDM model yields a lower inferred value of H0 relative
+to ΛCDM. This shift originates from internal parameter degeneracies between (Ωm0 , h, ω0 , ωa ) required to maintain
+consistency with the BAO distance ratios under fixed sound-horizon calibration. However, our analysis does not include
+late-time distance-ladder measurements such as SH0ES, nor does it incorporate the full Planck CMB likelihood.
+Therefore, this shift in H0 should not be interpreted as a resolution of the Hubble tension. Rather, it reflects the
+geometric rearrangement of parameter space within the BAO likelihood under extended dark-energy models.
+
+
+
+                                               VI.    CONCLUSIONS
+
+
+   We have reassessed the cosmological implications of the DESI DR2 BAO measurements using the anisotropic
+observables (DM /rd , DH /rd ), the primary outputs of the BAO fitting pipeline. By mapping the fitted α-parameters
+to distance ratios and reconstructing a block-diagonal covariance per redshift bin, we carried out a uniform MCMC
+analysis of three nested models, ΛCDM, ωCDM, and ω0 ωa CDM.
+   In the BAO-only analysis, all three models provide statistically acceptable fits with reduced chi-square values
+χ̃2 ≃ 0.8–1.05. Neither ωCDM nor ω0 ωa CDM yields a significant improvement over ΛCDM: likelihood-ratio tests
+give pLRT = 0.41 and 0.15 respectively, while Bayes factors and information criteria mildly favor the simpler ΛCDM
+model. The pivoted e.o.s, ωp = −0.899± 0.087 at zp ≃ 0.34, is fully consistent with −1, and posterior predictive checks
+confirm the absence of overfitting. These conclusions are in full agreement with the official DESI DR2 analysis.
+   When a Gaussian prior on rd = 147.09±0.26 Mpc from Planck DR3 is imposed, the results remain consistent with the
+BAO-only case. Although ω0 ωa CDM achieves a somewhat lower χ2 , the gain is modest and outweighed by complexity
+penalties, with model-selection metrics continuing to prefer ΛCDM. Importantly, the apparent ∼ 3σ preference for
+DDE reported by DESI when using the full CMB likelihood is not reproduced under this more conservative treatment.
+This demonstrates that conclusions about dark-energy dynamics depend sensitively on how CMB information is
+incorporated, and that isolating the rd calibration provides a more transparent robustness test [25, 26].
+   A common feature of both analyses is the strong degeneracy between h rd and dark-energy parameters, especially
+the anti-correlation with ω. BAO data alone therefore constrain h rd and geometric combinations of E(z), but cannot
+disentangle late-time dynamics from early-time calibration without external information.
+   In summary, DESI DR2 BAO data, whether analyzed alone or combined with the Planck rd prior, remain fully
+consistent with ΛCDM and show no statistically significant preference for ωCDM or ω0 ωa CDM. Importantly, the
+apparent ∼ 3σ preference for dynamical dark energy reported by DESI when using the full CMB likelihood is not
+reproduced under our fixed-rd anchoring.
+   Our results should therefore be interpreted as a robustness test of the sound-horizon calibration rather than as
+a refutation or replacement of full CMB-based joint analyses. Future progress will hinge on achieving a precise and
+independent calibration of rd , which is essential for breaking the degeneracy between h rd and dark-energy parameters.
+   Although the present work focuses exclusively on DESI DR2 BAO and BAO+rd prior combinations, it is useful to
+place these results in a broader observational context. Joint analyses combining BAO with supernova datasets (e.g.,
+Pantheon+) have reported varying levels of preference for dynamical dark energy, depending on dataset selection and
+early-universe anchoring choices. Our BAO-based results therefore provide a complementary perspective by isolating
+the geometric information contained in BAO distance ratios from additional late-time probes. A full multi-probe
+analysis including SNe Ia or GRBs is beyond the scope of this work.
+   Several limitations of the present analysis should be emphasized. First, our results are restricted to BAO-only and
+BAO+rd prior configurations and do not incorporate the full Planck CMB likelihood. Second, the sound horizon is
+treated either as a fixed calibration parameter or as an external Gaussian prior; we do not explore early-universe
+modifications that alter recombination or the acoustic scale directly. Third, our conclusions apply specifically to
+the robustness of late-time dynamical dark-energy inference within the DESI BAO framework and should not be
+                                                                                                                               13
+
+interpreted as a general statement about all joint CMB+LSS analyses.
+
+
+
+
+ [1] D. J. Eisenstein, W. Hu and M. Tegmark, Astrophys. J. Lett. 504, L57-L61 (1998) doi:10.1086/311582 [arXiv:astro-
+     ph/9805239 [astro-ph]].
+ [2] C. Blake and K. Glazebrook, Astrophys. J. 594, 665-673 (2003) doi:10.1086/376983 [arXiv:astro-ph/0301632 [astro-ph]].
+ [3] H. J. Seo and D. J. Eisenstein, Astrophys. J. 598, 720-740 (2003) doi:10.1086/379122 [arXiv:astro-ph/0307460 [astro-ph]].
+ [4] D. J. Eisenstein et al. [SDSS], Astrophys. J. 633, 560-574 (2005) doi:10.1086/466512 [arXiv:astro-ph/0501171 [astro-ph]].
+ [5] S. Cole et al. [2dFGRS], Mon. Not. Roy. Astron. Soc. 362, 505-534 (2005) doi:10.1111/j.1365-2966.2005.09318.x
+     [arXiv:astro-ph/0501174 [astro-ph]].
+ [6] L. Anderson et al. [BOSS], Mon. Not. Roy. Astron. Soc. 427, no.4, 3435-3467 (2013) doi:10.1111/j.1365-2966.2012.22066.x
+     [arXiv:1203.6594 [astro-ph.CO]].
+ [7] S. Alam et al. [BOSS], Mon. Not. Roy. Astron. Soc. 470, no.3, 2617-2652 (2017) doi:10.1093/mnras/stx721
+     [arXiv:1607.03155 [astro-ph.CO]].
+ [8] M. Abdul Karim et al. [DESI], [arXiv:2503.14738 [astro-ph.CO]].
+ [9] K. Lodha et al. [DESI], [arXiv:2503.14743 [astro-ph.CO]].
+[10] N. Aghanim et al. [Planck], Astron. Astrophys. 641, A6 (2020) doi:10.1051/0004-6361/201833910 [arXiv:1807.06209 [astro-
+     ph.CO]].
+[11] M. Chevallier and D. Polarski, Int. J. Mod. Phys. D 10, 213-224 (2001) doi:10.1142/S0218271801000822 [arXiv:gr-
+     qc/0009008 [gr-qc]].
+[12] E. V. Linder, Phys. Rev. Lett. 90, 091301 (2003) doi:10.1103/PhysRevLett.90.091301 [arXiv:astro-ph/0208512 [astro-ph]].
+[13] É. Aubourg et al. [BOSS], Phys. Rev. D 92, no.12, 123516 (2015) doi:10.1103/PhysRevD.92.123516 [arXiv:1411.1074
+     [astro-ph.CO]].
+[14] G. E. Addison, D. J. Watts, C. L. Bennett, M. Halpern, G. Hinshaw and J. L. Weiland, Astrophys. J. 853, no.2, 119 (2018)
+     doi:10.3847/1538-4357/aaa1ed [arXiv:1707.06547 [astro-ph.CO]].
+[15] L. Knox and M. Millea, Phys. Rev. D 101, no.4, 043533 (2020) doi:10.1103/PhysRevD.101.043533 [arXiv:1908.03663
+     [astro-ph.CO]].
+[16] S. Brieden, H. Gil-Marı́n and L. Verde, JCAP 04, 023 (2023) doi:10.1088/1475-7516/2023/04/023 [arXiv:2212.04522 [astro-
+     ph.CO]].
+[17] S. Lee, [arXiv:2506.16022 [astro-ph.CO]].
+[18] H. Jeffreys, Theory of Probability, 3rd ed. Oxford Classic Texts in the Physical Sciences. Oxford Univ. Press, Oxford (1961).
+[19] A. R. Liddle, P. Mukherjee, D. Parkinson and Y. Wang, Phys. Rev. D 74, 123506 (2006) doi:10.1103/PhysRevD.74.123506
+     [arXiv:astro-ph/0610126 [astro-ph]].
+[20] A. R. Liddle, Mon. Not. Roy. Astron. Soc. 377, L74-L78 (2007) doi:10.1111/j.1745-3933.2007.00306.x [arXiv:astro-
+     ph/0701113 [astro-ph]].
+[21] R. Trotta, Contemp. Phys. 49, 71-104 (2008) doi:10.1080/00107510802066753 [arXiv:0803.4089 [astro-ph]].
+[22] D. Blas, J. Lesgourgues and T. Tram, JCAP 07, 034 (2011) doi:10.1088/1475-7516/2011/07/034 [arXiv:1104.2933 [astro-
+     ph.CO]].
+[23] H. du Mas des Bourboux et al. [eBOSS], Astrophys. J. 901, no.2, 153 (2020) doi:10.3847/1538-4357/abb085
+     [arXiv:2007.08995 [astro-ph.CO]].
+[24] D. M. Scolnic et al. [Pan-STARRS1], Astrophys. J. 859, no.2, 101 (2018) doi:10.3847/1538-4357/aab9bb [arXiv:1710.00845
+     [astro-ph.CO]].
+[25] S. Birrer, A. J. Shajib, A. Galan, M. Millon, T. Treu, A. Agnello, M. Auger, G. C. F. Chen, L. Christensen and T. Collett,
+     et al. Astron. Astrophys. 643, A165 (2020) doi:10.1051/0004-6361/202038861 [arXiv:2007.02941 [astro-ph.CO]].
+[26] K. Dutta, Ruchika, A. Roy, A. A. Sen and M. M. Sheikh-Jabbari, Gen. Rel. Grav. 52, no.2, 15 (2020) doi:10.1007/s10714-
+     020-2665-4 [arXiv:1808.06623 [astro-ph.CO]].
+

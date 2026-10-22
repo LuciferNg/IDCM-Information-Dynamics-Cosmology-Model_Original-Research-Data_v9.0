@@ -1,0 +1,41 @@
+{
+  "test1_profile": {
+    "best_gaussian": {
+      "zc": 0.76,
+      "amplitude": 3.0714285714285716,
+      "sigma": 0.31,
+      "chi2": 0.8100634771747741
+    },
+    "best_lorentzian": {
+      "zc": 0.8,
+      "amplitude": 3.163265306122449,
+      "sigma": 0.32,
+      "chi2": 0.6123719049572319
+    },
+    "best_flat": {
+      "bias": 1.85,
+      "chi2": 2.2874999999999996
+    },
+    "data": {
+      "z": [
+        0.51,
+        0.71,
+        2.33
+      ],
+      "significance": [
+        1.6,
+        3.0,
+        0.9
+      ]
+    },
+    "verdict": "observer-relative"
+  },
+  "test2_dipole": {
+    "status": "impossible",
+    "reason": "needs raw DESI catalog"
+  },
+  "test3_density": {
+    "status": "impossible",
+    "reason": "needs same-z completeness split"
+  }
+}

@@ -1,0 +1,75 @@
+{
+  "parameters": {
+    "H0": 72.6,
+    "OM": 0.317,
+    "EPS": 0.1545084971874737,
+    "Z_C": 0.6
+  },
+  "results": [
+    {
+      "z": 0,
+      "t_lcdm": 13.8,
+      "t_idcm": 13.8,
+      "dt": 0,
+      "dt_pct": 0
+    },
+    {
+      "z": 0.6,
+      "t_lcdm": 7.5,
+      "t_idcm": 7.5,
+      "dt": 0,
+      "dt_pct": 0
+    },
+    {
+      "z": 1,
+      "t_lcdm": 5.9,
+      "t_idcm": 5.9,
+      "dt": 0,
+      "dt_pct": 0
+    },
+    {
+      "z": 3,
+      "t_lcdm": 2.2,
+      "t_idcm": 2.2,
+      "dt": 0,
+      "dt_pct": 0
+    },
+    {
+      "z": 5,
+      "t_lcdm": 1.2,
+      "t_idcm": 1.2,
+      "dt": 0,
+      "dt_pct": 0
+    },
+    {
+      "z": 7,
+      "t_lcdm": 0.8,
+      "t_idcm": 0.8,
+      "dt": 0,
+      "dt_pct": 0
+    },
+    {
+      "z": 10,
+      "t_lcdm": 0.47,
+      "t_idcm": 0.47,
+      "dt": 0,
+      "dt_pct": 0
+    },
+    {
+      "z": 12,
+      "t_lcdm": 0.35,
+      "t_idcm": 0.35,
+      "dt": 0,
+      "dt_pct": 0
+    },
+    {
+      "z": 15,
+      "t_lcdm": 0.25,
+      "t_idcm": 0.25,
+      "dt": 0,
+      "dt_pct": 0
+    }
+  ],
+  "verdict": "sync dip at z_c=0.6 cannot explain JWST high-z galaxies",
+  "alternative": "observer-relative rendering \u2014 galaxies are 'mature' in their own frame"
+}

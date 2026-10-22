@@ -1,0 +1,52 @@
+{
+  "observed_aliasing_z": [
+    5.6,
+    6.9,
+    7.7
+  ],
+  "pattern_type": "Fibonacci gaps scaled by 0.1",
+  "observed_pattern": {
+    "z1": "F\u2085 + F\u2084/F\u2085 = 5 + 3/5 = 5.6",
+    "z2": "z\u2081 + F\u2087/10 = 5.6 + 13/10 = 6.9",
+    "z3": "z\u2082 + F\u2086/10 = 6.9 + 8/10 = 7.7"
+  },
+  "forward_prediction": {
+    "gap_sequence": "F\u2085/10, F\u2084/10, F\u2083/10, F\u2082/10, F\u2081/10...",
+    "next_z": 8.2,
+    "z_values": [
+      6.9,
+      7.7,
+      8.2,
+      8.5,
+      8.7,
+      8.8,
+      8.9
+    ]
+  },
+  "backward_prediction": {
+    "path": "from z=5.6 backward subtracting F\u2085/10, F\u2084/10, F\u2083/10, F\u2082/10...",
+    "z_values": [
+      5.1,
+      4.8,
+      4.6,
+      4.5,
+      4.4
+    ]
+  },
+  "all_predicted_zs": [
+    4.4,
+    4.5,
+    4.6,
+    4.8,
+    5.1,
+    5.6,
+    6.9,
+    7.7,
+    8.2,
+    8.5,
+    8.7,
+    8.8,
+    8.9
+  ],
+  "verdict": "Fibonacci-ordered aliasing z spanning z\u22484.4 to z\u22488.2"
+}

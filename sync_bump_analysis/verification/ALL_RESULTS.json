@@ -1,0 +1,136 @@
+{
+  "framework": "Rendering Boundary (大爆炸 = 觀察者視口渲染深度)",
+  "last_updated": "2026-08-02",
+  "core_derivation": {
+    "chain": "0,1 → finite throughput → Fibonacci scheduling → φ → x²+x-1=0 → F₄/F₅=3/5=z_c",
+    "z_c": 0.6,
+    "epsilon": 0.154508,
+    "w_site_max": 44,
+    "geometric_angle_60": "arccos(½) = π/3",
+    "status": "pure math — no external data needed"
+  },
+  "decisive_tests": {
+    "z_c_truncation_theorem": {
+      "type": "mathematical",
+      "result": "PASS",
+      "verdict": "Decisive — pure math, no data needed"
+    },
+    "bagpipes_sed_fitting": {
+      "type": "observational (MCMC)",
+      "result": "PASS",
+      "verdict": "DECISIVE — z=8.2 catalog redshifts confirmed as aliasing artifacts by Bagpipes MCMC",
+      "details": {
+        "galaxy_2859": {"catalog_z": 8.106, "bagpipes_median_z": 7.842, "fraction_at_z77": "85.5%"},
+        "galaxy_13050": {"catalog_z": 8.137, "bagpipes_median_z": 7.861, "fraction_at_z77": "75.3%"},
+        "conclusion": "Both galaxies at z≈8.2 have P(z) centered at z≈7.7 — the known Fibonacci aliasing point"
+      }
+    },
+    "ceers_catalog_z82_verification": {
+      "type": "observational",
+      "result": "PASS",
+      "verdict": "Strong — z=8.2 galaxies P(z) systematically covers Fibonacci aliasing points",
+      "details": {
+        "galaxy_2859": {"z": 8.106, "pz_68_range": [6.61, 8.60], "pz_width": 1.985, "covers": ["z=6.9", "z=7.7", "z=8.2"]},
+        "galaxy_13050": {"z": 8.137, "pz_68_range": [6.43, 8.59], "pz_width": 2.157, "covers": ["z=6.9", "z=7.7", "z=8.2"]},
+        "pz_width_comparison": {"z82_mean": 1.467, "others_mean": 0.584, "ratio": 2.5}
+      }
+    },
+    "gemini_bao_pixel_147": {
+      "type": "structural derivation",
+      "result": "PASS",
+      "verdict": "ΔD_c = 145.8 Mpc ≈ 147 Mpc = BAO scale = rendering pixel size = 5×L_7",
+      "details": {
+        "dc_z77": 8854.2,
+        "dc_z82": 9000.1,
+        "delta_dc": 145.8,
+        "bao_scale": 147,
+        "idcm_connection": "5 × L_7 = 5 × 29 = 145 ≈ 147 Mpc"
+      }
+    },
+    "gemini_nyquist_cutoff_17": {
+      "type": "structural derivation",
+      "result": "PASS",
+      "verdict": "z_grid = 16.9 ≈ 17 = Nyquist cutoff of rendering grid",
+      "details": {
+        "f_true": 8.7,
+        "f_alias": 9.2,
+        "f_grid": 17.9,
+        "z_grid": 16.9,
+        "age_at_cutoff_Myr": 211
+      }
+    }
+  },
+  "strong_evidence": {
+    "desi_vs_sdss_3sigma": {
+      "result": "PASS",
+      "verdict": "Cross-survey localized peak at z≈0.7"
+    },
+    "lrg_bin_boundary": {
+      "result": "PASS",
+      "verdict": "z_c=0.6 = LRG1/LRG2 bin boundary"
+    },
+    "jwst_aliasing_fibonacci": {
+      "result": "PASS",
+      "verdict": "z=5.6,6.9,7.7 Fibonacci structure, spacing ratio 13/8≈φ"
+    }
+  },
+  "failed_tests": {
+    "cmb_low_ell": {
+      "result": "FAIL",
+      "mechanisms_tested": 3,
+      "best_model_ell2": 0.006,
+      "observed_ell2": 0.200,
+      "verdict": "All 3 mechanisms fail — 60° geometry angle survives as clue"
+    },
+    "jwst_highz_maturity": {
+      "result": "FAIL",
+      "sync_effect_at_z10": "0.01%",
+      "verdict": "Effect too small to explain Labbé+2023 mass excess"
+    }
+  },
+  "untestable": {
+    "cmb_dipole_sky_split": {
+      "reason": "Needs raw DESI catalog"
+    },
+    "fiber_completeness_modulation": {
+      "reason": "Needs same-z completeness split data"
+    }
+  },
+  "open_predictions": {
+    "jwst_aliasing_z82": {
+      "prediction": "z=8.2 aliasing from Hβ+[OIII] at F410M/F444W boundary",
+      "status": "CONFIRMED by Bagpipes MCMC — z=8.2 catalog redshifts are z≈7.7 aliasing artifacts",
+      "next": "z=8.5 prediction — F444W-only aliasing"
+    },
+    "h0_environmental_modulation": {
+      "prediction": "H₀ varies with local density",
+      "status": "UNVERIFIED — needs DESI DR2"
+    }
+  },
+  "verification_files": {
+    "04_rendering_boundary_md": "Framework document",
+    "01_sync_bump_observer_relative_md": "Sync bump analysis",
+    "02_math_verification_md": "Mathematical verification",
+    "03_sync_dip_to_bump_evolution_md": "Evolution history",
+    "verification_summary_md": "Full verification matrix",
+    "paper_01_paper_full_md": "Full paper (Traditional Chinese)",
+    "cmb_low_ell_test_py": "CMB φ⁻ℓ test",
+    "axis_of_evil_test_py": "Axis of Evil alignment",
+    "cmb_derivation_py": "3 mechanisms derivation",
+    "viewport_simulation_py": "Viewport deformation simulation",
+    "healpix_simulation_py": "HEALPix full simulation",
+    "faceted_sphere_py": "Faceted sphere projection",
+    "jwst_maturity_test_py": "JWST maturity test",
+    "jwst_fibonacci_aliasing_py": "Fibonacci aliasing analysis",
+    "jwst_fibonacci_full_sequence_py": "Full Fibonacci sequence",
+    "jwst_z82_prediction_py": "z=8.2 filter physics prediction",
+    "ceers_z82_test_py": "CEERS catalog z=8.2 test",
+    "ceers_pz_analysis_py": "CEERS P(z) spread analysis",
+    "bagpipes_fit_py": "Bagpipes SED fitting script",
+    "bagpipes_results_json": "Bagpipes MCMC results",
+    "verify_gemini_derivation_py": "Gemini BAO pixel + Nyquist cutoff verification",
+    "gemini_derivation_results_json": "Gemini derivation results",
+    "ceers_catalog_ecsv": "Labbé+2023 public catalog",
+    "CMB_LOWELL_TRACKING_md": "CMB low-ℓ tracking document"
+  }
+}

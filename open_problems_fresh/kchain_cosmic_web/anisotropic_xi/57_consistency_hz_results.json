@@ -1,0 +1,8 @@
+{
+  "method": "W-field 2-step consistency + thermal dissipation",
+  "n_active": "44 - 44/(1+z)",
+  "E_base": 16.0,
+  "chi2_v1": 6799.095725483461,
+  "chi2_v2": 12362.86342094656,
+  "dof": 13
+}

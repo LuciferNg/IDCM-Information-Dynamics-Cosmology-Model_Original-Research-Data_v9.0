@@ -1,0 +1,41 @@
+{
+  "phi": 1.618033988749895,
+  "phi_inv": 0.6180339887498948,
+  "planck_data": {
+    "2": {
+      "obs": 212,
+      "model": 1060,
+      "label": "Quadrupole"
+    },
+    "3": {
+      "obs": 1040,
+      "model": 1240,
+      "label": "Octopole"
+    },
+    "4": {
+      "obs": 680,
+      "model": 750,
+      "label": "\u2113=4"
+    },
+    "5": {
+      "obs": 1150,
+      "model": 1150,
+      "label": "\u2113=5"
+    }
+  },
+  "predictions": {
+    "phi_power": {
+      "1": 0.6180339887498948,
+      "2": 0.3819660112501051,
+      "3": 0.23606797749978964,
+      "4": 0.1458980337503154,
+      "5": 0.0901699437494742,
+      "6": 0.05572809000084118
+    }
+  },
+  "verdict": {
+    "\u2113=2": "inconclusive (cosmic variance 63%)",
+    "\u2113=3": "within range",
+    "axis_of_evil": "real at 3-4\u03c3, dipole-aligned"
+  }
+}

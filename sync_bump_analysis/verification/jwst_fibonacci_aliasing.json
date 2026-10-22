@@ -1,0 +1,24 @@
+{
+  "observed_aliasing_z": [
+    5.6,
+    6.9,
+    7.7
+  ],
+  "gaps": [
+    1.3000000000000007,
+    0.7999999999999998
+  ],
+  "gap_ratio": 1.6250000000000013,
+  "fibonacci_ratio": 1.618033988749895,
+  "gap_ratio_match": true,
+  "decomposition": {
+    "z1": "F\u2085 + F\u2084/F\u2085 = 5 + 3/5 = 5.6",
+    "z2": "z\u2081 + F\u2087/10 = 5.6 + 13/10 = 6.9",
+    "z3": "z\u2082 + F\u2086/10 = 6.9 + 8/10 = 7.7"
+  },
+  "next_prediction": {
+    "method": "z\u2084 = z\u2083 + F\u2085/10 = 7.7 + 5/10 = 8.2",
+    "value": 8.2
+  },
+  "verdict": "The aliasing z gaps form a Fibonacci sequence scaled by 0.1"
+}

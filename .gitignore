@@ -1,0 +1,14 @@
+# IDCM-v9.0--W-Field-Lattice .gitignore (2026-10-18, bind GitHub)
+# 原始觀測數據唔上傳（政策：留碟研究）— *.npz / *.fits / *.parquet / *.deb
+*.fits
+*.fits.gz
+*.parquet
+*.deb
+*.npz
+
+# 大目錄 — 睇 data/ 28G 唔上傳
+/data/
+__pycache__/
+/venv_sed/
+*.pyc
+.pytest_cache/

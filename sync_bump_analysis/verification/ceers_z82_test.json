@@ -1,0 +1,33 @@
+{
+  "n_galaxies": 13,
+  "z82_galaxies": [
+    {
+      "id": 25666,
+      "z": 7.931,
+      "mass": 9.521798229698335,
+      "f410m": 81.75916824949593,
+      "f410m_f444w": -81.51371567506482
+    },
+    {
+      "id": 2859,
+      "z": 8.105592642974775,
+      "mass": 10.029126864461965,
+      "f410m": 63.277629148610174,
+      "f410m_f444w": -61.662309908633304
+    },
+    {
+      "id": 13050,
+      "z": 8.136669296217242,
+      "mass": 10.137980622560049,
+      "f410m": 81.98343165160081,
+      "f410m_f444w": -65.8437229085384
+    }
+  ],
+  "aliasing_prediction": {
+    "z": 8.2,
+    "mechanism": "H\u03b2+[OIII] at F410M/F444W boundary \u2192 color degeneracy",
+    "test": "Need NIRSpec P(z) analysis at z=8.2",
+    "status": "catalog downloaded \u2014 photometry alone insufficient for definitive test"
+  },
+  "verdict": "Inconclusive with photometry alone \u2014 need NIRSpec spectroscopy"
+}

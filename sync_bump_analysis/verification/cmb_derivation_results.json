@@ -1,0 +1,18 @@
+{
+  "attempted_mechanisms": {
+    "phi_power_law": {
+      "status": "failed",
+      "reason": "\u2113=2 factor 3 off"
+    },
+    "dipole_modulation": {
+      "status": "failed",
+      "reason": "2 orders too small"
+    },
+    "isw_suppression": {
+      "status": "failed",
+      "reason": "\u2113=2 factor 5 off"
+    }
+  },
+  "verdict": "CMB low-\u2113 is NOT a clean test for observer-relative hypothesis",
+  "recommendation": "Focus on JWST high-z and H\u2080 environmental tests"
+}

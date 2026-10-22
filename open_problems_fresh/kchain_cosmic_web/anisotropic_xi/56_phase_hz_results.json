@@ -1,0 +1,6 @@
+{
+  "method": "phase accumulation: \u03b8(z)=\u03b8\u2080exp(-\u03a6(z)), \u03a6=\u222bdz/(1+z)/v_g(28/(1+z))",
+  "chi2_desi": 113297.3556612771,
+  "dof": 13,
+  "theta0": 0.2243994752564138
+}

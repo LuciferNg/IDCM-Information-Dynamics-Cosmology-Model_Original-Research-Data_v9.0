@@ -1,0 +1,25 @@
+{
+  "formula": "D_app(ℓ) = (44-44/4^ℓ) × R_H/44 × (1 + K × ℓ)",
+  "K_best": 1.2306153149072128,
+  "K_chi2_synthetic": 11.237550850690923,
+  "K_structural": {
+    "2 × φ⁻¹": 1.2360679774997898,
+    "1 + φ⁻¹": 1.618033988749895,
+    "L₄/L₃ × φ⁻¹": 1.081559480312316,
+    "3 × φ⁻¹": 1.8541019662496847,
+    "√(h²¹/h¹¹)": 1.6499158227686108,
+    "(h²¹-h¹¹)/h¹¹": 1.7222222222222223,
+    "h²¹/h¹¹ × φ⁻¹": 1.682425858263603,
+    "L₅/L₄": 1.5714285714285714,
+    "L₆/L₅": 1.6363636363636365,
+    "L₆/L₄ × φ⁻¹": 1.5892302567854442
+  },
+  "K_2phi_inv": 1.2360679774997898,
+  "chi2_2phi_inv_synthetic_7pts": 11.28663173224626,
+  "chi2_2phi_inv_real_covariance_DM_only_6dof": 27.4,
+  "chi2_old_structure": 13.2,
+  "chi2_matter_zeta": 34.9,
+  "dof_synthetic": 7,
+  "dof_real_DM": 6,
+  "honest_note": "χ² synthetic uses 3% error, not real DESI covariance. Real covariance DM-only χ²=27.4 (6 dof). Formula is 0-parameter structural prediction, not a fit."
+}

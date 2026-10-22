@@ -1,0 +1,864 @@
+       SWE-NFI: Studying and Benchmarking Coding Agents for
+                   Non-Functional Improvements
+                Pengyu Xue                                    He Yang Yuan                                    Xin Wang
+            pengyu13@yorku.ca                                yuanh@yorku.ca                   xwang496@connect.hkust-gz.edu.cn
+              York University                                 York University                 The Hong Kong University of Science
+          Toronto, Ontario, Canada                       Toronto, Ontario, Canada                and Technology (Guangzhou)
+                                                                                                Guangzhou, Guangdong, China
+
+                Junkai Chen                                  Haonan Zhang                                  Boyuan Chen
+          junkaichen@smu.edu.sg                        haonan.zhang@uwaterloo.ca                        chenfsd@gmail.com
+     Singapore Management University                      University of Waterloo                      Independent Researcher
+            Singapore, Singapore                        Waterloo, Ontario, Canada                             Canada
+
+                Zishuo Ding                                     Zhenhao Li                                  Weiyi Shang
+        zishuoding@hkust-gz.edu.cn                         lzhenhao@yorku.ca                          wshang@uwaterloo.ca
+    The Hong Kong University of Science                      York University                          University of Waterloo
+       and Technology (Guangzhou)                        Toronto, Ontario, Canada                    Waterloo, Ontario, Canada
+      Guangzhou, Guangdong, China
+
+Abstract                                                                   In practice, real-world software development and maintenance
+Although coding agents have achieved impressive performance on          involve far more than implementing new functionality or fixing
+correctness-oriented benchmarks, their ability to make behavior-        bugs. Developers continuously make non-functional improvements
+preserving non-functional improvements (NFIs) remains underex-          (NFIs) to existing code, such as refining documentation [29], im-
+plored. In real-world software development, developers continu-         proving error handling [47, 61] and security [45], modernizing
+ously improve software quality without changing observable behav-       library usage [66], enhancing coding style [12, 82], constructing
+ior, yet existing benchmarks primarily evaluate functional correct-     system observability [19, 35–38, 40, 67, 87, 88], and simplifying
+ness and provide limited support for assessing these non-functional     program structure [52]. Although these changes typically preserve
+improvements.                                                           the original functionality, they play a critical role in improving soft-
+   In this paper, we present SWE-NFI, a benchmark for evaluat-          ware maintainability, readability, and long-term evolution [6, 46].
+ing coding agents on NFIs beyond functional correctness. Our            Consequently, NFIs constitute an indispensable part of software
+benchmark contains 188 tasks constructed from real merged pull re-      maintenance.
+quests in open-source Python projects. We operationalize developer-        Despite the importance of NFIs, existing benchmarks for cod-
+oriented NFIs into 92 executable rules and develop a comprehensive      ing agents predominantly evaluate functionality-oriented tasks.
+evaluation suite that combines functional correctness testing with      Representative benchmarks typically evaluate the agents by exe-
+rule-based NFI evaluation.                                              cuting unit tests or comparing the generated code against expected
+   We evaluate state-of-the-art commercial and open-source coding       behavior [5, 13, 14, 31, 42]. Such evaluations have substantially
+agents. Although the best-performing agent achieves a 70.0% func-       advanced the development of coding agents [28, 41], but provide
+tional correctness rate, all evaluated agents generally fall short of   limited insights into their ability to perform NFIs. More importantly,
+human developers in overall NFI capability. The gap is particularly     functional correctness and NFIs capture complementary aspects of
+evident for structural code improvements, where agents’ NFI scores      software quality. A functionally correct solution may still exhibit
+range from 0.0 to 1.3, compared with 1.5 for the human reference.       poor documentation, inadequate error handling, outdated library
+Our benchmark and findings provide a reproducible foundation for        usage, or unnecessarily complex program structure. Since these
+evaluating and advancing coding agents beyond functional correct-       issues affect maintainability and long-term evolution, evaluating
+ness.                                                                   coding agents solely by functional correctness gives an incomplete
+                                                                        picture of practical usefulness.
+                                                                           To bridge this gap, we present SWE-NFI, a benchmark for sys-
+1    Introduction                                                       tematically evaluating coding agents on NFIs beyond functional
+Coding agents powered by large language models have become              correctness. Following the five high-level aspects of non-functional
+increasingly integrated into modern software engineering work-          improvements discussed in SWE-IF [86], we derive 92 executable
+flows. These agents are capable of assisting developers in a wide       rules from prior studies, real-world issues, and coding guidelines.
+range of functionality-oriented software engineering tasks, such        Based on these rules, we construct 188 benchmark tasks from real
+as resolving GitHub issues, fixing bugs, implementing feature re-       merged GitHub pull requests, including 145 single-file tasks and
+quests [7, 9, 11, 31, 34, 72, 74, 85], and supporting emerging vibe     43 multi-file tasks. Each task is accompanied by a comprehensive
+coding workflows [10, 55].
+ArXiv, 2026, Online                     Pengyu Xue, He Yang Yuan, Xin Wang, Junkai Chen, Haonan Zhang, Boyuan Chen, Zishuo Ding, Zhenhao Li, and Weiyi Shang
+
+
+evaluation suite consisting of manually implemented functional                 is required to edit multiple files to resolve it, with the resulting
+test cases and rule-based NFI evaluation. Since the benchmark is               patch verified against comprehensive test suites. This work opens
+constructed entirely from real merged pull requests, it captures the           a new direction that more closely mirrors real-world development
+non-functional improvements that developers routinely perform                  workflows, and has become the prevailing standard for evaluating
+during software development and maintenance.                                   the coding capabilities of LLMs and agents. It also inspires a number
+   We systematically evaluate state-of-the-art commercial and open-            of works that extend and refine the original SWE-bench (e.g., feature
+source coding agents using SWE-NFI. Our results reveal a substan-              addition [34], multilingual [81], and multimodal [75] extensions,
+tial gap between current coding agents and human developers.                   among many others [17, 57, 79, 84]). Very recently, we have also
+Although the best-performing agent achieves a 70.0% functional                 observed that the generation of entire repositories or complete
+correctness rate, all evaluated agents mostly fall short of the corre-         software systems [18, 27, 76] is nascent but developing rapidly. For
+sponding human reference across multiple NFI aspects, especially               example, ProgramBench [76] has attracted considerable attention
+for logic patterns, where the average improvement score ranges                 from the community, which asks LLM agents to reproduce program
+from 0.0 to 1.3 across all evaluated agents, compared with 1.5 for             executables and evaluate their function with agentic black-box
+the human reference. We further find that multi-file tasks remain              fuzzing.
+considerably more challenging than single-file tasks, while repeated              Compared with these works focusing on functional evaluation,
+executions exhibit relatively stable NFI performance. In addition,             SWE-NFI proposes five non-functional aspects for code generation
+we investigate the consistency of coding agents across repeated                evaluation, with rules mined from the open-source community,
+executions of the same task, as well as the practical costs of making          constituting a complementary and distinctive contribution.
+non-functional improvements in terms of execution time and to-
+ken consumption. These findings suggest that, while coding agents              2.2     Code Generation Evaluation Beyond
+have made substantial progress in generating functionally correct                      Correctness
+code, enabling them to perform high-quality non-functional im-
+provements remains an important open challenge.                                In addition to functional correctness, a growing number of stud-
+                                                                               ies examine other aspects of LLM-generated code. Among these,
+   Our main contributions are summarized as follows:
+                                                                               code efficiency has received considerable attention [20, 26, 30, 39,
+   • We operationalize NFIs into an executable evaluation frame-               43, 44, 54, 56, 70]. For example, EffiBench [30] collects efficiency-
+      work. Specifically, following the five high-level NFI aspects            critical problems from LeetCode and compares the running time of
+      proposed in prior work, we systematically derive 92 executable           LLM-generated solutions against human-written canonical ones.
+      rules from multiple complementary sources, including prior               COFFE [54] uses computationally intensive test inputs and the num-
+      studies, real-world open-source development practices, and               ber of CPU instructions for a more discriminative and precise evalu-
+      coding guidelines.                                                       ation of code efficiency. The security of code produced by LLMs and
+   • We construct SWE-NFI, a benchmark from real merged GitHub                 agents is another dimension beyond functionality [10, 51, 53, 60].
+      pull requests. The benchmark contains 188 NFI tasks, includ-             Pearce et al. [51] pioneer this direction by auditing GitHub Copi-
+      ing 145 single-file and 43 multi-file. Each task is accompanied          lot completions and find that approximately 40% of them may be
+      by a comprehensive evaluation suite consisting of manually               vulnerable. SecureVibeBench [10] reconstructs scenarios in which
+      implemented functional test cases and rule-based NFI evalua-             developers introduce security issues and uses them to evaluate
+      tion.                                                                    agents. Beyond efficiency and security, more specialized aspects
+   • We conduct a comprehensive empirical study of state-of-the-               of code have been studied, such as portability [23, 66, 71], compli-
+      art commercial and open-source coding agents on SWE-NFI.                 ance [73], and fairness [22].
+      Our study provides a systematic evaluation of coding agents                 In contrast to the aforementioned research, which typically fo-
+      on NFIs beyond functional correctness and discusses insights             cuses on evaluating classical code properties such as efficiency
+      into their effectiveness, robustness, and practical deployment           and security, SWE-NFI is grounded in real-world coding behaviors
+      costs.                                                                   and assesses developer-oriented dimensions mined from large-scale
+                                                                               open-source development. Moreover, to achieve verifiable and de-
+2 Related Work                                                                 terministic evaluation, we codify these abstract, descriptive criteria
+2.1 Functional Code Generation Benchmarks                                      into reproducible, deterministic rules, rather than relying on less re-
+In the early days of large language models, code generation bench-             liable measurements such as manual assessment or LLM-as-a-judge,
+marks, such as HumanEval [14] and MBPP [5], generally consist of               which significantly distinguishes SWE-NFI from similar work [86].
+method-level, self-contained programming problems with several
+test cases for functional evaluation. Motivated by these works, a              2.3     LLM-Based Agents in Software Engineering
+series of follow-up benchmarks has emerged, improving upon them                LLM-based agents have shown great capabilities in various software
+in various respects, such as task granularity (e.g., ClassEval [21],           engineering tasks, including program repair, vulnerability discov-
+RepoEval [83]), language coverage (e.g., MultiPL-E [8], MBXP [4]),             ery, and software refactoring [28, 41]. Bouzenia et al. [7] present the
+domain diversity (e.g., BigCodeBench [89], DS-1000 [32]), and test             first autonomous LLM agent for program repair, namely RepairA-
+enhancement (e.g., EvalPlus [42]).                                             gent. Built around tool use, this work designs a well-crafted tool
+   In particular, SWE-bench [31] advances the evaluation of code               set and employs dynamic templates together with a state machine
+generation to a new stage: given an issue description, the model               to guide tool invocation for the LLM. AutoCodeRover [85] utilizes
+SWE-NFI : Studying and Benchmarking Coding Agents for Non-Functional Improvements                                                               ArXiv, 2026, Online
+
+
+
+                         Stage 1: NFI Rules                    Stage 2: Task Construction                     Stage 3: Evaluation Suite
+
+                    Academic        Coding       GitHub             Pull Request Collection                 Functional Correctness Evaluation
+                    Literature     Documents     Issues
+
+                                                                 PR Cleaning      Keyword Matching
+                          Manual Rule Analysis                                                                     NFI Rule Evaluation
+                                                                     NFI Rule-base Filtering
+
+                                 92 NFI Rules                   Data Cleaning       Human Validation
+                                                                                                                      Result Analysis
+                     Deterministic         Threshold               Construct Task Description
+
+                                                                                                           RQ1: Performance Comparison
+                                                                        Cross Validation
+                             NFI Qualification                                                             RQ2: Scope Impact
+
+                                                                     NFI Task Dataset                       RQ3: Consistency Analysis
+                                  NFI Scoring                          (188 tasks)                         RQ4: Practical Cost
+
+
+
+
+                                                          Figure 1: Overview of SWE-NFI.
+
+
+the reasoning ability of LLMs to retrieve code, localize relevant ele-               improvements that are routinely performed during software main-
+ments, and generate patches in an iterative manner. SWE-agent [74]                   tenance. Specifically, following prior study [86], we study five rep-
+proposes the idea of an Agent-Computer Interface, which trans-                       resentative aspects: Documentation, Error Handling, Library Con-
+forms common computer operations into agent-friendly instruc-                        straints, Coding Style, and Logic Patterns. Although these aspects
+tions to enable effective iteration between action and feedback.                     provide a high-level characterization of non-functional improve-
+Building on SWE-agent, Abramovich et al. [2] design interactive                      ments, they do not define executable evaluation criteria. Therefore,
+agent tools and a context summarization strategy tailored for vul-                   we further operationalize them into concrete rules that can be au-
+nerability discovery tasks. RefAgent [50] introduces a multi-agent                   tomatically evaluated. In this study, we focus on Python because
+framework for automatic code refactoring, where several special-                     it provides mature static-analysis tools and well-established cod-
+ized agents are responsible for roles such as planning and testing                   ing standards, enabling reproducible benchmark construction and
+during the refactoring process.                                                      deterministic evaluation.
+   Beyond academia, efforts from industry and the open-source                        Rule Derivation. We derive rules from three complementary
+community, exemplified by Claude Code [15], Codex [48], and                          sources following a similar process to prior studies [69, 77, 80]:
+OpenHands [68], have also joined in releasing and iterating on                       prior studies, open-source software artifacts, and Python coding
+software engineering agents. As these agents become more capable,                    guidelines.
+the need for a multi-dimensional evaluation beyond functionality                        First, we collect studies related to software maintainability and
+alone becomes increasingly pressing, which is precisely what SWE-                    non-functional improvements from major software engineering
+NFI targets.                                                                         venues (e.g., ICSE, FSE, ASE) and AI venues (e.g., AAAI, NeurIPS,
+                                                                                     ACL), published between 2020 and 2025. We retrieve candidate pa-
+3 SWE-NFI Benchmark Framework                                                        pers using aspect-specific keywords associated with the five NFI
+                                                                                     aspects, (eg., "static analysis", "linter", "code quality", "refactoring",
+3.1 Benchmark Overview                                                               "code smells", etc.) resulting Coding Style with 95 papers, Logic
+SWE-NFI is designed to evaluate whether coding agents can make                       Patterns with 101 papers, Documentation with 78 papers, Error
+developer-oriented non-functional improvements beyond func-                          Handling with 97 papers, and Library Constraints with 39 papers.
+tional correctness. As shown in Figure 1, SWE-NFI consists of three                  Following an in-depth manual screening of the literature, we nar-
+main stages: (1): NFI Rules: We operationalize five aspects of NFIs                  rowed the selection to 35 highly relevant papers that provided the
+into 92 executable rules; (2) Task Construction: We construct 188                    theoretical foundation for our rule derivation.
+benchmark tasks from real-world merged GitHub pull requests; (3)                        Second, we collect real-world developer discussions from issues
+Evaluation Suite: We implement an evaluation suite that com-                         in widely used open-source Python projects. We start from the
+bines functional correctness tests with NFI rule-based evaluation.                   Top-100 starred Python projects in GitHub-Ranking and remove
+We illustrate each component in detail below.                                        repositories that correspond to tutorials, demos, educational mate-
+                                                                                     rials, instructions, or curated lists. We then use the GitHub Issue
+3.2    NFI Rules                                                                     Search API to run aspect-specific keyword queries over the remain-
+                                                                                     ing repositories, restricting the search to issues created between
+Non-Functional Improvement Aspects. Non-functional improve-                          2020 and 2025 and removing duplicates by URL. To focus on dis-
+ments cover a broad range of software quality concerns, such as                      cussions with clear developer engagement, we keep only issues
+maintainability, performance, security, reliability, and usability. In               with at least 10 reactions and comments in total. This procedure
+this work, we focus on developer-oriented, behavior-preserving
+ArXiv, 2026, Online                            Pengyu Xue, He Yang Yuan, Xin Wang, Junkai Chen, Haonan Zhang, Boyuan Chen, Zishuo Ding, Zhenhao Li, and Weiyi Shang
+
+
+Table 1: Summary of the 92 executable rules for Non-                                     • Deterministic rules correspond to rules that can be directly
+Functional Improvements evaluation.                                                        verified using static analysis without additional calibration.
+                                                                                           These rules are further divided into Required Rules and Prohib-
+ Aspect
+                               Deterministic        Threshold-based
+                                                                        Total
+                                                                                           ited Rules. Required rules describe coding practices that should
+                            Required   Prohibited      Quantitative                        be present in the generated code (e.g., function names should
+ Documentation (Doc)          12           4                3            19                follow snake_case), whereas prohibited rules describe undesir-
+ Error Handling (EH)          4            6                2            12                able patterns that should be avoided (e.g., wildcard imports
+ Library Constraints (LC)     1           19                2            22                should not be used). Each deterministic rule is converted into
+ Coding Style (CS)            7           10                8            25                a binary indicator (i.e., 1 if the code complies with the rule and
+ Logic Patterns (LP)          0            8                6            14
+                                                                                           0 otherwise).
+ Total                        24          47               21            92
+                                                                                         • Threshold-based Rules quantify code quality using numeri-
+                                                                                           cal thresholds. Unlike deterministic rules, these rules require
+                                                                                           comparing a measured value against a predefined threshold.
+                                                                                           Examples include maximum function length, maximum nest-
+yields 326 issues across five aspects: Coding Style (54), Logic Pat-                       ing depth, cyclomatic complexity, and the number of parame-
+terns (21), Documentation (104), Error Handling (31), and Library                          ters per function. These thresholds are configurable and can
+Constraints (116). These issues, together with the literature and                          be adjusted for different projects or coding standards. In our
+coding guidelines, inform the candidate NFI rules.                                         benchmark, we adopt threshold values based on widely ac-
+   Third, we incorporate coding guidelines that define recommended                         cepted Python coding guidelines and static analysis recom-
+Python development practices. We systematically categorize and                             mendations to reflect common software engineering practices.
+synthesize these guidelines into rules corresponding to our five eval-                Non-Functional Improvements Quantification. For each NFI
+uation aspects. Our rule set integrates standards from PEP 8 [65],                    aspect 𝑝, let 𝑃𝑝 (𝑐) denote the number of rules satisfied by code
+PEP 3134 [78], PEP 585 [33], PEP 257 [24], and PEP 484 [58]. We                       version 𝑐 under aspect 𝑝, and let 𝑇𝑝 denote the total number of
+also incorporate best practices from reputable technical sources,                     rules for aspect 𝑝. We first define the normalized rule score of code
+including the Tufts University coding standards [64], the pyupgrade                   version 𝑐 as:
+documentation [62], and industry-standard metrics [59]. Each de-
+terministic and threshold-based rule is derived from these official                                                                𝑃𝑝 (𝑐)
+documentations and specialized technical resources to ensure that                                                      𝑆𝑝 (𝑐) =           .                       (1)
+                                                                                                                                    𝑇𝑝
+our benchmark accurately reflects established professional coding                        Therefore, 𝑆𝑝 (𝑐) ∈ [0, 1].
+standards.                                                                               Given two code versions 𝑐 before and 𝑐 after , we define the normal-
+Manual Analysis and Refinement. We then manually analyze                              ized NFI improvement under aspect 𝑝 as:
+the collected artifacts to identify concrete code improvement rules                                  𝐼𝑝 (𝑐 before, 𝑐 after ) = 𝑆𝑝 (𝑐 after ) − 𝑆𝑝 (𝑐 before )
+that can be mapped to the five NFI aspects. During the analysis,
+                                                                                                                               𝑃𝑝 (𝑐 after ) − 𝑃𝑝 (𝑐 before )     (2)
+we focus on rules that satisfy two requirements. First, they should                                                        =                                  .
+represent practices that frequently appear in prior studies or real-                                                                         𝑇𝑝
+world software improvements. Second, they should be measurable                        A positive value indicates an improvement under NFI aspect 𝑝, zero
+through static analysis without requiring evaluation-time human                       indicates no measurable change, and a negative value indicates a
+annotation or LLM-based judgment.                                                     regression.
+   The first author initially extracted candidate rules from the col-                    For benchmark instance 𝑖, let 𝑐 𝑖before denote the original code and
+lected data. The extracted rules were then reviewed and refined by                    let 𝑐 𝑖after (𝑥) denote the completed code produced by source 𝑥. For
+a second author. Disagreements were resolved through discussion                       dataset instances, 𝑥 = ℎ denotes the human reference implementa-
+until a consensus was reached.                                                        tion; during agent evaluation, 𝑥 = 𝑎 denotes the output generated
+Rules Summary. Through this process, we derive 92 executable                          by agent 𝑎. We compute the NFI improvement of source 𝑥 under
+rules across the five NFI aspects. These rules transform high-level                   aspect 𝑝 as:                                                
+NFI aspects into concrete and measurable evaluation targets. To                                              𝐼𝑖,𝑝 (𝑥) = 𝐼𝑝 𝑐 𝑖before, 𝑐 𝑖after (𝑥) .       (3)
+provide a clear overview of our evaluation mechanism, Table 1                         We report all NFI improvement values after scaling 𝐼𝑖,𝑝 (𝑥) to a
+reports the number of rules in each aspect, and Table 2 summarizes                    percentage scale. Here, 𝐼𝑖,𝑝 (ℎ) denotes the human reference im-
+representative rules for each NFI aspect, categorized by their type                   provement, and 𝐼𝑖,𝑝 (𝑎) denotes the improvement achieved by agent
+of measurement and requirement. Due to space constraints, we                          𝑎.
+list a portion of example rules in the table; the full list of all 92
+rules, including specific threshold parameters and static analysis                    3.3     Benchmark Dataset Construction
+configurations, is provided in our replication package [1].                           We construct the dataset of SWE-NFI through a multi-stage pipeline
+NFI Rules Overview. Through this process, we derive 92 exe-                           that progressively transforms raw pull request data into benchmark
+cutable rules across the five NFI aspects. We further organize these                  tasks. Starting from real-world merged pull requests, we first collect
+rules into two categories according to their measurement charac-                      candidate records from production-grade Python repositories and
+teristics: Deterministic Rules and Threshold-based Rules:                             identify developer-driven non-functional improvements using the
+SWE-NFI : Studying and Benchmarking Coding Agents for Non-Functional Improvements                                                                                      ArXiv, 2026, Online
+
+
+                                                 Table 2: Rules catalogue for the five NFI aspects.
+
+ Aspect                Measurement           Requirement         Example / Threshold                                              Explanation
+
+                       Deterministic         Required            Modules, classes, and methods                                    Docstring presence enforcement
+ Documentation         Deterministic         Prohibited          No empty docstrings, no TODOs                                    Content quality verification
+                       Threshold-based       Quantitative        Docstring/Type hint coverage ≥ 80%                               Documentation coverage targets
+
+                       Deterministic         Required            Mandatory ‘raise X from e’                                       Exception chaining enforcement
+ Error Handling        Deterministic         Prohibited          No bare ‘except:’, no silent drops                               Safety and exception robustness
+                       Threshold-based       Quantitative        Try-block LOC ratio ≤ 0.5, handlers ≤ 3                          Exception scope management
+
+                       Deterministic         Required            Use pathlib, collections.abc                                     Modern API migration
+ Library Constraints   Deterministic         Prohibited          No tf.Session, np.bool, .ix[]                                    Legacy API prevention
+                       Threshold-based       Quantitative        Deprecated API count ≤ 2 per file                                API usage frequency monitoring
+
+                       Deterministic         Required            snake_case, PascalCase, Line break after operators, UPPER_CASE   Naming conventions enforcement
+ Coding Style          Deterministic         Prohibited          No trailing whitespace, no mixed tabs                            Formatting standards maintenance
+                       Threshold-based       Quantitative        Line length ≤ 100, magic numbers ≤ 5                             Complexity & style density control
+
+                       Deterministic         Required            Assertions for critical logic                                    State validation requirement
+ Logic Patterns        Deterministic         Prohibited          No mutable default args, no ‘while True’                         Anti-pattern avoidance
+                       Threshold-based       Quantitative        Cyclomatic complexity ≤ 10, depth ≤ 3                            Complexity and logic density
+
+
+
+
+aspect-specific rule checkers introduced in Section 3.2. We then                            Two authors independently review each candidate to verify that
+apply automatic filtering and human validation to remove noisy,                         it is focused and represents a genuine non-functional improvement.
+ambiguous, and unsuitable samples. Next, we manually construct                          We further exclude instances requiring substantial external context,
+task descriptions that preserve the original development intent                         large-scale migrations, public API changes, or semantic changes.
+while preventing benchmark information leakage. Overall, SWE-                           Disagreements are resolved through discussion until consensus is
+NFI contains 188 benchmark tasks, including 145 single-file tasks                       reached (𝜅 = 0.71). This process yields 484 validated instances for
+and 43 multi-file tasks, constructed from real-world merged pull                        subsequent benchmark construction.
+requests.                                                                               Step 4: Task Construction. For each validated instance, we man-
+Step 1: Real-world Pull Request Collection. We construct SWE-                           ually construct a natural-language task description that converts
+NFI from real-world merged pull requests in production-grade                            the original pull request into a developer-facing request. To pre-
+Python repositories. We first collect repositories using the GitHub                     serve benchmark integrity, the description omits the final aspect,
+Search API and filter them by programming language, repository                          executable rules, code patches, and the reference implementation
+status, and popularity. We exclude forks, archived repositories, tu-                    while preserving the original development intent. One author drafts
+torials, demos, educational projects, and curated lists, yielding 100                   each task description based on the pull request context and code
+production-grade Python repositories, each with at least 45,000 stars                   changes, and a second author verifies and refines it for clarity,
+(median 66,254). We then collect merged pull requests from 2020 to                      self-containment, and fidelity. Disagreements are resolved through
+2025. To focus on developer-driven non-functional improvements,                         discussion until consensus is reached. The benchmark contains
+we remove bot-generated pull requests, dependency updates, re-                          both single-file and multi-file tasks. Single-file tasks modify one file,
+lease pull requests, version bumps, and revert commits. We further                      whereas multi-file tasks require coordinated modifications across
+apply aspect-specific keyword matching to increase the likelihood                       related files sharing a common improvement objective. After a final
+of collecting modifications related to the five NFI aspects. The basic                  selection that discards non-self-contained or untestable instances,
+unit of data collection is a PR-file pair, where each record corre-                     we obtain the final 188 tasks.
+sponds to one merged pull request and one modified Python file.
+After deduplication, we obtain 226,955 raw records.
+                                                                                         3.4         Evaluation Suite
+Step 2: NFI Rule-Based Filtering. We next identify records with
+measurable non-functional improvements by computing the NFI                             The evaluation suite of SWE-NFI consists of two complementary
+improvement score using Eq. (3). We retain only records satisfying                      components: functional correctness and NFI rule-score evaluation.
+𝐼𝑖,𝑝 (ℎ) > 0. This process yields 6,775 positive-improvement records,                   We first verify whether the generated code preserves the intended
+211,914 records without measurable changes, 7,566 regressions,                          functionality. NFI evaluation is performed only on valid, function-
+and 700 scorer errors. Only the positive-improvement records are                        ally correct outputs. The entire process is fully automated and does
+retained for subsequent benchmark construction.                                         not rely on LLM-as-a-judge or human annotation.
+Step 3: Data Cleaning and Human Validation. We further                                  Functional Correctness Evaluation. For each benchmark task,
+clean and validate the remaining records to construct high-quality                      we manually implement unit test cases to verify functional correct-
+benchmark candidates. We first apply automatic filters, includ-                         ness. One author drafts the tests, and a second author verifies and
+ing repository blocklists, diff size and file length constraints, per-                  refines them to ensure comprehensive coverage of the intended
+repository caps, and SHA-256 deduplication, resulting in 1,215 can-                     functionality. Disagreements are resolved through discussion until
+didate records for manual review.                                                       consensus is reached. We validate the evaluation suite by executing
+                                                                                        all test cases on the human reference implementation, where every
+                                                                                        benchmark instance passes successfully.
+ArXiv, 2026, Online                      Pengyu Xue, He Yang Yuan, Xin Wang, Junkai Chen, Haonan Zhang, Boyuan Chen, Zishuo Ding, Zhenhao Li, and Weiyi Shang
+
+
+NFI Rule-Score Evaluation. We implement rule-based check-                       invalid Python output are excluded from subsequent functional and
+ers using Ruff, Radon, AST-based analyses, and custom scripts to                NFI rule-score analysis.
+evaluate the 92 executable rules introduced in Section 3.2. Ruff                Functional Correctness. We then execute the manually imple-
+detects coding-style violations and library usage issues, Radon mea-            mented unit tests introduced in Section 3.4. A valid agent run is
+sures structural properties (e.g., cyclomatic complexity and function           considered functionally correct if the generated code passes all
+length), AST analyses identify Python-specific patterns, and custom             corresponding test cases. Since SWE-NFI focuses on non-functional
+scripts implement rules unsupported by existing tools.                          improvements beyond functional correctness, NFI rule-score analy-
+                                                                                sis is performed only on functionally correct agent runs.
+   Benchmark Summary: SWE-NFI operationalizes five NFI
+                                                                                NFI Improvement. For each valid and functionally correct agent
+   aspects into 92 executable rules and contains 188 real-world
+                                                                                run, we compute the NFI improvement score under the target as-
+   tasks, including 145 single-file and 43 multi-file tasks. Each task
+                                                                                pect 𝑝 using Eq. (3). In this evaluation setting, the source 𝑥 in Eq. (3)
+   is accompanied by a comprehensive evaluation suite combining
+                                                                                is instantiated as the evaluated agent 𝑎, and 𝑐 𝑖after (𝑎) denotes the
+   functional correctness tests and rule-based NFI evaluation.
+                                                                                evaluated output generated by that agent. The human reference im-
+                                                                                provement 𝐼𝑖,𝑝 (ℎ) is pre-computed from the dataset by instantiating
+                                                                                𝑥 = ℎ, where 𝑐 𝑖after (ℎ) denotes the human reference implementation.
+4 Experimental Setup
+                                                                                Both quantities are computed relative to the same code_before, and
+4.1 Studied Agents                                                              the human reference implementation is never exposed to agents.
+We evaluate eight coding agent configurations, including two com-               Aggregate Analysis. We aggregate NFI results over valid and func-
+mercial coding agents and two open-source coding agents paired                  tionally correct agent runs. Unless otherwise specified, reported
+with three different foundation models.                                         NFI values are average improvements computed from 𝐼𝑖,𝑝 (𝑎) in
+Commercial Coding Agents. We study OpenAI Codex [48] and                        Eq. (3) and scaled to a percentage. For aspect-level analysis, we
+Claude Code Agent [15], two commercial coding agents designed                   compute averages separately for each NFI aspect. For subset-level
+for software engineering tasks. In our experiments, Codex is con-               analysis, such as single-file versus multi-file tasks, we compute
+figured with gpt-5.3-codex, while Claude Code Agent uses claude-                averages over the corresponding evaluated outputs. If an agent has
+sonnet-4-6.                                                                     no valid and functionally correct outputs for a given subset, its NFI
+                                                                                improvement for that subset is removed from calculation rather
+Open-source Coding Agents. We follow prior work [10] and
+                                                                                than treated as zero.
+study two open-source coding agents, Aider [3] and mini-SWE-
+agent [63], the officially recommended successor to SWE-agent [74].
+To examine the influence of different foundation models, we equip
+both agents with the same three backbone models: gpt-4.1 [49],                  5    Results
+gemini-2.5-flash [25], and deepseek-chat [16].                                  In this section, we systematically evaluate coding agents on SWE-
+                                                                                NFI and analyze their ability to perform tasks on non-functional
+4.2     Experimental Protocol                                                   improvements. Specifically, we investigate the following research
+To reduce the impact of stochasticity, we set the temperature to                questions:
+zero whenever the corresponding agent supports temperature con-                    • RQ1: How well do coding agents perform on non-functional
+trol. For each agent configuration and each benchmark task, we                       improvements compared with human reference improvements?
+repeat the experiment five times and report the average results                    • RQ2: How does task scope affect the ability of coding agents
+across all runs. All agents are given the same task input, consisting                to make non-functional improvements?
+of the natural-language task description and the corresponding                     • RQ3: How consistent are coding agents in producing non-
+code_before. Agents are expected to generate the complete revised                    functional improvements across repeated runs?
+code_after. The human reference implementation, i.e., the human-                   • RQ4: What is the practical cost of making non-functional
+written code_after extracted from real pull requests, is never ex-                   improvements in terms of execution time and token consump-
+posed to the agents and is only used to compute the human refer-                     tion?
+ence improvement 𝐼𝑖,𝑝 (ℎ).
+
+4.3     Results Analysis Protocol
+                                                                                RQ1: How well do coding agents perform on
+Output Validity. Before evaluating the code generated by agents,                non-functional improvements compared with
+we first verify whether the generated output is valid. An output
+                                                                                human reference improvements?
+is considered valid if it is non-empty and syntactically parseable
+Python. We report output validity first because an agent that fails             Motivation. Modern coding agents have demonstrated strong ca-
+to produce valid code cannot be meaningfully evaluated by our                   pabilities in achieving functional correctness. However, it remains
+evaluation suites.                                                              unclear whether these agents can also produce measurable non-
+   We report valid-output rate, which measures the fraction of agent            functional improvements. In professional software development,
+runs where the generated output is both non-empty and syntacti-                 these aspects are critical for long-term maintainability and usability.
+cally valid Python. Agent runs with empty output or syntactically               RQ1 evaluates whether agent-generated revisions produce valid,
+SWE-NFI : Studying and Benchmarking Coding Agents for Non-Functional Improvements                                                                                 ArXiv, 2026, Online
+
+
+   Table 3: Performance comparison of coding agents on non-functional improvements and functional correctness (RQ1).
+
+      Agent                            Valid (%)               Func. Pass (%)               Doc             EH               LC                      CS                     LP
+      Codex                              99.3                          64.8                 6.8−            2.1+             1.6+                   2.0+                    1.3−
+      Claude Code Agent                  93.7                          70.0                 7.4−            2.1+             1.4+                   1.0−                    0.7−
+      Aider + GPT-4.1                    96.4                          66.3                 8.1+            2.3+            −1.1−                   0.1−                    0.9−
+      Aider + DeepSeek                   73.9                          67.0                 6.0−            2.5+            0.5−                    1.2−                    0.7−
+      Aider + Gemini 2.5                 95.8                          59.1                 7.0−            2.1+            −0.5−                   0.6−                    0.7−
+      Mini-SWE + GPT-4.1                 98.4                          4.8                   0.0             0.0              0.0                    0.0                     0.0
+      Mini-SWE + DeepSeek                83.8                          11.5                 2.7−            1.6−             2.1+                   1.0−                    0.6−
+      Mini-SWE + Gemini 2.5              91.1                          5.3                   0.0             0.0            0.5−                    0.9−                     0.0
+      Human Reference                    100.0                     100.0                    8.0             2.0              1.1                     1.5                    1.5
+
+
+                     Table 4: Average NFI improvement by task scope (RQ2). Single-file (S) vs. multi-file (M) tasks.
+
+                                Improvement (Single-file %)                         Improvement (Multi-file %)                             S − M (Difference %)
+  Agent
+                          Doc    EH      LC        CS    LP     Avg.          Doc   EH     LC      CS      LP      Avg.   Doc       EH         LC          CS         LP           Avg.
+  Codex                   6.8    2.3     1.2       2.0   1.5     2.8          6.8   1.1    3.3      1.9    0.4     2.7    0.0       +1.2      −2.1         +0.1      +1.1          +0.1
+  Claude Code Agent       6.9    2.4    1.1        1.1   0.7     2.4          9.3   0.7    2.5      0.7    0.5     2.8    −2.4      +1.7      −1.4         +0.4      +0.1          −0.3
+  Aider + GPT-4.1         7.9    2.6    −1.1       0.4   0.9     2.1          9.2   1.1   −1.3     −1.0   0.6      1.7    −1.3      +1.4      +0.2         +1.4      +0.3          +0.4
+  Aider + DeepSeek        6.1    2.7    0.3        1.4   0.7     2.2          5.6   1.5    1.7      0.7    0.4     2.0    +0.4      +1.3      −1.4         +0.7      +0.3          +0.3
+  Aider + Gemini 2.5      6.4    2.3    −0.5       0.6   0.9     1.9          9.9   1.2    0.1      0.4   −0.1     2.3    −3.5      +1.1      −0.5         +0.2      +1.0          −0.3
+  Mini-SWE + GPT-4.1      0.0    0.0     0.0       0.0   0.0     0.0           –     –      –        –      –       –      –         –         –            –         –             –
+  Mini-SWE + DeepSeek     2.4    2.0     1.9       1.1   0.9     1.7          4.0   0.8    2.7      0.9    0.0     1.7    −1.6      +1.2      −0.8         +0.2      +0.9          0.0
+  Mini-SWE + Gemini 2.5   0.0    0.0     0.5       0.9   0.0     0.3           –     –      –        –      –       –      –         –         –            –         –             –
+
+
+
+functionally correct, and measurable NFI. We compare these aspect-                        Aider + GPT-4.1 achieves the highest documentation improvement
+level improvements with human-reference improvements from real                            (8.1 vs. 8.0) and also exceeds the human reference on error handling.
+pull requests.                                                                               Performance also varies considerably across NFI aspects. Doc-
+Approach. For RQ1, we evaluate each agent on the 188 tasks in                             umentation and error handling are the strongest aspects for most
+SWE-NFI. We first report valid output rate and functional pass rate                       configurations, whereas logic-pattern improvements consistently
+to separate executable outputs from functionally correct revisions.                       remain below the human reference. Library-constraint improve-
+For NFI performance, each aspect column in Table 3 reports the                            ments show larger variation across agents: Codex, Claude Code
+average NFI improvement defined in Eq. (3). For an agent 𝑎, the                           Agent, and Mini-SWE + DeepSeek outperform the human refer-
+reported value is the average of 𝐼𝑖,𝑝 (𝑎) over evaluated outputs under                    ence, whereas Aider + GPT-4.1 and Aider + Gemini 2.5 produce
+aspect 𝑝. For the Human row, the reported value is the average of                         negative average improvements. The Mini-SWE configurations re-
+𝐼𝑖,𝑝 (ℎ), where code_after denotes the human reference implementa-                        veal a functional-correctness bottleneck. Although they maintain
+tion.                                                                                     relatively high valid-output rates (83.8% - 98.4%), their functional
+                                                                                          correctness rates remain between 4.8% and 11.5%, which leaves few
+Results. Table 3 shows the results of this RQ. For each aspect, a “+”
+                                                                                          outputs eligible for subsequent NFI evaluation.
+or “-” following the number indicates whether an agent’s average
+improvement is above or below the corresponding human reference
+improvement for that aspect. Overall, current coding agents remain                           RQ1 Summary: Current coding agents remain substantially
+substantially behind human developers in making non-functional                               behind human developers in making non-functional improve-
+improvements. Although the best-performing agent achieves a                                  ments. Especially, all evaluated agents consistently underper-
+functional correctness rate of 70.0%, most agent configurations fail                         form on logic-pattern improvements (0.0 - 1.3 vs. 1.5), which
+to match the corresponding human improvements across the five                                suggests that structural code improvements remain a major
+NFI aspects. Among the evaluated aspects, logic patterns exhibit the                         challenge.
+largest gap: all evaluated agents remain below the human reference
+(0.0 - 1.3 vs. 1.5). These results suggest that, while current coding
+agents can successfully preserve functionality, they are still limited                    RQ2: How does task scope affect the ability of
+in performing the structural code improvements routinely made by                          coding agents to make non-functional
+human developers.
+                                                                                          improvements?
+   Despite this overall gap, several agents demonstrate competitive
+performance on specific aspects. Codex achieves the highest valid-                        Motivation. Real-world non-functional improvement tasks vary
+output rate (99.3%) and exceeds the human reference on coding                             in scope. Some require localized modifications within a single file,
+style, error handling, and library constraints. Claude Code Agent                         whereas others involve coordinated changes across multiple files.
+achieves the highest functional correctness rate (70.0%) and exceeds                      Since modern coding agents are increasingly expected to handle
+the human reference on error handling and library constraints.                            repository-level development tasks, it is important to understand
+                                                                                          whether task scope influences their ability to make non-functional
+ArXiv, 2026, Online                      Pengyu Xue, He Yang Yuan, Xin Wang, Junkai Chen, Haonan Zhang, Boyuan Chen, Zishuo Ding, Zhenhao Li, and Weiyi Shang
+
+
+improvements. RQ2 compares agent performance on single-file and                          Table 5: Results over five repeated runs (RQ3).
+multi-file tasks to investigate how task scope affects NFI improve-
+ments across different quality aspects.                                          Agent              Metric           Run 1 Run 2 Run 3 Run 4 Run 5 Avg. Std.
+
+Approach. We split SWE-NFI into its single-file and multi-file                                      Valid (%)         98.4   100.0   99.5   98.9   99.5   99.3 0.5
+subsets. For each agent and each subset, we compute the average                  Codex              Func. Pass (%)    62.7    68.6   63.6   64.5   64.7   64.8 2.0
+                                                                                                    𝐼 NFI (𝑎)         12.4    12.5   13.4   12.6   12.6   12.7 0.4
+NFI improvement using Eq. (3) with 𝑥 = 𝑎. The reported values are
+computed over valid and functionally correct evaluated outputs                                     Valid (%)          97.3   92.0    94.0   92.0   93.1   93.7 2.0
+                                                                                 Claude Code Agent Func. Pass (%)     67.1   71.0    69.8   70.1   71.9   70.0 1.6
+only. For multi-file tasks, rule scores are aggregated across the
+                                                                                                   𝐼 NFI (𝑎)          13.1   13.1    12.8   12.8   13.4   13.0 0.2
+modified files before computing task-level NFI improvement. Table 4
+                                                                                                    Valid (%)         96.3   96.8    95.7   96.8   96.3   96.4 0.4
+reports aspect-level improvements and their average across aspects.
+                                                                                 Aider+GPT          Func. Pass (%)    66.1   67.4    67.1   65.8   65.0   66.3 0.9
+The S−M columns subtract the multi-file average from the single-                                    𝐼 NFI (𝑎)         13.7   13.7    13.3   13.3   14.0   13.6 0.3
+file average. Negative values indicate higher average improvement
+                                                                                                    Valid (%)         76.0   74.0    72.9   75.6   71.3   73.9 1.8
+on multi-file tasks, while positive values indicate higher average               Aider+DS           Func. Pass (%)    66.2   69.4    67.9   65.0   66.3   67.0 1.5
+improvement on single-file tasks.                                                                   𝐼 NFI (𝑎)         11.6   11.7    12.0   11.5   11.8   11.7 0.1
+Results. Table 4 shows that multi-file tasks remain more challeng-                                  Valid (%)         96.8   96.3    95.3   94.7   95.8   95.8 0.7
+ing for current coding agents. Overall, the effect of task scope varies          Aider+Gemini       Func. Pass (%)    59.2   59.4    60.2   58.5   58.3   59.1 0.7
+across NFI aspects. Documentation occasionally benefits from multi-                                 𝐼 NFI (𝑎)         11.7   12.4    11.9   12.0   12.9   12.2 0.4
+
+file tasks (e.g., Claude Code Agent: 6.9→9.3 and Aider + Gemini 2.5:                                Valid (%)         98.4   98.4    98.4   98.4   98.4   98.4 0.0
+6.4→9.9), suggesting that adding documentation across related files              Mini-SWE+GPT       Func. Pass (%)    4.8    4.8     4.8    4.8    4.8     4.8 0.0
+                                                                                                    𝐼 NFI (𝑎)         0.0    0.0     0.0    0.0    0.0     0.0 0.0
+is relatively straightforward. In contrast, error-handling and logic-
+pattern improvements consistently decrease on multi-file tasks                                      Valid (%)         79.8   87.6    85.7   85.7   80.3   83.8 3.1
+                                                                                 Mini-SWE+DS        Func. Pass (%)    10.7   12.0    11.1   13.8   9.8    11.5 1.4
+across all evaluated agents. For example, Codex’s logic-pattern
+                                                                                                    𝐼 NFI (𝑎)         8.6    6.6     5.5    7.8    5.0     6.7 1.4
+improvement drops from 1.5 to 0.4, while Claude Code Agent’s
+                                                                                                 Valid (%)            91.5   90.4    91.5   92.5   89.4   91.1 1.1
+error-handling improvement decreases from 2.4 to 0.7. Notably, the
+                                                                                 Mini-SWE+Gemini Func. Pass (%)       5.1    5.1     5.6    4.9    5.7     5.3 0.3
+two Mini-SWE configurations paired with GPT-4.1 and Gemini-2.5                                   𝐼 NFI (𝑎)            0.9    0.9     0.8    0.9    0.8     0.9 0.0
+fail to produce functionally correct outputs on multi-file tasks and
+are therefore excluded from the comparison.
+    These results suggest that current coding agents can often extend
+                                                                                correct evaluated outputs. For each agent and metric, we report
+localized improvements such as documentation across multiple
+                                                                                the five run values, their average, and standard deviation. Lower
+files, but still struggle to coordinate more complex non-functional
+                                                                                standard deviation indicates more stable behavior across repeated
+improvements involving multiple related files.
+                                                                                runs on the same tasks.
+   RQ2 Summary: Overall, multi-file tasks remain more chal-                     Results. Table 5 shows that NFI improvements are generally stable
+   lenging than single-file tasks for current coding agents. While              across repeated runs. The best-performing configurations, includ-
+   documentation occasionally benefits from additional cross-file               ing Codex, Claude Code Agent, and the three Aider-based agents,
+   context, multi-file tasks consistently reduce improvements in                all exhibit relatively low standard deviations in 𝐼 NFI (𝑎) below 0.4,
+   coding style (up to 1.4), error handling (up to 1.7), and logic              indicating that their measured NFI improvements remain consistent
+   patterns (up to 1.1).                                                        once outputs are valid and functionally correct.
+                                                                                    Greater variation appears before NFI evaluation. Valid-output
+                                                                                and functional-pass rates fluctuate more noticeably for Aider +
+                                                                                DeepSeek and Mini-SWE + DeepSeek. The results suggest that
+RQ3: How consistent are coding agents in making                                 repeated executions primarily affect whether outputs become func-
+non-functional improvements across repeated                                     tionally correct and eligible for NFI evaluation rather than the mea-
+executions of the same task?                                                    sured NFI improvements themselves. Finally, consistency should
+Motivation. Coding agents driven by large language models may                   be interpreted together with effectiveness. For example, Mini-SWE
+exhibit stochastic behavior across repeated executions, even un-                + GPT and Mini-SWE + Gemini show almost no variation across
+der the same benchmark task and agent configuration. For soft-                  runs, but their functional pass rates remain below 6% and result in
+ware maintenance tasks, stable behavior matters at multiple stages:             little or no measurable NFI improvement.
+producing valid outputs, preserving functional correctness, and
+achieving measurable non-functional improvement. RQ3 evaluates                     RQ3 Summary: Aggregate NFI improvements remain con-
+whether these stages remain stable across repeated runs.                           sistent across repeated runs once outputs pass validity and
+Approach. For RQ3, we use five repeated executions of each agent                   functional-correctness checks. Most run-to-run variation arises
+configuration to measure run-to-run consistency. We analyze three                  before NFI evaluation, primarily from valid-output and func-
+metrics: valid-output rate, functional pass rate, and aggregate agent              tional pass rates. High consistency alone does not necessarily
+                                                                                   imply effective non-functional improvements.
+NFI improvement. The aggregate improvement, denoted as 𝐼 NFI (𝑎),
+is computed using Eq. (3) with 𝑥 = 𝑎, over valid and functionally
+SWE-NFI : Studying and Benchmarking Coding Agents for Non-Functional Improvements                                                                                                               ArXiv, 2026, Online
+
+
+                                                                                                       Evaluation of Execution Time and Token Usage Across Different Agents
+RQ4: What is the practical cost of making                                                     100000                                                                                                      100,000,000
+                                                                                                                                                                                   32,139,360
+non-functional improvements in terms of                                                                                     50,741,364
+                                                                                                               14330                                                                       7,518,460      10,000,000
+                                                                                                                                                            11780
+execution time and token consumption?                                                         10000      504,160                991,751 438,519 870,624                                   5801
+                                                                                                                                     3680     3654                                                        1,000,000
+                                                                                                       2450                  2854                      327,391
+Motivation. Beyond NFI performance, the practical utility of cod-                                                                                                                                         100,000
+                                                                                               1000                                                                   816
+ing agents also depends on their computational cost. An agent that
+
+
+
+
+                                                                                    Time(s)
+
+
+
+
+                                                                                                                                                                                                                        Tokens
+                                                                                                                                                                                                          10,000
+achieves strong NFI improvements may require substantially more
+                                                                                                100
+execution time or token consumption than alternative configura-                                                                                                                                           1,000
+
+tions. RQ4 evaluates the computational cost of different coding                                                                                                                                           100
+agents and examines the relationship between resource consump-                                   10
+                                                                                                                                                                                                          10
+tion and NFI performance.
+                                                                                                  1                                                                                                       1
+Approach. For each agent configuration, we measure two computational-                                    Codex         Claude    Aider + GPT-  Aider +    Aider +      Mini-SWE + Mini-SWE + Mini-SWE +
+                                                                                                        (gpt-5.3)      Agent         4.1      DeepSeek   Gemini 2.5     GPT-4.1   DeepSeek Gemini 2.5
+cost metrics: execution time and token consumption. Execution                                                       (sonnet-4-6)
+                                                                                                                                                   Agents
+time is measured from task initiation to completion, including                                                                            Avg Time (s)          Avg Token
+
+model inference and agent execution overhead. Token consump-
+tion is computed as the total number of input and output tokens                               Figure 2: Execution time and token usage across agents
+used during the interaction. We report the average values across all
+valid runs and compare them with the NFI performance reported                        Task description                             Sample 1                                          Sample 2
+
+in previous RQs.                                                                                                                  Claude r1 | NFI_Documentation +21.05%             Codex r1 | NFI_Documentation +10.53%
+
+                                                                                    Add type annotations and docstrings           …                                                …
+                                                                                    to g4f/debug.py to improve clarity            log_handler: Callable[..., None] =               log_handler: Callable[..., None]
+Results. Figure 2 shows that per-run execution time and token                       for maintainers and static analysis           print                                            = print
+                                                                                    tools, without changing runtime               """Callable used to emit log                     logs: list = []
+consumption vary by orders of magnitude across agent configura-                     behavior.                                     messages."""                                     def log(text: str, file:
+                                                                                                                                  logs: list[str] = []                             Optional[TextIO] = None) ->
+tions. Claude Code Agent has the highest cost, averaging 14,330                      Code before                                  """Accumulated log messages."""                  None:
+                                                                                                                                  def log(text: str, file:                             """Log text through the
+seconds and 50.7 million tokens per run, followed by Mini-SWE +                     …
+                                                                                    log_handler: callable = print
+                                                                                                                                  Optional[TextIO] = None) -> None:                configured handler when logging
+                                                                                                                                      """Write *text* via                          is enabled."""
+DeepSeek with 11,780 seconds and 32.1 million tokens. In contrast,                  logs: list = []
+                                                                                    def log(text, file = None):
+                                                                                                                                  ``log_handler`` if enabled.                          if logging:
+                                                                                                                                                                                           log_handler(text,
+Codex and the Aider configurations require fewer than one million                       if logging:
+                                                                                            log_handler(text,
+                                                                                                                                      The optional ``file`` stream
+                                                                                                                                  is forwarded to
+                                                                                                                                                                                   file=file)
+                                                                                                                                                                                   …
+tokens per run on average, while Mini-SWE + GPT-4.1 has the                         file=file)
+                                                                                    …
+                                                                                                                                      ``log_handler`` (e.g.
+                                                                                                                                  ``sys.stderr``).
+lowest measured cost, with 816 seconds and 327 thousand tokens.                                                                       """
+                                                                                                                                      if logging:
+   However, higher computational cost does not necessarily trans-                                                                         log_handler(text,
+                                                                                                                                  file=file)
+late into proportionally better NFI performance. Claude Code Agent                                                                …
+
+
+consumes approximately 100× more tokens than Codex and over
+50× more than Aider + GPT-4.1, yet its functional pass rate as shown                               Figure 3: Comparison of different Agent outputs
+in Table 3 is only 5.2 and 3.7 percentage points higher, respectively.
+Moreover, Aider + GPT-4.1 achieves higher documentation (8.1 vs.
+                                                                                    6 Discussion
+7.4) and error-handling improvements (2.3 vs. 2.1), while Codex
+outperforms Claude Code Agent in coding style (2.0 vs. 1.0) and                     6.1 Case Study
+library constraints (1.6 vs. 1.4). These results suggest diminishing                Figure 3 shows a task from SWE-NFI that is related to improving
+returns in computational cost, where substantially higher resource                  the aspect of Documentation. The task requires adding type annota-
+consumption does not necessarily yield proportional gains in non-                   tions and docstrings to improve maintainability and static-analysis
+functional improvements.                                                            support without changing runtime behavior. For readability, the fig-
+   The results also show that computational cost is not explained by                ure shows abbreviated versions of the task description and source
+a simple commercial versus open-source distinction. Claude Code                     code.
+Agent is substantially more expensive than Codex despite both                          Both agents successfully improve the original implementation,
+being commercial agents, while the open-source configurations                       but to different extents. Claude provides more comprehensive docu-
+exhibit a wide spectrum of resource consumption, ranging from the                   mentation, introduces more precise type annotations (e.g., list[str]),
+lightweight Aider framework to the considerably more expensive                      and documents the logging behavior in greater detail, resulting in
+Mini-SWE framework. Overall, resource efficiency should be evalu-                   a 21.05 Documentation rule-score improvement. Codex also adds
+ated together with functional correctness and NFI performance.                      type annotations and docstrings, but its revisions are less com-
+                                                                                    prehensive, achieving a 10.53 Documentation improvement. This
+                                                                                    example illustrates that SWE-NFI can quantitatively distinguish
+  RQ4 Summary: Higher computational cost does not necessar-
+                                                                                    the NFI produced by different coding agents.
+  ily lead to proportionally better non-functional improvements.
+  The cost pattern is also not explained by a simple commercial
+                                                                                    6.2                Implications
+  vs. open-source distinction. Resource cost should therefore be
+  interpreted together with validity, functional correctness, and                   Implication 1: Current coding agents still lag behind human
+  aggregate NFI improvement.                                                        developers in non-functional improvements. The benchmark
+                                                                                    instances in SWE-NFI are constructed from real merged pull re-
+                                                                                    quests, reflecting non-functional improvements that developers
+ArXiv, 2026, Online                    Pengyu Xue, He Yang Yuan, Xin Wang, Junkai Chen, Haonan Zhang, Boyuan Chen, Zishuo Ding, Zhenhao Li, and Weiyi Shang
+
+
+actively make during software maintenance. These changes demon-               therefore consider resource cost together with validity, functional
+strate that improving documentation, error handling, library usage,           correctness, and measured NFI improvement.
+and code structure is an integral part of real-world software devel-
+opment rather than an auxiliary activity. However, our results show
+that current coding agents consistently fall short of the correspond-         7    Threats to Validity
+ing human reference improvements across multiple NFI aspects.
+This gap suggests that, although coding agents have achieved strong           Construct Validity. SWE-NFI operationalizes non-functional im-
+functional capabilities, their ability to perform high-quality non-           provements using 92 executable NFI rules derived from various
+functional improvements remains limited. Future research should               sources, including prior studies, open-source artifacts, and coding
+place greater emphasis on developing coding agents that can better            guidelines. Although these rules cannot fully capture every aspect
+support software maintenance beyond functional correctness.                   of software quality, we intentionally focus on improvements that
+Implication 2: Deterministic evaluation enables reproducible                  can be measured automatically and reproducibly without requiring
+benchmarking. Unlike LLM-as-a-judge evaluation, SWE-NFI oper-                 evaluation-time human annotation or LLM-based judgment. Our
+ationalizes non-functional improvements using 92 executable rules.            benchmark is also flexible to extend more rules.
+This enables deterministic, reproducible, and scalable evaluation             Internal Validity. The stochastic nature of coding agents may
+without requiring evaluation-time human annotation. Although                  introduce variability into the experimental results. To mitigate this
+rule-based evaluation cannot capture every aspect of software qual-           threat, we set the temperature to zero whenever supported and
+ity, it provides an objective foundation for comparing coding agents          repeat each experiment five times. We report the average results
+on developer-oriented non-functional improvements and is also                 across all runs to reduce the influence of randomness. Our bench-
+flexible to extend.                                                           mark construction involves manual procedures, such as manually
+Implication 3: NFI capability of current coding agents is                     validating the data to be included in our benchmark, which may
+aspect-dependent and often favors localized additions over                    introduce subjectivity. To mitigate this threat, two authors inde-
+structural revisions. The aspect-level results show that agent                pendently performed these procedures, and disagreements were
+performance is not uniform across NFI aspects. Documentation                  resolved through discussion until consensus was reached. Func-
+and error handling are the strongest sources of improvement for               tional tests may also affect internal validity, because they may not
+several configurations, while logic-pattern improvements remain               cover all possible cases for each task. To mitigate this threat, we only
+below the human reference improvement for all evaluated agents.               apply NFI scoring to outputs that are valid and pass the task-specific
+Library-constraint improvements also vary across configurations,              tests. We report the functional pass rate separately, so outputs that
+including cases of negative average improvement despite functional            fail the tests are not counted as negative NFI improvements.
+correctness. These findings suggest that future coding agents should          External Validity. Our benchmark focuses exclusively on Python
+move beyond localized insertions toward reasoning about broader               projects. Although Python is one of the most widely used program-
+program structure and maintainability.                                        ming languages and has a rich open-source ecosystem, the findings
+Implication 4: SWE-NFI provides actionable guidance for                       may not directly generalize to other programming languages or
+non-functional improvements. The five-aspect framework and                    software ecosystems. Future studies may extend our benchmark to
+92 executable rules provide a structured and practical foundation             study additional programming languages. Due to computational
+for improving non-functional aspects of software beyond functional            and API costs, we evaluate a limited set of coding agents. Although
+correctness. By operationalizing common maintenance practices                 we include both commercial and open-source agents, our results
+into measurable rules, SWE-NFI provides actionable guidance for               may not fully represent the rapidly evolving landscape of coding
+both researchers and practitioners to evaluate and improve doc-               agents. Future studies could expand the set of evaluated agents and
+umentation, coding style, error handling, library usage, and code             foundation models to further validate our findings.
+structure. Beyond serving as an evaluation benchmark, the pro-
+posed framework can facilitate the development of coding agents
+and software engineering tools that better support real-world soft-           8    Conclusion
+ware maintenance.                                                             In this paper, we present SWE-NFI, a benchmark for evaluating
+Implication 5: NFI outcomes depend on the agent system                        coding agents on non-functional improvements beyond functional
+and resource cost must be interpreted with output quality.                    correctness. SWE-NFI contains 188 single-file and multi-file tasks
+The results show that NFI performance is shaped by the full agent             constructed from real merged Python pull requests, and operational-
+configuration, not only by the backbone model or resource budget.             izes five NFI aspects into 92 executable rules with a comprehensive
+Agent scaffolds affect whether outputs pass validity and functional-          evaluation suite combining functional correctness testing and deter-
+correctness checks, and thus how many outputs become eligible for             ministic rule-based NFI evaluation. Our results show that, although
+NFI scoring. Meanwhile, higher execution time or token consump-               current coding agents can produce measurable NFIs after gener-
+tion does not by itself imply stronger NFI improvement, and low-              ating functionally correct code, they still consistently fall short of
+cost configurations may still produce weak evaluated outputs. Prac-           human developers, particularly on structural improvements such
+tical use of coding agents for non-functional maintenance should              as logic patterns. SWE-NFI provides a reproducible foundation for
+                                                                              evaluating and advancing coding agents toward better support for
+                                                                              real-world software development and maintenance.
+SWE-NFI : Studying and Benchmarking Coding Agents for Non-Functional Improvements                                                                          ArXiv, 2026, Online
+
+
+References                                                                               [21] Xueying Du, Mingwei Liu, Kaixin Wang, Hanlin Wang, Junwei Liu, Yixuan Chen,
+ [1] 2026. Replication Package. https://figshare.com/s/f14692e227368f6c392b. Last             Jiayi Feng, Chaofeng Sha, Xin Peng, and Yiling Lou. 2024. Evaluating large
+     accessed June 2026.                                                                      language models in class-level code generation. In Proceedings of the IEEE/ACM
+ [2] Talor Abramovich, Meet Udeshi, Minghao Shao, Kilian Lieret, Haoran Xi, Kim-              46th International Conference on Software Engineering. 1–13.
+     berly Milner, Sofija Jancheska, John Yang, Carlos E Jimenez, Farshad Khor-          [22] Yongkang Du, Jen-tse Huang, Jieyu Zhao, and Lu Lin. 2025. Faircoder: Evaluating
+     rami, Prashanth Krishnamurthy, Brendan Dolan-Gavitt, Muhammad Shafique,                  social bias of llms in code generation. arXiv preprint arXiv:2501.05396 (2025).
+     Karthik R Narasimhan, Ramesh Karri, and Ofir Press. 2025. EnIGMA: Inter-            [23] Ryo Fujii, Makoto Morishita, Kazuki Yano, and Jun Suzuki. 2026. TimeMachine-
+     active Tools Substantially Assist LM Agents in Finding Security Vulnerabil-              bench: A Benchmark for Evaluating Model Capabilities in Repository-Level
+     ities. In Forty-second International Conference on Machine Learning. https:              Migration Tasks. arXiv preprint arXiv:2601.22597 (2026).
+     //openreview.net/forum?id=Of3wZhVv1R                                                [24] David Goodger and Rossum Guido. 2001. PEP 257 - Docstring Conventions.
+ [3] Aider. 2026. Aider: An ai pair programming tool. https://aider.chat/.                    https://peps.python.org/pep-0257/.
+ [4] Ben Athiwaratkun, Sanjay Krishna Gouda, Zijian Wang, Xiaopeng Li, Yuchen            [25] Google. 2026. Gemini API. https://ai.google.dev/gemini-api/docs/models. Last
+     Tian, Ming Tan, Wasi Uddin Ahmad, Shiqi Wang, Qing Sun, Mingyue Shang,                   Access: 2026.
+     Sujan Kumar Gonugondla, Hantian Ding, Varun Kumar, Nathan Fulton, Arash             [26] Xinyi He, Qian Liu, Mingzhe Du, Lin Yan, Zhijie Fan, Yiming Huang, Zejian Yuan,
+     Farahani, Siddhartha Jain, Robert Giaquinto, Haifeng Qian, Murali Krishna Ra-            and Zejun Ma. 2025. Swe-perf: Can language models optimize code performance
+     manathan, Ramesh Nallapati, Baishakhi Ray, Parminder Bhatia, Sudipta Sengupta,           on real-world repositories? arXiv preprint arXiv:2507.12415 (2025).
+     Dan Roth, and Bing Xiang. 2023. Multi-lingual Evaluation of Code Generation         [27] Ruida Hu, Xinchen Wang, Chao Peng, Cuiyun Gao, and David Lo. 2026. Evaluating
+     Models. In The Eleventh International Conference on Learning Representations.            LLM-Based 0-to-1 Software Generation in End-to-End CLI Tool Scenarios. arXiv
+     https://openreview.net/forum?id=Bo7eeXm6An8                                              preprint arXiv:2604.06742 (2026).
+ [5] Jacob Austin, Augustus Odena, Maxwell Nye, Maarten Bosma, Henryk                    [28] Xing Hu, Feifei Niu, Junkai Chen, Xin Zhou, Junwei Zhang, Junda He, Xin Xia,
+     Michalewski, David Dohan, Ellen Jiang, Carrie J. Cai, Michael Terry, Quoc V.             and David Lo. 2025. Assessing and advancing benchmarks for evaluating large
+     Le, and Charles Sutton. 2021. Program Synthesis with Large Language Models.              language models in software engineering tasks. ACM Transactions on Software
+     arXiv preprint arXiv:2108.07732 (2021).                                                  Engineering and Methodology (2025).
+ [6] Amiangshu Bosu, Michaela Greiler, and Christian Bird. 2015. Characteristics of      [29] Xing Hu, Xin Xia, et al. 2022. Practitioners’ Expectations on Automated Code
+     Useful Code Reviews: An Empirical Study at Microsoft. In IEEE/ACM Working                Comment Generation. In IEEE/ACM International Conference on Software Engi-
+     Conference on Mining Software Repositories (MSR).                                        neering (ICSE).
+ [7] Islem Bouzenia, Premkumar Devanbu, and Michael Pradel. 2025. Repairagent:           [30] Dong Huang, Yuhao Qing, Weiyi Shang, Heming Cui, and Jie M. Zhang. 2025. Ef-
+     An autonomous, llm-based agent for program repair. In 2025 IEEE/ACM 47th                 fibench: Benchmarking the efficiency of automatically generated code. Advances
+     International Conference on Software Engineering (ICSE). IEEE, 2188–2200.                in Neural Information Processing Systems 37 (2025), 11506–11544.
+ [8] Federico Cassano, John Gouwar, Daniel Nguyen, Sydney Nguyen, Luna Phipps-           [31] Carlos E. Jimenez, John Yang, Alexander Wettig, Shunyu Yao, Kexin Pei, Ofir
+     Costin, Donald Pinckney, Ming-Ho Yee, Yangtian Zi, Carolyn Jane Anderson,                Press, and Karthik Narasimhan. 2024. SWE-bench: Can Language Models Resolve
+     Molly Q Feldman, et al. 2023. Multipl-e: A scalable and polyglot approach to             Real-world GitHub Issues? arXiv preprint arXiv:2310.06770 (2024).
+     benchmarking neural code generation. IEEE Transactions on Software Engineering      [32] Yuhang Lai, Chengxi Li, Yiming Wang, Tianyi Zhang, Ruiqi Zhong, Luke Zettle-
+     49, 7 (2023), 3675–3691.                                                                 moyer, Wen-tau Yih, Daniel Fried, Sida Wang, and Tao Yu. 2023. DS-1000: A
+ [9] Junkai Chen, Xing Hu, Zhenhao Li, Cuiyun Gao, Xin Xia, and David Lo. 2024.               natural and reliable benchmark for data science code generation. In International
+     Code search is all you need? improving code suggestions with code search. In             Conference on Machine Learning. PMLR, 18319–18345.
+     Proceedings of the IEEE/ACM 46th International Conference on Software Engineering   [33] Lukasz Langa. 2019. PEP 585 – Type Hinting Generics In Standard Collections.
+     (ICSE). 1–13. doi:10.1145/3597503.3639085                                                https://peps.python.org/pep-0585/.
+[10] Junkai Chen, Huihui Huang, Yunbo Lyu, Junwen An, Jieke Shi, Chengran Yang,          [34] Wei Li, Xin Zhang, Zhongxin Guo, Shaoguang Mao, Wen Luo, Guangyue Peng,
+     Ting Zhang, Haoye Tian, Yikun Li, Zhenhao Li, Xin Zhou, Xing Hu, and David               Yangyu Huang, Houfeng Wang, and Scarlett Li. 2025. Fea-bench: A benchmark
+     Lo. 2026. SecureVibeBench: Benchmarking Secure Vibe Coding of AI Agents via              for evaluating repository-level code generation for feature implementation. In
+     Reconstructing Vulnerability-Introducing Scenarios. In Proceedings of the 64th           Proceedings of the 63rd Annual Meeting of the Association for Computational
+     Annual Meeting of the Association for Computational Linguistics (Volume 1: Long          Linguistics (Volume 1: Long Papers). 17160–17176.
+     Papers), Maria Liakata, Viviane P. Moreira, and David Jurgens (Eds.). Association   [35] Zhenhao Li, An Ran Chen, Xing Hu, Xin Xia, Tse-Hsun Chen, and Weiyi Shang.
+     for Computational Linguistics, San Diego, California, United States, 24144–24168.        2023. Are they all good? studying practitioners’ expectations on the readability
+     https://aclanthology.org/2026.acl-long.1107/                                             of log messages. In 2023 38th IEEE/ACM International Conference on Automated
+[11] Junkai Chen, Zhenhao Li, Xing Hu, and Xin Xia. 2026. Nlperturbator: Studying             Software Engineering (ASE). IEEE, 129–140. doi:10.1109/ASE56229.2023.00136
+     the robustness of code llms to natural language variations. ACM Transactions on     [36] Zhenhao Li, Tse-Hsun Chen, and Weiyi Shang. 2020. Where Shall We Log?
+     Software Engineering and Methodology 35, 4 (2026), 1–20.                                 Studying and Suggesting Logging Locations in Code Blocks. In 35th IEEE/ACM
+[12] Junkai Chen, Zhenhao Li, Qiheng Mao, Xing Hu, Kui Liu, and Xin Xia. 2025.                International Conference on Automated Software Engineering, ASE 2020. 361–372.
+     Understanding practitioners’ expectations on clear code review comments.                 doi:10.1145/3324884.3416636
+     Proceedings of the ACM on Software Engineering 2, ISSTA (2025), 1257–1279.          [37] Zhenhao Li, Tse-Hsun Chen, Jinqiu Yang, and Weiyi Shang. 2019. DLFinder:
+     doi:10.1145/3728931                                                                      Characterizing and Detecting Duplicate Logging Code Smells. In 2019 IEEE/ACM
+[13] Junkai Chen, Zhiyuan Pan, Xing Hu, Zhenhao Li, Ge Li, and Xin Xia. 2025.                 41st International Conference on Software Engineering (ICSE). doi:10.1109/ICSE.
+     Reasoning Runtime Behavior of a Program with LLM: How Far Are We?. In                    2019.00032
+     Proceedings of the IEEE/ACM 47th International Conference on Software Engineering   [38] Zhenhao Li, Heng Li, Tse-Hsun Chen, and Weiyi Shang. 2021. Deeplv: Sug-
+     (ICSE).                                                                                  gesting log levels using ordinal based neural networks. In 2021 IEEE/ACM
+[14] Mark Chen, Jerry Tworek, Heewoo Jun, Qiming Yuan, et al. 2021. Evaluating                43rd International Conference on Software Engineering (ICSE). IEEE, 1461–1472.
+     Large Language Models Trained on Code. arXiv preprint arXiv:2107.03374 (2021).           doi:10.1109/ICSE43902.2021.00131
+[15] Claude Code. 2026. Claude Code Docs. https://docs.anthropic.com/en/docs/            [39] Zhengquan Li, Zhenhao Li, and Zishuo Ding. 2025. From Feedback to Fail-
+     claude-code. Last Access: 2026.                                                          ure: Automated Android Performance Issue Reproduction. arXiv preprint
+[16] Deepseek. 2026. DeepSeek. https://www.deepseek.com/en/. Last Access: 2026.               arXiv:2508.11147 (2025).
+[17] Xiang Deng, Jeff Da, Edwin Pan, Yannis Yiming He, Charles Ide, Kanak Garg,          [40] Zhenhao Li, Chuan Luo, Tse-Hsun Chen, Weiyi Shang, Shilin He, Qingwei Lin,
+     Niklas Lauffer, Andrew Park, Nitin Pasari, Chetan Rane, et al. 2025. Swe-bench           and Dongmei Zhang. 2023. Did we miss something important? Studying and
+     pro: Can ai agents solve long-horizon software engineering tasks? arXiv preprint         exploring variable-aware log abstraction. In 2023 IEEE/ACM 45th International
+     arXiv:2509.16941 (2025).                                                                 Conference on Software Engineering (ICSE). 830–842.
+[18] Jingzhe Ding, Shengda Long, Changxin Pu, Huan Zhou, Hongwan Gao, Xiang              [41] Junwei Liu, Kaixin Wang, Yixuan Chen, Xin Peng, Zhenpeng Chen, Lingming
+     Gao, Chao He, Yue Hou, Fei Hu, Zhaojian Li, et al. 2026. NL2Repo-Bench:                  Zhang, and Yiling Lou. 2025. Large language model-based agents for software en-
+     Towards Long-Horizon Repository Generation Evaluation of Coding Agents.                  gineering: A survey. ACM Transactions on Software Engineering and Methodology
+     arXiv preprint arXiv:2512.12730 (2026).                                                  (2025).
+[19] Zishuo Ding, Yiming Tang, Yang Li, Heng Li, and Weiyi Shang. 2023. On the           [42] Jiawei Liu, Chunqiu Steven Xia, Yuyao Wang, and Lingming Zhang. 2023. Is Your
+     temporal relations between logging and code. In 2023 IEEE/ACM 45th International         Code Generated by ChatGPT Really Correct? Rigorous Evaluation of Large Lan-
+     Conference on Software Engineering (ICSE). IEEE, 843–854.                                guage Models for Code Generation. In Advances in Neural Information Processing
+[20] Mingzhe Du, Luu A Tuan, Bin Ji, Qian Liu, and See-Kiong Ng. 2024. Mercury: A             Systems (NeurIPS).
+     code efficiency benchmark for code large language models. Advances in Neural        [43] Jiawei Liu, Songrun Xie, Junhao Wang, Yuxiang Wei, Yifeng Ding, and Lingming
+     Information Processing Systems 37 (2024), 16601–16622.                                   Zhang. 2024. Evaluating language models for efficient code generation. arXiv
+                                                                                              preprint arXiv:2408.06450 (2024).
+ArXiv, 2026, Online                               Pengyu Xue, He Yang Yuan, Xin Wang, Junkai Chen, Haonan Zhang, Boyuan Chen, Zishuo Ding, Zhenhao Li, and Weiyi Shang
+
+
+[44] Jeffrey Jian Ma, Milad Hashemi, Amir Yazdanbakhsh, Kevin Swersky, Ofir Press,             of, November 16-20, 2025. IEEE, 1931–1942. doi:10.1109/ASE63991.2025.00161
+     Enhui Li, Vijay Janapa Reddi, and Parthasarathy Ranganathan. 2025. SWE-              [70] Xin Wang, Zhenhao Li, and Zishuo Ding. 2026. LLM4Perf: Large Language
+     fficiency: Can Language Models Optimize Real-World Repositories on Real Work-             Models Are Effective Samplers for Multi-Objective Performance Modeling. In
+     loads? arXiv preprint arXiv:2511.06090 (2025).                                            Proceedings of the IEEE/ACM 48th International Conference on Software Engineering
+[45] Qiheng Mao, Zhenhao Li, Xing Hu, Kui Liu, Xin Xia, and Jianling Sun. 2025.                (ICSE).
+     Towards explainable vulnerability detection with large language models. IEEE         [71] Tongtong Wu, Weigang Wu, Xingyu Wang, Kang Xu, Suyu Ma, Bo Jiang, Ping
+     Transactions on Software Engineering (2025).                                              Yang, Zhenchang Xing, Yuan-Fang Li, and Gholamreza Haffari. 2024. Versicode:
+[46] Shane McIntosh, Yasutaka Kamei, Bram Adams, and Ahmed E. Hassan. 2016. An                 Towards version-controllable code generation. arXiv preprint arXiv:2406.07411
+     Empirical Study of the Impact of Modern Code Review Practices on Software                 (2024).
+     Quality. In Empirical Software Engineering, Vol. 21. 2146–2189.                      [72] Chunqiu Steven Xia, Yinlin Deng, Soren Dunn, and Lingming Zhang. 2024. Agent-
+[47] Tam Nguyen, Phong Vu, and Tung Nguyen. 2020. Code Recommendation for                      less: Demystifying LLM-based Software Engineering Agents. arXiv preprint
+     Exception Handling. In ACM Joint European Software Engineering Conference and             arXiv:2407.01489 (2024).
+     Symposium on the Foundations of Software Engineering (ESEC/FSE).                     [73] Weiwei Xu, Kai Gao, Hao He, and Minghui Zhou. 2025. Licoeval: Evaluating llms
+[48] OpenAI. 2025. Codex CLI: A Lightweight Coding Agent That Runs in Your                     on license compliance in code generation. In 2025 IEEE/ACM 47th International
+     Terminal. https://github.com/openai/codex. Accessed: 2026-06-28.                          Conference on Software Engineering (ICSE). IEEE, 1665–1677.
+[49] OpenAI. 2026. OpenAI Developer. https://developers.openai.com/api/docs/              [74] John Yang, Carlos E. Jimenez, Alexander Wettig, Kilian Lieret, Shunyu Yao,
+     models. Last Access: 2026.                                                                Karthik Narasimhan, and Ofir Press. 2024. SWE-agent: Agent-Computer Inter-
+[50] Khouloud Oueslati, Maxime Lamothe, and Foutse Khomh. 2026. RefAgent:                      faces Enable Automated Software Engineering. In Advances in Neural Information
+     A Multi-agent LLM-based Framework for Automatic Software Refactoring. In                  Processing Systems (NeurIPS).
+     IEEE/ACM International Conference on Software Engineering (ICSE).                    [75] John Yang, Carlos E Jimenez, Alex L Zhang, Kilian Lieret, Joyce Yang, Xindi Wu,
+[51] Hammond Pearce, Baleegh Ahmad, Benjamin Tan, Brendan Dolan-Gavitt, and                    Ori Press, Niklas Muennighoff, Gabriel Synnaeve, Karthik R Narasimhan, et al.
+     Ramesh Karri. 2025. Asleep at the keyboard? assessing the security of github              2025. SWE-bench Multimodal: Do AI Systems Generalize to Visual Software
+     copilot’s code contributions. Commun. ACM 68, 2 (2025), 96–105.                           Domains?. In The Thirteenth International Conference on Learning Representations.
+[52] Norman Peitek, Sven Apel, Chris Parnin, André Brechmann, and Janet Siegmund.         [76] John Yang, Kilian Lieret, Jeffrey Ma, Parth Thakkar, Dmitrii Pedchenko, Sten
+     2021. Program Comprehension and Code Complexity Metrics: An fMRI Study.                   Sootla, Emily McMilin, Pengcheng Yin, Rui Hou, Gabriel Synnaeve, et al. 2026.
+     In IEEE/ACM International Conference on Software Engineering (ICSE).                      ProgramBench: Can Language Models Rebuild Programs From Scratch? arXiv
+[53] Jinjun Peng, Leyi Cui, Kele Huang, Junfeng Yang, and Baishakhi Ray. 2025. Cwe-            preprint arXiv:2605.03546 (2026).
+     val: Outcome-driven evaluation on functionality and security of llm code gener-      [77] Lanxin Yang, Jinwei Xu, Yifan Zhang, He Zhang, and Alberto Bacchelli. 2023.
+     ation. In 2025 IEEE/ACM International Workshop on Large Language Models for               Evacrc: Evaluating code review comments. In Proceedings of the 31st ACM Joint
+     Code (LLM4Code). IEEE, 33–40.                                                             European Software Engineering Conference and Symposium on the Foundations of
+[54] Yun Peng, Jun Wan, Yichen Li, and Xiaoxue Ren. 2025. Coffe: A code efficiency             Software Engineering. 275–287.
+     benchmark for code generation. Proceedings of the ACM on Software Engineering        [78] Ka-Ping Yee. 2005. PEP 3134 – Exception Chaining and Embedded Tracebacks.
+     2, FSE (2025), 242–265.                                                                   https://peps.python.org/pep-3134/.
+[55] Veronica Pimenova, Sarah Fakhoury, Christian Bird, Margaret-Anne Storey, and         [79] Boxi Yu, Yuxuan Zhu, Pinjia He, and Daniel Kang. 2025. Utboost: Rigorous
+     Madeline Endres. 2025. Good Vibrations? A Qualitative Study of Co-Creation,               evaluation of coding agents on swe-bench. In Proceedings of the 63rd Annual
+     Communication, Flow, and Trust in Vibe Coding. arXiv:2509.12491 [cs.SE]                   Meeting of the Association for Computational Linguistics (Volume 1: Long Papers).
+[56] Yuhao Qing, Boyu Zhu, Mingzhe Du, Zhijiang Guo, Terry Yue Zhuo, Qianru                    3762–3774.
+     Zhang, Jie Zhang, Heming Cui, Siu Ming Yiu, Dong Huang, et al. 2026. Effibench-      [80] He Yang Yuan, Xin Wang, Kundi Yao, An Ran Chen, Zishuo Ding, and Zhenhao
+     x: A multi-language benchmark for measuring efficiency of llm-generated code.             Li. 2026. Towards Secure Logging: Characterizing and Benchmarking Logging
+     Advances in Neural Information Processing Systems 38 (2026).                              Code Security Issues with LLMs. Proceedings of the ACM on Software Engineering
+[57] Muhammad Shihab Rashid, Christian Bock, Yuan Zhuang, Alexander Buch-                      3, FSE (2026), 745–765.
+     holz, Tim Esler, Simon Valentin, Luca Franceschi, Martin Wistuba, Prabhu Teja        [81] Daoguang Zan, Zhirong Huang, Wei Liu, Hanwu Chen, Shulin Xin, Linhao
+     Sivaprasad, Woo Jung Kim, et al. 2026. Swe-polybench: A multi-language                    Zhang, Qi Liu, Li Aoyan, Lu Chen, Xiaojian Zhong, et al. 2026. Multi-swe-bench:
+     benchmark for repository level evaluation of coding agents. arXiv preprint                A multilingual benchmark for issue resolving. Advances in Neural Information
+     arXiv:2504.08703 (2026).                                                                  Processing Systems 38 (2026).
+[58] Guido Rossum, Jukka Lehtosalo, and Lukasz Langa. 2001. PEP 484 - Type Hints.         [82] Beiqi Zhang, Peng Liang, Qiong Feng, Yujia Fu, and Zengyang Li. 2024. Copilot-
+     https://peps.python.org/pep-0484/.                                                        in-the-Loop: Fixing Code Smells in Copilot-Generated Python Code using Copilot.
+[59] SciTools. 2026.           Understanding McCabe Cyclomatic Complexity.                     In IEEE/ACM International Conference on Automated Software Engineering (ASE),
+     https://support.scitools.com/support/solutions/articles/70000582297-                      NIER Track. arXiv:2401.14176.
+     understanding-mccabe-cyclomatic-complexity.                                          [83] Fengji Zhang, Bei Chen, Yue Zhang, Jacky Keung, Jin Liu, Daoguang Zan, Yi
+[60] Chihao Shen, Connor Dilgren, Purva Chiniya, Luke Griffith, Yu Ding, and Yizheng           Mao, Jian-Guang Lou, and Weizhu Chen. 2023. Repocoder: Repository-level code
+     Chen. 2026. SecRepoBench: Benchmarking Code Agents for Secure Code Com-                   completion through iterative retrieval and generation. In Proceedings of the 2023
+     pletion in Real-World Repositories. arXiv preprint arXiv:2504.21205 (2026).               Conference on Empirical Methods in Natural Language Processing. 2471–2484.
+[61] Xinyu Shi, Zhenhao Li, and An Ran Chen. 2025. Enhancing LLM-based Fault              [84] Linghao Zhang, Shilin He, Chaoyun Zhang, Yu Kang, Bowen Li, Chengxing Xie,
+     Localization with a Functionality-Aware Retrieval-Augmented Generation Frame-             Junhao Wang, Maoquan Wang, Yufan Huang, Shengyu Fu, et al. 2026. Swe-bench
+     work. arXiv preprint arXiv:2509.20552 (2025).                                             goes live! Advances in Neural Information Processing Systems 38 (2026).
+[62] Anthony Sottile. 2021. pyupgrade Documentation. https://github.com/asottile/         [85] Yuntong Zhang, Haifeng Ruan, Zhiyu Fan, and Abhik Roychoudhury. 2024. Au-
+     pyupgrade. Last Access: 2026.                                                             tocoderover: Autonomous program improvement. In Proceedings of the 33rd ACM
+[63] SWE-agent Team. 2026. mini-SWE-Agent. https://mini-swe-agent.com/latest/.                 SIGSOFT International Symposium on Software Testing and Analysis. 1592–1604.
+[64] Tufts University. 2026. CS 40 Coding Standards. https://www.cs.tufts.edu/comp/       [86] Ming Zhong, Xiang Zhou, Ting-Yun Chang, Qingze Wang, Nan Xu, Xiance Si,
+     40/docs/coding-standards.html.                                                            Dan Garrette, Shyam Upadhyay, Jeremiah Liu, Jiawei Han, Benoit Schillings,
+[65] Guido Van Rossum, Barry Warsaw, and Nick Coghlan. 2001. PEP 8 - Style Guide               and Jiao Sun. 2026. SWE-IF: Aligning Code Evaluation with Human Preference.
+     for Python Code. https://peps.python.org/pep-0008/.                                       In Proceedings of the 43rd International Conference on Machine Learning (ICML)
+[66] Chong Wang, Kaifeng Huang, Jian Zhang, Yebo Feng, Lyuye Zhang, Yang Liu,                  (PMLR, Vol. 306).
+     and Xin Peng. 2025. LLMs Meet Library Evolution: Evaluating Deprecated API           [87] Renyi Zhong, Yichen Li, Yulun Wu, Jinxi Kuang, Yintong Huo, and Michael R
+     Usage in LLM-based Code Completion. In IEEE/ACM International Conference on               Lyu. 2026. Single-Language Evidence Is Insufficient for Automated Logging:
+     Software Engineering (ICSE). arXiv:2406.09834.                                            A Multilingual Benchmark and Empirical Study with LLMs. arXiv preprint
+[67] Xin Wang, Yang Feng, Jiaoxiao Qian, Yang Zhang, Zhenhao Li, and Zishuo Ding.              arXiv:2604.17529 (2026).
+     2026. Logging Like Humans for LLMs: Rethinking Logging via Execution and             [88] Renyi Zhong, Yichen Li, Guangba Yu, Wenwei Gu, Jinxi Kuang, Yintong Huo, and
+     Runtime Feedback. arXiv preprint arXiv:2603.29122 (2026).                                 Michael R Lyu. 2026. Larger is not always better: Exploring small open-source
+[68] Xingyao Wang, Boxuan Li, Yufan Song, Frank F Xu, Xiangru Tang, Mingchen                   language models in logging statement generation. ACM Transactions on Software
+     Zhuge, Jiayi Pan, Yueqi Song, Bowen Li, Jaskirat Singh, et al. 2025. Openhands:           Engineering and Methodology 35, 7 (2026), 1–41.
+     An open platform for ai software developers as generalist agents. In International   [89] Terry Yue Zhuo, Minh Chien Vu, Jenny Chim, Han Hu, Wenhao Yu, Ratnadira
+     Conference on Learning Representations, Vol. 2025. 65882–65919.                           Widyasari, Imam Nur Bani Yusuf, Haolan Zhan, Junda He, Indraneil Paul, et al.
+[69] Xin Wang, Zhenhao Li, and Zishuo Ding. 2025. Defects4Log: Benchmarking LLMs               2025. Bigcodebench: Benchmarking code generation with diverse function calls
+     for Logging Code Defect Detection and Reasoning. In 40th IEEE/ACM International           and complex instructions. In International Conference on Learning Representations,
+     Conference on Automated Software Engineering, ASE 2025, Seoul, Korea, Republic            Vol. 2025. 66602–66656.
+

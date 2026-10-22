@@ -1,0 +1,47 @@
+{
+  "16624": {
+    "catalog_z": 8.517,
+    "bagpipes_median_z": 5.58,
+    "bagpipes_z_range": [
+      5.524,
+      5.709
+    ],
+    "pz_peak_z": 5.55,
+    "fraction_at_z77": 0.0,
+    "fraction_at_z82": 0.0,
+    "fraction_at_z85": 0.0,
+    "n_samples": 906,
+    "verdict": "AMBIGUOUS: P(z) median at 5.58",
+    "status": "UNCLEAR"
+  },
+  "21834": {
+    "catalog_z": 8.543,
+    "bagpipes_median_z": 5.612,
+    "bagpipes_z_range": [
+      5.499,
+      7.612
+    ],
+    "pz_peak_z": 5.65,
+    "fraction_at_z77": 0.003,
+    "fraction_at_z82": 0.0,
+    "fraction_at_z85": 0.0,
+    "n_samples": 583,
+    "verdict": "AMBIGUOUS: P(z) median at 5.61",
+    "status": "UNCLEAR"
+  },
+  "39575": {
+    "catalog_z": 8.616,
+    "bagpipes_median_z": 7.862,
+    "bagpipes_z_range": [
+      5.567,
+      8.204
+    ],
+    "pz_peak_z": 7.85,
+    "fraction_at_z77": 0.479,
+    "fraction_at_z82": 0.163,
+    "fraction_at_z85": 0.0,
+    "n_samples": 926,
+    "verdict": "AMBIGUOUS: P(z) median at 7.86",
+    "status": "UNCLEAR"
+  }
+}

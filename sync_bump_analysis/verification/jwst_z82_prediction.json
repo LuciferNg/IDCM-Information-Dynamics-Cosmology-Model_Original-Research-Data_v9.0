@@ -1,0 +1,18 @@
+{
+  "prediction_z": 8.2,
+  "mechanism": "H\u03b2+[OIII] at F410M/F444W boundary",
+  "aliasing_zs": [
+    5.6,
+    6.9,
+    7.7,
+    8.2,
+    8.5,
+    8.7,
+    8.8,
+    8.9
+  ],
+  "fibonacci_structure": "z\u2084 = 7.7 + F\u2085/10 = 7.7 + 0.5 = 8.2",
+  "test_method": "Check CEERS/JADES NIRSpec at z\u22488.2 for bimodal SED fits",
+  "existing_data": "Labbe+2023 Nature galaxies at z=7.4-9.1",
+  "verdict": "Testable with existing JWST data"
+}
